@@ -1,53 +1,38 @@
 <template>
   <div id="app">
-    <img class="logo" src="./assets/logo.png">
-    <hello></hello>
-    <youy></youy>
-    <p>
-      Welcome to your Vue.js app!
-    </p>
+    <v-header></v-header>
+    <div class="tab">
+      <div class="tab-item">商品</div>
+      <div class="tab-item">评论</div>
+      <div class="tab-item">商家</div>
+    </div>
+    <div class="content">
+      I am content
+    </div>
   </div>
 </template>
 
 <script>
-import Hello from './components/Hello'
-import youy from './components/youy'
+  import header from './components/header/header'
 
-export default {
-  components: {
-    Hello,
-    youy
+  export default {
+    components: {
+      'v-header': header,//用来起别名
+    }
   }
-}
 </script>
 
-<style>
-html {
-  height: 100%;
-}
+<style lang="stylus" rel="stylesheet/stylus">
+  #app
+    .tab
+      display: flex;
+      width: 100%;
+      height: 40px;
+      line-height: 40px;
+      .tab-item
+        flex: 1
+        text-align:center
 
-body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
 
-#app {
-  color: #2c3e50;
-  margin-top: -100px;
-  max-width: 600px;
-  font-family: Source Sans Pro, Helvetica, sans-serif;
-  text-align: center;
-}
 
-#app a {
-  color: #42b983;
-  text-decoration: none;
-}
-
-.logo {
-  width: 100px;
-  height: 100px
-}
 </style>

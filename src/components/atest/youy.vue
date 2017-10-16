@@ -14,6 +14,8 @@ export default {
 }
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
-  color:red
+<style>
+  h1{
+    color:red
+  }
 </style>
