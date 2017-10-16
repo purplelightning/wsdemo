@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-header></v-header>
-    <div class="tab">
+    <div class="tab border-1px topborder-1px">
       <div class="tab-item">
         <a v-link="{path:'/goods'}">商品</a>
       </div>
@@ -29,11 +29,16 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
+  @import "./common/stylus/mixin.styl"
+
   .tab
     display: flex;
     width: 100%;
     height: 40px;
     line-height: 40px;
+    /*border-bottom:1px solid rgba(7,17,27,0.1) 为了在所有dpi不同的设备上都显示1像素*/
+    border-1px(rgba(7, 17, 27, 0.1))
+    topborder-1px(rgba(222, 32, 222,1))
     .tab-item
       flex: 1
       text-align: center
