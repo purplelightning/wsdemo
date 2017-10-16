@@ -22,8 +22,23 @@
   import header from './components/header/header'
 
   export default {
+    data() {
+      return {
+        seller: {}
+      }
+    },
+    created() {
+//      this.$http.get('/api/seller').then((res) => {
+//        res=res.json();//调用.json,变成json格式
+//        if(res.errno===0){
+//
+//        }
+//
+//      })
+    },
     components: {
       'v-header': header,//用来起别名
+
     }
   }
 </script>
@@ -38,7 +53,7 @@
     line-height: 40px;
     /*border-bottom:1px solid rgba(7,17,27,0.1) 为了在所有dpi不同的设备上都显示1像素*/
     border-1px(rgba(7, 17, 27, 0.1))
-    topborder-1px(rgba(222, 32, 222,1))
+    topborder-1px(rgba(7, 17, 27, 0.1))
     .tab-item
       flex: 1
       text-align: center
