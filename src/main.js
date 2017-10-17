@@ -7,7 +7,7 @@ import ratings from './components/ratings/ratings'
 import seller from './components/seller/seller'
 
 import './common/stylus/index.styl'
-
+//都是1.0的用法
 Vue.use(VueRouter);
 Vue.use(VueResource);
 

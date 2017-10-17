@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-header></v-header>
+    <v-header :seller="seller"></v-header>
     <div class="tab border-1px topborder-1px">
       <div class="tab-item">
         <a v-link="{path:'/goods'}">商品</a>
@@ -21,6 +21,8 @@
 <script>
   import header from './components/header/header'
 
+  const ERR_OK=0;//ok的状态码
+
   export default {
     data() {
       return {
@@ -28,13 +30,15 @@
       }
     },
     created() {
-//      this.$http.get('/api/seller').then((res) => {
-//        res=res.json();//调用.json,变成json格式
-//        if(res.errno===0){
-//
-//        }
-//
-//      })
+      this.$http.get('/api/seller').then((res) => {
+        res = res.body;//调用.json,变成json格式
+        if (res.errno === ERR_OK) {
+          this.seller=res.data;
+//          console.log(this.seller);
+
+        }
+
+      })
     },
     components: {
       'v-header': header,//用来起别名
