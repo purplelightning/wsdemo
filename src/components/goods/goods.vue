@@ -4,7 +4,7 @@
     <div class="menu-wrapper" v-el:menu-wrapper>
       <ul>
         <li v-for="item in goods" class="menu-item"
-            :class="{'current':currentIndex===$index}">
+            :class="{'current':currentIndex===$index}" @click="selectMenu($index,$event)">
           <span class="text border-1px">
             <span v-show="item.type>0" class="icon"
                   :class="classMap[item.type]"></span>{{item.name}}
@@ -63,7 +63,9 @@
     },
     methods: {
       _initScroll() {
-        this.menuScroll = new BScroll(this.$els.menuWrapper, {});
+        this.menuScroll = new BScroll(this.$els.menuWrapper, {
+          click:true//滑动的preventDefault阻止的点击事件,默认派发
+        });
 
         this.foodsScroll = new BScroll(this.$els.foodsWrapper, {
           probeType: 3//探针,监听位置
@@ -83,6 +85,15 @@
           this.listHeight.push(height);
         }
       },
+      selectMenu:function (index,event) {
+        if(!event._constructed){
+          return;//pc端点击事件不执行,不让pc端的派发执行
+        }
+//        console.log(index);
+        let foodList=this.$els.foodsWrapper.getElementsByClassName('food-list-hook');
+        let el=foodList[index];
+        this.foodsScroll.scrollToElement(el,300);
+      }
 
     },
     computed: {
