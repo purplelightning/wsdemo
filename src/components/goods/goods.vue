@@ -40,11 +40,15 @@
       </ul>
     </div>
   </div>
+  <div class="shop">
+    <shopcart></shopcart>
+  </div>
 
 </template>
 
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll'
+  import shopcart from '../../components/shopcart/shopcart'
 
   const ERR_OK = 0;
 
@@ -123,6 +127,9 @@
 
         }
       })
+    },
+    components:{
+      shopcart,
     }
   }
 </script>
@@ -236,6 +243,8 @@
                 text-decoration: line-through
                 font-size: 10px
                 color: rgb(147, 153, 159)
+
+
 
 
 </style>
