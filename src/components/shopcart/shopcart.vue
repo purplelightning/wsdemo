@@ -11,12 +11,12 @@
           ¥ 0
         </div>
         <div class="desc">
-
+          另需配送费 ¥ {{deliveryPrice}} 元
         </div>
       </div>
       <div class="content-right">
-        <div class="low">
-          ¥20起送
+        <div class="pay">
+          ¥ {{minPrice}} 起送
         </div>
       </div>
     </div>
@@ -24,7 +24,19 @@
 </template>
 
 <script type="text/ecmascript-6">
-  export default {}
+  export default {
+    //App.vue传seller到goods,goods把deliveryPrice,minPrice传到shopcart;这里也要接收
+    props: {
+      deliveryPrice: {
+        type: Number,
+        default: 0
+      },
+      minPrice: {
+        type: Number,
+        default: 0
+      }
+    }
+  }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
@@ -37,6 +49,7 @@
     height: 48px
     .content
       display: flex
+      color: rgba(255, 255, 255, 0.4)
       background: #141d27
       font-size: 0
       .content-left
@@ -66,12 +79,32 @@
               color: #80858a
         .price
           display: inline-block
+          vertical-align: top
+          margin-top: 12px
+          font-size: 16px
+          font-weight: 700
+          line-height: 24px
+          padding-right: 12px
+          box-sizing: border-box
+          border-right: 1px solid rgba(255, 255, 255, 0.1)
+
         .desc
           display: inline-block
+          vertical-align: top
+          font-size: 10px
+          margin: 12px 0 0 12px
+          line-height: 24px
+
       .content-right
         flex: 0 0 105px
         width: 105px
-        background: #a0f033
-
+        .pay
+          padding: 0 8px
+          height:48px
+          line-height: 48px
+          text-align:center
+          font-size: 12px
+          font-weight:700
+          background: #2b333b
 
 </style>
