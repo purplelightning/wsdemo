@@ -18,7 +18,8 @@
           另需配送费{{deliveryPrice}} 元
         </div>
       </div>
-      <div class="content-right">
+      <!--阻止冒泡,阻止默认事件-->
+      <div class="content-right" @click.stop.prevent="pay">
         <div class="pay" :class="payClass">
           {{payDesc}}
         </div>
@@ -35,9 +36,9 @@
     <div class="shopcart-list" v-show="listShow" transition="fold">
       <div class="list-header">
         <h1 class="title">购物车</h1>
-        <span class="empty">清空</span>
+        <span class="empty" @click="empty">清空</span>
       </div>
-      <div class="list-content">
+      <div class="list-content" v-el:list-content>
         <ul>
           <li class="food" v-for="food in selectFoods">
             <span class="name">{{food.name}}</span>
@@ -52,10 +53,13 @@
       </div>
     </div>
   </div>
+  <div class="list-mask" v-show="listShow" transition="fade"
+  @click="hideList"></div>
 </template>
 
 <script type="text/ecmascript-6">
   import cartcontrol from '../cartcontrol/cartcontrol'
+  import BScroll from 'better-scroll'
 
   export default {
     data() {
@@ -141,6 +145,18 @@
           return false;
         }
         let show = !this.fold;
+        if (show) {
+          this.$nextTick(() => {
+            if (!this.scroll) {
+              this.scroll = new BScroll(this.$els.listContent, {
+                click: true
+              });
+            } else {
+              this.scroll.refresh();//重新计算高度差,决定是否滚动
+            }
+          });
+        }
+
         return show;
       }
     },
@@ -163,6 +179,22 @@
           return;
         }
         this.fold = !this.fold;
+      },
+      //清空购物车
+      empty: function () {
+        this.selectFoods.forEach((food) => {
+          food.count = 0;
+        })
+      },
+      hideList:function () {
+        this.fold=true;//不能直接设置计算属性
+      },
+      pay:function () {
+        if(this.totalPrice<this.minPrice){
+          return;
+        }else{
+          window.alert(`支付${this.totalPrice}元~`);
+        }
       }
     },
     components: {
@@ -339,7 +371,7 @@
           position: relative
           padding: 12px 0
           box-sizing: border-box
-          border-1px(rgba(7, 17, 27,0.1))
+          border-1px(rgba(7, 17, 27, 0.1))
           .name
             font-size: 14px
             color: rgb(7, 17, 27)
@@ -351,11 +383,25 @@
             font-size: 14px
             line-height: 24px
             color: rgb(240, 20, 20)
-            font-weight:700
+            font-weight: 700
           .cartcontrol-wrapper
             position: absolute
-            right:0
+            right: 0
             bottom: 6px
 
-
+  .list-mask
+    position: fixed
+    top: 0
+    left: 0
+    height: 100%
+    width: 100%
+    z-index: 40
+    backdrop-filter: blur(10px)
+    &.fade-transition
+      opacity: 1
+      transition: all 0.5s
+      background: rgba(7, 17, 27, 0.6)
+    &.fade-enter, &.fade-leave
+      opacity: 0
+      background: rgba(7, 17, 27, 0)
 </style>
