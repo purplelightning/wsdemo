@@ -1,3 +1,4 @@
+<!--商品增加,减少组件-->
 <template>
   <div class="cartcontrol">
     <div class="cart-decrease" v-show="food.count>0"
