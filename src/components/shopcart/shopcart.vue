@@ -24,11 +24,39 @@
         </div>
       </div>
     </div>
+    <div class="ball-container">
+      <div transition="drop" v-for="ball in balls" v-show="ball.show"
+           class="ball">
+        <div class="inner"></div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   export default {
+    data() {
+      return {
+        balls: [
+          {
+            show: false
+          },
+          {
+            show: false
+          },
+          {
+            show: false
+          },
+          {
+            show: false
+          },
+          {
+            show: false
+          },
+        ],
+        dropBall: [],
+      }
+    },
     //App.vue传seller到goods,goods把deliveryPrice,minPrice传到shopcart;这里也要接收
     props: {
       selectFoods: {
@@ -66,22 +94,62 @@
         });
         return count;
       },
-      payDesc(){
-        if(this.totalPrice===0){
+      payDesc() {
+        if (this.totalPrice === 0) {
           return ` ¥${this.minPrice}起送`;//ES6反引号,在有变量的时候,不用加号拼字符串
-        }else if(this.totalPrice<this.minPrice){
-          let diff=this.minPrice-this.totalPrice;
+        } else if (this.totalPrice < this.minPrice) {
+          let diff = this.minPrice - this.totalPrice;
           return `还差¥${diff}起送`;
-        }else{
+        } else {
           return '去结算';
         }
       },
-      payClass(){
-        if(this.totalPrice<this.minPrice){
+      payClass() {
+        if (this.totalPrice < this.minPrice) {
           return 'not-enough';
-        }else {
+        } else {
           return 'enough';
         }
+      }
+    },
+    methods: {
+      //这里的el就是goods从cartcontrol获得的target
+      drop(el) {
+//        console.log(el);//这里不能实现,与dispatch不起作用有关,
+        for (let i = 0; i < this.balls.length; i++) {
+          let ball = this.balls[i];
+          if (!ball.show) {
+            ball.show = true;
+            ball.el = el;
+            this.dropBall.push(ball);
+            return;
+          }
+        }
+      }
+    },
+    transition: {
+      drop: {
+        beforeEnter(el) {
+          let count = this.balls.length;
+          while (count > 0) {
+            let ball = this.balls[count];
+            if (ball.show) {
+              let rect = ball.el.getBoundingClientRect();
+              let x = rect.left - 32;
+              let y = -(window.innerHeight - rect.top - 22);
+              el.style.display = '';
+              el.style.webKitTransform = `translate3d(0,${y}px,0)`;
+              el.style.transform = `translate3d(0,${y}px,0)`;
+            }
+            count--;
+          }
+        },
+        enter(el) {
+
+        },
+        afterEnter(el) {
+
+        },
       }
     }
   }
@@ -160,7 +228,7 @@
           display: inline-block
           vertical-align: top
           font-size: 10px
-          margin: 12px 0 0 12px//这边..
+          margin: 12px 0 0 12px //这边..
           line-height: 24px
 
       .content-right
@@ -177,5 +245,22 @@
             background: #2b333b
           &.enough
             background: #00b43c
-            color:#fff
+            color: #fff
+    .ball-container
+      .ball
+        position: fixed
+        left: 32px
+        bottom: 22px
+        z-index: 200
+        &.drop-transition
+          transition: all 0.4s
+          opacity: 1
+          .inner
+            width: 16px
+            height: 16px
+            border-radius: 50%
+            background: rgb(0, 160, 220)
+            transition: all 0.4s
+
+
 </style>

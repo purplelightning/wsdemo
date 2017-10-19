@@ -45,7 +45,7 @@
     </div>
   </div>
   <div class="shop">
-    <shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice"
+    <shopcart v-ref:shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice"
               :min-price="seller.minPrice"></shopcart>
   </div>
 
@@ -104,7 +104,10 @@
         let foodList = this.$els.foodsWrapper.getElementsByClassName('food-list-hook');
         let el = foodList[index];
         this.foodsScroll.scrollToElement(el, 300);
-      }
+      },
+      _drop(target){
+        this.$refs.shopcart.drop(target);//再把target传给shopcart
+      },
 
     },
     computed: {
@@ -149,6 +152,12 @@
     components: {
       shopcart,
       cartcontrol,
+    },
+    events:{
+      //接收cartcontrol传递的target
+      'cart-add'(target){
+        this._drop(target);//把target传给_drop方法
+      }
     }
   }
 </script>

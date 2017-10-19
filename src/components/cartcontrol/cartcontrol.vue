@@ -37,6 +37,10 @@
         } else {
           this.food.count++;
         }
+        this.$dispatch('cart.add',event.target);//传递dom元素给父组件goods
+        this.$on('cart.add',function () {
+//          console.log('aaaa');
+        })
       },
       decreaseCart() {
         if (!event._constructed) {
