@@ -15,7 +15,7 @@
           ¥ {{totalPrice}}
         </div>
         <div class="desc">
-          另需配送费 ¥ {{deliveryPrice}} 元
+          另需配送费{{deliveryPrice}} 元
         </div>
       </div>
       <div class="content-right">
@@ -36,7 +36,7 @@
         default() {
           return [
             {
-              price: 0,
+              price: 15,
               count: 1
             }
           ];
@@ -160,7 +160,7 @@
           display: inline-block
           vertical-align: top
           font-size: 10px
-          margin: 12px 0 0 0//这边..
+          margin: 12px 0 0 12px//这边..
           line-height: 24px
 
       .content-right

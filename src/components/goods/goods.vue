@@ -30,8 +30,11 @@
                   <span>好评率: {{food.rating}}%</span>
                 </div>
                 <div class="price">
-                  <span class="now">¥ {{food.price}}</span><span v-show="food.oldPrice"
-                                                                 class="old">¥ {{food.oldPrice}}</span>
+                  <span class="now">¥ {{food.price}}</span><span v-show="food.oldPrice" class="old">¥ {{food.oldPrice}}</span>
+                </div>
+                <div class="cartcontrol-wrapper">
+                  <!--将food传入cartcontrol组件-->
+                  <cartcontrol v-bind:food="food"></cartcontrol>
                 </div>
               </div>
             </li>
@@ -49,6 +52,7 @@
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll'
   import shopcart from '../../components/shopcart/shopcart'
+  import cartcontrol from '../../components/cartcontrol/cartcontrol'
 
   const ERR_OK = 0;
 
@@ -72,6 +76,7 @@
         });
 
         this.foodsScroll = new BScroll(this.$els.foodsWrapper, {
+          click:true,
           probeType: 3//探针,监听位置
         });
 
@@ -130,6 +135,7 @@
     },
     components:{
       shopcart,
+      cartcontrol,
     }
   }
 </script>
@@ -243,6 +249,11 @@
                 text-decoration: line-through
                 font-size: 10px
                 color: rgb(147, 153, 159)
+            .cartcontrol-wrapper
+              position: absolute
+              right: 0
+              bottom:12px
+
 
 
 
