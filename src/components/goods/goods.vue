@@ -30,7 +30,8 @@
                   <span>好评率: {{food.rating}}%</span>
                 </div>
                 <div class="price">
-                  <span class="now">¥ {{food.price}}</span><span v-show="food.oldPrice" class="old">¥ {{food.oldPrice}}</span>
+                  <span class="now">¥ {{food.price}}</span><span v-show="food.oldPrice"
+                                                                 class="old">¥ {{food.oldPrice}}</span>
                 </div>
                 <div class="cartcontrol-wrapper">
                   <!--将food传入cartcontrol组件-->
@@ -44,7 +45,8 @@
     </div>
   </div>
   <div class="shop">
-    <shopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
+    <shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice"
+              :min-price="seller.minPrice"></shopcart>
   </div>
 
 </template>
@@ -72,11 +74,11 @@
     methods: {
       _initScroll() {
         this.menuScroll = new BScroll(this.$els.menuWrapper, {
-          click:true//滑动的preventDefault阻止的点击事件,默认派发
+          click: true//滑动的preventDefault阻止的点击事件,默认派发
         });
 
         this.foodsScroll = new BScroll(this.$els.foodsWrapper, {
-          click:true,
+          click: true,
           probeType: 3//探针,监听位置
         });
 
@@ -94,14 +96,14 @@
           this.listHeight.push(height);
         }
       },
-      selectMenu:function (index,event) {
-        if(!event._constructed){
+      selectMenu: function (index, event) {
+        if (!event._constructed) {
           return;//pc端点击事件不执行,不让pc端的派发执行
         }
 //        console.log(index);
-        let foodList=this.$els.foodsWrapper.getElementsByClassName('food-list-hook');
-        let el=foodList[index];
-        this.foodsScroll.scrollToElement(el,300);
+        let foodList = this.$els.foodsWrapper.getElementsByClassName('food-list-hook');
+        let el = foodList[index];
+        this.foodsScroll.scrollToElement(el, 300);
       }
 
     },
@@ -116,6 +118,17 @@
           }
         }
         return 0;
+      },
+      selectFoods() {
+        let foods = [];
+        this.goods.forEach((good) => {
+          good.foods.forEach((food) => {
+            if (food.count) {
+              foods.push(food);
+            }
+          });
+        });
+        return foods;
       }
     },
     created() {
@@ -133,7 +146,7 @@
         }
       })
     },
-    components:{
+    components: {
       shopcart,
       cartcontrol,
     }
@@ -163,9 +176,9 @@
         &.current
           position: relative
           z-index: 10
-          margin-top:-1px
+          margin-top: -1px
           font-weight: 700
-          color:#000
+          color: #000
           background: #ffffff
           .text
             border-none()
@@ -252,10 +265,7 @@
             .cartcontrol-wrapper
               position: absolute
               right: 0
-              bottom:12px
-
-
-
+              bottom: 12px
 
 
 </style>
