@@ -18,7 +18,7 @@
         <li v-for="item in goods" class="food-list food-list-hook">
           <h1 class="title">{{item.name}}</h1>
           <ul class="licon">
-            <li v-for="food in item.foods" class="food-item border-1px">
+            <li @click="setSelectFood(food,$event)" v-for="food in item.foods" class="food-item border-1px">
               <div class="icon">
                 <img width="57" height="57" v-bind:src="food.icon">
               </div>
@@ -49,12 +49,17 @@
               :min-price="seller.minPrice"></shopcart>
   </div>
 
+  <!--调用子组件方法-->
+  <food :food="selectFood" v-ref:food></food>
+
 </template>
 
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll'
   import shopcart from '../../components/shopcart/shopcart'
   import cartcontrol from '../../components/cartcontrol/cartcontrol'
+  import food from '../../components/food/food'
+
 
   const ERR_OK = 0;
 
@@ -64,6 +69,8 @@
         goods: [],
         listHeight: [],//记录区间高度的数组
         scrollY: 0,
+        selectFood: {},
+
       }
     },
     props: {
@@ -105,8 +112,15 @@
         let el = foodList[index];
         this.foodsScroll.scrollToElement(el, 300);
       },
-      _drop(target){
+      _drop(target) {
         this.$refs.shopcart.drop(target);//再把target传给shopcart
+      },
+      setSelectFood(food, event) {
+        if (!event._constructed) {
+          return;
+        }
+        this.selectFood = food;
+        this.$refs.food.show();
       },
 
     },
@@ -152,10 +166,11 @@
     components: {
       shopcart,
       cartcontrol,
+      food,
     },
-    events:{
+    events: {
       //接收cartcontrol传递的target
-      'cart-add'(target){
+      'cart-add'(target) {
         this._drop(target);//把target传给_drop方法
       }
     }
