@@ -31,14 +31,14 @@
         <p class="text">{{food.info}}</p>
       </div>
       <split></split>
-      <!--<div class="comment">-->
-      <!--<div class="name">商品评价</div>-->
-      <!--<div class="category">-->
-      <!--<div class="all">全部</div>-->
-      <!--<div class="tui">推荐</div>-->
-      <!--<div class="to">吐槽</div>-->
-      <!--</div>-->
-      <!--</div>-->
+      <div class="comment">
+        <div class="name">商品评价</div>
+        <div class="category">
+          <div class="all">全部{{food.ratings.length}}</div>
+          <div class="tui">推荐{{tuiCount}}</div>
+          <div class="to">吐槽{{toCount}}</div>
+        </div>
+      </div>
 
     </div>
   </div>
@@ -202,7 +202,6 @@
           color: white
           background: rgb(0, 160, 220)
 
-
       .info
         padding: 18px
         .title
@@ -215,31 +214,31 @@
           color: rgb(77, 85, 93)
           line-height: 24px
           font-size: 12px
-        .comment
-          padding: 18px
-          .name
-            display: block
-            color: rgb(7, 17, 27)
-            line-height: 14px
-            font-size: 14px
-            margin-bottom: 6px
-          .category
-            margin-top: 18px
-            .all, .tui, .to
-              display: inline-block
-              font-size: 12px
-              line-height: 16px
-              border-radius: 2px
-              padding: 8px
-            .all
-              color: white
-              background: rgb(0, 160, 220)
-            .tui
-              color: rgb(77, 85, 93)
-              background: rgba(0, 160, 220, .2)
-            .to
-              color: rgba(77, 85, 93, 0.2)
-              background: rgba(0, 160, 220, .1)
+      .comment
+        padding: 18px
+        .name
+          display: block
+          color: rgb(7, 17, 27)
+          line-height: 14px
+          font-size: 14px
+          margin-bottom: 6px
+        .category
+          margin-top: 18px
+          .all, .tui, .to
+            display: inline-block
+            font-size: 12px
+            line-height: 16px
+            border-radius: 2px
+            padding: 8px
+          .all
+            color: white
+            background: rgb(0, 160, 220)
+          .tui
+            color: rgb(77, 85, 93)
+            background: rgba(0, 160, 220, .2)
+          .to
+            color: rgba(77, 85, 93, 0.2)
+            background: rgba(0, 160, 220, .1)
 
 </style>
 
