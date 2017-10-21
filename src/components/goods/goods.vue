@@ -229,7 +229,7 @@
           vertical-align: middle
           width: 56px
           font-size: 12px
-          border-1px(rgba(7, 17, 27.0 .1))
+          border-1px(rgba(7, 17, 27,0.1))
 
     .foods-wrapper
       flex: 1
