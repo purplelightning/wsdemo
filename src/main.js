@@ -38,4 +38,4 @@ router.map({
 });
 
 router.start(app,'#app');
-router.go('/goods');//默认页面
+// router.go('/goods');//默认页面
