@@ -31,11 +31,11 @@
         <p class="content border-1px">{{seller.bulletin}}</p>
 
         <ul v-if="seller.supports" class="support-content">
-            <li v-for="support in seller.supports" class="support-item border-1px">
-              <div class="icon" :class="classMap[support.type]"></div>
-              <div class="text">{{support.description}}</div>
-            </li>
-          </ul>
+          <li v-for="support in seller.supports" class="support-item border-1px">
+            <div class="icon" :class="classMap[support.type]"></div>
+            <div class="text">{{support.description}}</div>
+          </li>
+        </ul>
 
       </div>
       <split></split>
@@ -80,31 +80,34 @@
       star,
       split,
     },
-    watch:{
-      'seller'(){
-
+    methods: {
+      _initScroll() {
+        if (!this.scroll) {
+          this.scroll = new BScroll(this.$els.seller, {
+            click: true,
+          })
+        }else {
+          this.scroll.refresh();
+        }
       }
     },
+    //...
+    watch: {
+      'seller'() {
+        this._initScroll();
+      }
+    },
+    ready() {//执行时机优先于watch的执行时机
+      this._initScroll();
+    },
     created() {
-      this.$http.get('api/seller').then((res) => {
-        res = res.body;
-        if (res.errno === ERR_OK) {
-          this.seller = res.data;
-          this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
-          this.$nextTick(() => {
-            //使用better-scroll
-            this.scroll = new BScroll(this.$els.seller, {
-              click: true,
-            })
-          });
-        }
-      });
+      this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
     },
   }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import '../../common/stylus/mixin'
+  @import "../../common/stylus/mixin.styl"
 
   .seller
     position: absolute //使用better-scroll还要绝对定位,定高
@@ -149,7 +152,7 @@
           display: inline-block
           flex: 1
           text-align: center
-          border-right: 1px solid rgba(7, 17, 27, 0.1)
+          border-right: 1px solid rgba(7, 17, 27, 0.2)
           .title
             margin-bottom: 4px
             font-size: 10px
@@ -205,11 +208,38 @@
           font-size: 12px
           color: rgb(240, 20, 20)
           line-height: 24px
-          border-1px: rgba(7, 17, 27, 0.1)
+          border-1px: rgba(7, 17, 27, 0.2)
         .support-content
           .support-item
+            padding: 16px 12px
+            font-size: 0
+            border-1px: rgba(7, 17, 27, 0.2)
+            &:last-child
+              border-none()
             .icon
+              display: inline-block
+              vertical-align: top
+              width: 16px
+              height: 16px
+              margin-right: 6px
+              background-size: 16px 16px
+              background-repeat: no-repeat
+              &.decrease
+                bg-image('decrease_4')
+              &.discount
+                bg-image('discount_4')
+              &.guarantee
+                bg-image('guarantee_4')
+              &.invoice
+                bg-image('invoice_4')
+              &.special
+                bg-image('special_4')
             .text
+              display: inline-block
+              vertical-align: top
+              color: rgb(7, 17, 27)
+              line-height: 16px
+              font-size: 12px
 
 
 </style>
