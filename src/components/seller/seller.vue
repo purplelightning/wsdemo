@@ -40,10 +40,14 @@
       </div>
       <split></split>
 
-      <div class="picture-wrapper">
+      <div class="pics">
         <h1 class="title">商家实景</h1>
-        <div class="picture">
-
+        <div class="pic-wrapper" v-el:pic-wrapper>
+          <ul class="pic-list" v-el:pic-list>
+            <li class="pic-item" v-for="pic in seller.pics">
+              <img :src="pic" width="120" height="90">
+            </li>
+          </ul>
         </div>
       </div>
       <split></split>
@@ -86,19 +90,52 @@
           this.scroll = new BScroll(this.$els.seller, {
             click: true,
           })
-        }else {
+        } else {
           this.scroll.refresh();
+        }
+      },
+      _initPics() {
+        if (this.seller.pics) {
+          let picWidth = 120;
+          let margin = 6;
+          let width = (picWidth + margin) * this.seller.pics.length - margin;//ul宽度
+          this.$els.picList.style.width = width + 'px';
+          this.$nextTick(() => {
+            if (!this.picScroll) {
+              this.picScroll = new BScroll(this.$els.picWrapper, {
+                scrollX: true,
+                eventPassThrough: 'vertical'
+              });
+            }else{
+              this.picScroll.refresh();
+            }
+          })
         }
       }
     },
-    //...
+    //观测更新
     watch: {
       'seller'() {
         this._initScroll();
+        this._initPics();
       }
     },
     ready() {//执行时机优先于watch的执行时机
       this._initScroll();
+      this._initPics();
+      //设置内层的宽度超过外层的宽度
+      if (this.seller.pics) {
+        let picWidth = 120;
+        let margin = 6;
+        let width = (picWidth + margin) * this.seller.pics.length - margin;//ul宽度
+        this.$els.picList.style.width = width + 'px';
+        this.$nextTick(() => {
+          this.picScroll = new BScroll(this.$els.picWrapper, {
+            scrollX: true,
+            eventPassThrough: 'vertical'
+          });
+        })
+      }
     },
     created() {
       this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
@@ -241,6 +278,26 @@
               line-height: 16px
               font-size: 12px
 
+      .pics
+        padding: 18px
+        .title
+          margin-bottom: 12px
+          font-size: 14px
+          color: rgb(7, 17, 27)
+          line-height: 14px
+        .pic-wrapper /*横向滚动*/
+          width: 100%
+          overflow: hidden
+          white-space: nowrap /*不会折行*/
+          .pic-list
+            font-size: 0
+            .pic-item
+              display: inline-block
+              margin-right: 6px
+              height: 90px
+              width: 120px
+              &:last-child
+                margin-right: 0
 
 </style>
 
