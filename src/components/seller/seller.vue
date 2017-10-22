@@ -8,6 +8,11 @@
           <span class="rating-count">({{seller.ratingCount}})</span>
           <span class="sell-count">月售{{seller.sellCount}}单</span>
         </div>
+
+        <div class="favor" @click="toggleFavourite($event)">
+          <span class="icon-favorite" :class="{'active':favourite}"></span>
+          <span class="text">{{favouriteText}}</span>
+        </div>
       </div>
 
       <ul class="detail">
@@ -41,7 +46,7 @@
       <split></split>
 
       <div class="pics">
-        <h1 class="title">商家实景</h1>
+        <h1 class="title border-1px">商家实景</h1>
         <div class="pic-wrapper" v-el:pic-wrapper>
           <ul class="pic-list" v-el:pic-list>
             <li class="pic-item" v-for="pic in seller.pics">
@@ -53,13 +58,14 @@
       <split></split>
 
       <div class="info-wrapper">
-        <div class="title">商家信息</div>
+        <h1 class="title">商家信息</h1>
         <ul class="content">
-          <li v-for="info in infos">
+          <li v-for="info in seller.infos" class="info-item border-1px">
             {{info}}
           </li>
         </ul>
       </div>
+
     </div>
   </div>
 </template>
@@ -67,13 +73,19 @@
 <script type="text/ecmascript-6">
   import star from '../../components/star/star'
   import split from '../../components/split/split'
+  import shopcart from '../../components/shopcart/shopcart'
   import BScroll from 'better-scroll'
+  import {saveToLocal, loadFromLocal} from '../../common/js/store'
 
   const ERR_OK = 0;
 
   export default {
     data() {
-      return {}
+      return {
+        favourite: (() => {
+          return loadFromLocal(this.seller.id, 'favourite', false);
+        })()//立即执行函数
+      }
     },
     props: {
       seller: {
@@ -83,8 +95,21 @@
     components: {
       star,
       split,
+      shopcart,
+    },
+    computed: {
+      favouriteText() {
+        return this.favourite ? '已收藏' : '收藏';
+      }
     },
     methods: {
+      toggleFavourite(event) {
+        if (!event._constructed) {
+          return;
+        }
+        this.favourite = !this.favourite;
+        saveToLocal(this.seller.id, 'favourite', this.favourite);
+      },
       _initScroll() {
         if (!this.scroll) {
           this.scroll = new BScroll(this.$els.seller, {
@@ -106,7 +131,7 @@
                 scrollX: true,
                 eventPassThrough: 'vertical'
               });
-            }else{
+            } else {
               this.picScroll.refresh();
             }
           })
@@ -155,6 +180,7 @@
     overflow: hidden
     .seller-content
       .overview
+        position: relative
         padding: 18px
         .title
           margin-bottom: 8px
@@ -181,6 +207,24 @@
             vertical-align: top
             font-size: 10px
             color: rgb(77, 85, 93)
+        .favor
+          position: absolute
+          width: 50px
+          right: 11px
+          top: 18px
+          text-align: center
+          .icon-favorite
+            display: block
+            margin-bottom: 4px
+            font-size: 24px
+            color: #d4d6d9
+            line-height: 24px
+            &.active
+              color: rgb(240, 20, 20)
+          .text
+            color: rgb(77, 85, 93)
+            line-height: 10px
+            font-size: 10px
 
       .detail
         display: flex
@@ -299,6 +343,23 @@
               &:last-child
                 margin-right: 0
 
+      .info-wrapper
+        padding: 18px 18px 0 18px
+        .title
+          padding-bottom: 12px
+          font-size: 14px
+          color: rgb(7, 17, 27)
+          line-height: 14px
+          border-1px: rgba(7, 17, 27, 0.2)
+        .content
+          .info-item
+            padding: 16px 12px
+            font-size: 12px
+            color: rgb(7, 17, 27)
+            line-height: 16px
+            border-1px: rgba(7, 17, 27, 0.2)
+            &:last-child
+              border-none()
 </style>
 
 

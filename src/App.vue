@@ -19,23 +19,31 @@
 </template>
 
 <script>
+  import {urlParse} from './common/js/util'
+
   import header from './components/header/header'
 
-  const ERR_OK=0;//ok的状态码
+  const ERR_OK = 0;//ok的状态码
 
   export default {
     data() {
       return {
-        seller: {}
+        seller: {
+          id: (() => {//立即执行函数
+            let queryParam = urlParse();
+//            console.log(queryParam);
+            return queryParam.id;
+          })()
+        }
       }
     },
     created() {
-      this.$http.get('/api/seller').then((res) => {
+      this.$http.get('/api/seller?id='+this.seller.id).then((res) => {
         res = res.body;//调用.json,变成json格式
         if (res.errno === ERR_OK) {
-          this.seller=res.data;
-//          console.log(this.seller);
-
+//          this.seller = res.data;
+          this.seller=Object.assign({},this.seller,res.data);//扩展id属性
+//          console.log(this.seller.id);
         }
 
       })
