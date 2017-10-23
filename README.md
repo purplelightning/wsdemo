@@ -1,6 +1,7 @@
 # selling
 
-> a project written by vue1.0
+> a project written by vue1.0,
+升级不到2.0了...
 
 ## Build Setup
 
