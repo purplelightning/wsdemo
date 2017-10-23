@@ -12,8 +12,8 @@
         <a v-link="{path:'/seller'}">商家</a>
       </div>
     </div>
-
-    <router-view :seller="seller"></router-view>
+  <!--keep-alive保留组件的状态 -->
+    <router-view :seller="seller" keep-alive></router-view>
 
   </div>
 </template>
