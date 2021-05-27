@@ -1,0 +1,6 @@
+export const LOG_IN = 'LOG/IN'
+export const LOG_OUT = 'LOG/OUT'
+export const ASYNC_LOGIN = 'ASYNC/LOGIN'
+export const ASYNC_LOGOUT = 'ASYNC/LOGOUT'
+export const ASYNC_GETLIST = 'ASYNC/GETLIST'
+export const CHANGE_COURSE = 'CHANGE/COURSE'
