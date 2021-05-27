@@ -49,17 +49,10 @@ class Course extends React.Component {
 
 const mapStateToProps = (state) => {
   return{
-    name: state.name,
-    list: state.list,
-    course: state.course
+    name: state.users.name,
+    list: state.users.list,
+    course: state.users.course
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    logout: actions.logout,
-    changeCourse: actions.changeCourse
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Course)
+export default connect(mapStateToProps, actions)(Course)

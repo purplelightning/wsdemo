@@ -8,7 +8,6 @@ const initState = {
 }
 
 export default (state = initState, action) => {
-  console.log(action.type)
   switch(action.type){
     case types.LOG_OUT:{
       return initState
@@ -20,6 +19,11 @@ export default (state = initState, action) => {
     }
     case types.CHANGE_COURSE:{
       return {
+        ...state, course: action.course
+      }
+    }
+    case types.SET_COURSE_LIST:{
+      return{
         ...state, list: action.list
       }
     }

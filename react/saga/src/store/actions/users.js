@@ -7,7 +7,7 @@ export default {
   doLogin(params){
     return { type: types.ASYNC_LOGIN, payload: params}
   },
-  changeCourse(dd){
-    return { type: types.CHANGE_COURSE, payload: dd }
+  changeCourse(course){
+    return { type: types.CHANGE_COURSE, course: course }
   }
 }

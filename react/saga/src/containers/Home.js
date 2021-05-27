@@ -21,7 +21,7 @@ class Home extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    loginStatus: state.loginStatus
+    loginStatus: state.users.loginStatus
   }
 }
 

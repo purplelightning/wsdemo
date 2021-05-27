@@ -3,26 +3,34 @@ import * as types from '../actions/actionTypes'
 import fetchSmart from '../../common/utils'
 
 function* login(action){
-  console.log('saga---login')
-  console.log(action)
   let { payload } = action
-  console.log(payload)
-  try {
-    let res = yield call(fetchSmart, '/users/login', {
-      method: 'POST',
-      body: JSON.stringify(payload.params)
-    })
-  }catch{
-
+  let res = yield call(fetchSmart, '/users/login', {
+    method: 'POST',
+    body: JSON.stringify(payload)
+  })
+  if(res.msg === '登录成功'){
+    yield put({type: types.LOG_IN, name: payload.username})
+    yield fork(getList)
   }
 }
 
 function* changeCourse(action){
-  let {payload} = action
-  try{
+  yield fork(getList.bind(this, action.course))
+}
 
-  }catch{
-    
+function* getList(type){
+  let param={
+    page:1
+  }
+  if(type){
+    param.type=type
+  }
+  let res = yield call(fetchSmart, '/course/list', {
+    method: 'POST',
+    body: JSON.stringify(param)
+  })
+  if(res.data){
+    yield put({type: types.SET_COURSE_LIST, list: res.data})
   }
 }
 
