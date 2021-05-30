@@ -4,9 +4,27 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
-import inteceptor from './common/inteceptor'
-
 Vue.config.productionTip = false
+
+import { baseUrl } from './common/api'
+
+import axios from 'axios'
+axios.defaults.baseURL = baseUrl
+Vue.prototype.$http = axios
+
+
+axios.interceptors.request.use(config => {
+  return config
+}, err => {
+  return Promise.reject(err)
+})
+
+axios.interceptors.response.use(response => {
+  return response.data
+}, err => {
+  return err
+})
+
 
 /* eslint-disable no-new */
 new Vue({

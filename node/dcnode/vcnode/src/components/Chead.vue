@@ -1,7 +1,7 @@
 <template>
   <div id="head-wrapper">
     <div class="left">
-      <router-link to="/">CNODE社区</router-link>
+      <router-link exact to="/">CNODE社区</router-link>
       <div class="search"></div>
     </div>
     <div class="right">
@@ -38,11 +38,16 @@ export default {
   min-width: 550px;
   background: #444;
   text-decoration: none;
+  z-index: 1000;
   .left{
     margin-left: 60px;
     a{
       color: #ccc;
       text-decoration: none;
+    }
+    .active{
+      color: #fff;
+      font-size: 1.2em;
     }
   }
   .right{
@@ -58,6 +63,10 @@ export default {
       color: #ccc;
       text-decoration: none;
       text-align: center;
+    }
+    .active{
+      color: #fff;
+      font-size: 1.2em;
     }
   }
 }

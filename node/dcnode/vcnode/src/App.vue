@@ -1,20 +1,20 @@
 <template>
   <div id="app">
-    <home></home>
+    <chead></chead>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Home from './components/Home'
+import Chead from "./components/Chead";
 export default {
-  name: 'App',
-  components:{Home}
-  
-}
+  name: "App",
+  components: { Chead },
+};
 </script>
 
 <style>
 #app {
-  
+  padding-top: 60px;
 }
 </style>
