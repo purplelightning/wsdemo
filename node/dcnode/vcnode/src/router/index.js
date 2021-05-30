@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/components/Home'
-import Guide from '@/components/Guide'
-import Apipage from '@/components/Apipage'
-import About from '@/components/About'
+import Home from '@/container/Home'
+import Guide from '@/container/Guide'
+import Apipage from '@/container/Apipage'
+import About from '@/container/About'
 import Bdetail from '@/components/detail/Bdetail'
 
 Vue.use(Router)

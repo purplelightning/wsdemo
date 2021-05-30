@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import bList from './bList'
+import bList from '../components/bList'
 import urlObj from '../common/api'
 
 export default {
