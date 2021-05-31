@@ -65,8 +65,8 @@ export default {
 
 <style scoped lang="less">
 #home{
-  padding: 20px 50px;
-  min-width: 700px;
+  padding: 20px 0 20px 40px;
+  width: 750px;
   .tab-container{
     width: 100%;
     height: 50px;

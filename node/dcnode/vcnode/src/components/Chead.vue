@@ -8,21 +8,69 @@
       <router-link class="item" to="guide">新手入门</router-link>
       <router-link class="item" to="apipage">API</router-link>
       <router-link class="item" to="about">关于</router-link>
-      <div class="item">注册</div>
-      <div class="item">登录</div>
+      <div v-show="!isLogin" class="item" @click="register">注册</div>
+      <div v-show="!isLogin" class="item" @click="login">登录</div>
+      <div class="avatar" v-show="isLogin">
+        <img :src="avatarImg" />
+      </div>
+      <div class="modal-wrapper" v-show="showLoginBox">
+        <el-form ref="form" :model="form" label-width="80px">
+          <el-form-item label="Token">
+            <el-input v-model="form.token"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit">确定</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
+import urlObj from '../common/api'
+
 export default {
   data() {
     return {
-
+      showLoginBox: false,
+      form: {
+        token: ''
+      }
     }
   },
-  components: {
+  methods: {
+    ...mapMutations(['doLogin']),
+    login(){
+      this.showLoginBox = true
+    },
+    onSubmit(){
+      const token = this.form.token
+      this.$http.post(urlObj.getUserInfo(), {accesstoken: token}).then(res => {
+        this.$message({type:'success', message:'登录成功'})
+        this.form.token = ''
+        const params = {
+          id: res.id,
+          loginname: res.loginname,
+          avatarImg: res.avatar_url,
+          token: token
+        }
+        this.doLogin(params)
+        this.closeModal()
+      }).catch(() => {
+        this.$message({type:'error', message:'登录失败'})
+      })
+    },
+    closeModal(){
+      this.showLoginBox = false
+    },
+    register(){
 
+    },
+  },
+  computed:{
+    ...mapState(['loginname', 'isLogin', 'avatarImg']),
   }
 }
 </script>
@@ -63,10 +111,41 @@ export default {
       color: #ccc;
       text-decoration: none;
       text-align: center;
+      cursor: pointer;
     }
     .active{
       color: #fff;
       font-size: 1.2em;
+    }
+    .avatar{
+      position: absolute;
+      top: 10px;
+      right: -50px;
+      width: 50px;
+      img{
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+      }
+    }
+  }
+  .modal-wrapper{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+    right: 0;
+    background: rgba(22,22,22,.8);
+    .el-form{
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, 0);
+      padding: 20px;
+      width: 350px;
+      background: #fff;
+      border-radius: 5px;
     }
   }
 }
