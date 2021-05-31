@@ -10,7 +10,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.config.productionTip = false
 
-Vue. use(ElementUI)
+Vue.use(ElementUI)
 
 import { baseUrl } from './common/api'
 
@@ -20,6 +20,10 @@ Vue.prototype.$http = axios
 
 
 axios.interceptors.request.use(config => {
+  let tokk = JSON.parse(localStorage.getItem('acToken'))
+  if(tokk){
+
+  }
   return config
 }, err => {
   return Promise.reject(err)

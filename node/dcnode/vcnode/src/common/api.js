@@ -10,5 +10,5 @@ export default {
   getTopicDetail: (params) => {
     return `/topic/${params.id}`
   },
-  addTopic: '/topics'
+  addTopic: () => '/topics'
 }

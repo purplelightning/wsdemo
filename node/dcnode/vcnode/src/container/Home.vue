@@ -1,5 +1,8 @@
 <template>
   <div id="home">
+    <div class="right-mol">
+      <el-button type="primary" @click="goCreate">发布话题</el-button>
+    </div>
     <div class="tab-container">
       <div :class="{active: index === selectIndex}" :key="index" v-for="(item,index) in tabs"
       class="tab" @click="changeList(index)">
@@ -55,6 +58,9 @@ export default {
     changeList(val){
       this.selectIndex = val
       this.getData()
+    },
+    goCreate(){
+      this.$router.history.push('/topic/create')
     }
   },
   components:{
@@ -65,8 +71,17 @@ export default {
 
 <style scoped lang="less">
 #home{
+  position: relative;
   padding: 20px 0 20px 40px;
   width: 750px;
+  .right-mol{
+    position: absolute;
+    top: 20px;
+    right: -300px;
+    width: 200px;
+    height: 200px;
+    border: 1px solid black;
+  }
   .tab-container{
     width: 100%;
     height: 50px;

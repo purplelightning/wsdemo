@@ -7,7 +7,7 @@ if(!localStorage.getItem('loginInfo')){
 }
 
 const state = {
-  token: JSON.parse(localStorage.getItem('loginInfo')).token || '',
+  token: JSON.parse(localStorage.getItem('acToken')) || '',
   id: JSON.parse(localStorage.getItem('loginInfo')).id || '',
   isLogin: Boolean(JSON.parse(localStorage.getItem('loginInfo')).isLogin),
   loginname: JSON.parse(localStorage.getItem('loginInfo')).loginname || '',
@@ -22,7 +22,9 @@ const mutations = {
     state.avatarImg = params.avatarImg
     state.isLogin = true
     params.isLogin = true
+    delete params.token
     localStorage.setItem('loginInfo', JSON.stringify(params))
+    localStorage.setItem('acToken', JSON.stringify(token))
   }
 }
 
