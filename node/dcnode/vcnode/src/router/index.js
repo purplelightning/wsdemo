@@ -4,7 +4,8 @@ import Home from '@/container/Home'
 import Guide from '@/container/Guide'
 import Apipage from '@/container/Apipage'
 import About from '@/container/About'
-import Bdetail from '@/components/detail/Bdetail'
+import TopicDetail from '@/components/detail/TopicDetail'
+import ManageTopic from '@/components/detail/ManageTopic'
 
 Vue.use(Router)
 
@@ -34,8 +35,13 @@ export default new Router({
     },
     {
       path: '/topic/detail/:id',
-      name: 'Bdetail',
-      component: Bdetail
+      name: 'TopicDetail',
+      component: TopicDetail
     },
+    {
+      path: '/topic/manage',
+      name: 'ManageTopic',
+      component: ManageTopic
+    }
   ]
 })

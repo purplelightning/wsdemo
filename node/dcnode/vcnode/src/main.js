@@ -20,7 +20,7 @@ Vue.prototype.$http = axios
 
 
 axios.interceptors.request.use(config => {
-  let tokk = JSON.parse(localStorage.getItem('acToken'))
+  let tokk = localStorage.getItem('acToken')
   if(tokk){
 
   }

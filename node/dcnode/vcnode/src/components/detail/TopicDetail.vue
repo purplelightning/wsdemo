@@ -20,7 +20,7 @@ import ReplyList from './ReplyList'
 import urlObj from "../../common/api";
 
 export default {
-  name: "Bdetail",
+  name: "TopicDetail",
   data() {
     return {
       info: {},

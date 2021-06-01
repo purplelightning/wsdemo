@@ -1,7 +1,7 @@
 <template>
   <div id="home">
-    <div class="right-mol">
-      <el-button type="primary" @click="goCreate">发布话题</el-button>
+    <div class="right-mol" v-show="token">
+      <info></info>
     </div>
     <div class="tab-container">
       <div :class="{active: index === selectIndex}" :key="index" v-for="(item,index) in tabs"
@@ -9,13 +9,16 @@
         {{item.name}}
       </div>
     </div>
-    <b-list :bolist="list"></b-list>
+    <topic-list :bolist="list"></topic-list>
   </div>
 </template>
 
 <script>
-import bList from '../components/bList'
+import TopicList from '../components/TopicList'
+import Info from '../components/Info'
 import urlObj from '../common/api'
+
+import { mapState } from "vuex";
 
 export default {
   data() {
@@ -38,9 +41,7 @@ export default {
     this.getData()
   },
   computed:{
-    acClass(){
-
-    }
+    ...mapState(['token'])
   },
   methods:{
     getData(){
@@ -59,12 +60,9 @@ export default {
       this.selectIndex = val
       this.getData()
     },
-    goCreate(){
-      this.$router.history.push('/topic/create')
-    }
   },
   components:{
-    bList
+    TopicList,Info
   }
 }
 </script>
@@ -78,9 +76,8 @@ export default {
     position: absolute;
     top: 20px;
     right: -300px;
-    width: 200px;
+    width: 220px;
     height: 200px;
-    border: 1px solid black;
   }
   .tab-container{
     width: 100%;

@@ -10,9 +10,9 @@
       <router-link class="item" to="about">关于</router-link>
       <div v-show="!isLogin" class="item" @click="register">注册</div>
       <div v-show="!isLogin" class="item" @click="login">登录</div>
-      <div class="avatar" v-show="isLogin">
-        <img :src="avatarImg" />
-      </div>
+      <div v-show="isLogin" class="item">设置</div>
+      <div v-show="isLogin" class="item" @click="logout">退出</div>
+
       <div class="modal-wrapper" v-show="showLoginBox">
         <el-form ref="form" :model="form" label-width="80px">
           <el-form-item label="Token">
@@ -41,7 +41,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['doLogin']),
+    ...mapMutations(['doLogin', 'doLogout']),
     login(){
       this.showLoginBox = true
     },
@@ -61,6 +61,10 @@ export default {
       }).catch(() => {
         this.$message({type:'error', message:'登录失败'})
       })
+    },
+    logout(){
+      this.doLogout()
+      this.$message({type:'success', message:'退出登录'})
     },
     closeModal(){
       this.showLoginBox = false

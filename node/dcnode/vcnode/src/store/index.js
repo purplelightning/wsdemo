@@ -7,7 +7,7 @@ if(!localStorage.getItem('loginInfo')){
 }
 
 const state = {
-  token: JSON.parse(localStorage.getItem('acToken')) || '',
+  token: localStorage.getItem('acToken') || '',
   id: JSON.parse(localStorage.getItem('loginInfo')).id || '',
   isLogin: Boolean(JSON.parse(localStorage.getItem('loginInfo')).isLogin),
   loginname: JSON.parse(localStorage.getItem('loginInfo')).loginname || '',
@@ -16,7 +16,8 @@ const state = {
 
 const mutations = {
   doLogin (state, params) {
-    state.token = params.token
+    let token = params.token
+    state.token = token
     state.id = params.id
     state.loginname = params.loginname
     state.avatarImg = params.avatarImg
@@ -24,7 +25,17 @@ const mutations = {
     params.isLogin = true
     delete params.token
     localStorage.setItem('loginInfo', JSON.stringify(params))
-    localStorage.setItem('acToken', JSON.stringify(token))
+    localStorage.setItem('acToken', token)
+    
+  },
+  doLogout (state) {
+    localStorage.setItem('loginInfo', '{}')
+    localStorage.setItem('acToken','')
+    state.token = ''
+    state.id = ''
+    state.loginname= ''
+    state.avatarImg = ''
+    state.isLogin = false
   }
 }
 

@@ -13,7 +13,7 @@
 <script>
 
 export default {
-  name: 'bList',
+  name: 'TopicList',
   props: ['bolist'],
   data(){
     return {
