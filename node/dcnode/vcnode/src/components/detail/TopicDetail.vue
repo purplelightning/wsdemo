@@ -10,7 +10,12 @@
     </div>
     <div class="reply">
       <div class="reply-head">{{info.reply_count}}回复</div>
-      <reply-list :replyList="info.replies"></reply-list>
+      <reply-list :topicId="info.id" :replyList="info.replies"
+      @addReply="getDetailInfo"></reply-list>
+      <div class="add-reply" v-show="token">
+        <el-input type="textarea" rows="4" v-model="replyContent"></el-input>
+        <el-button type="primary" @click="addReply">回复</el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -19,11 +24,14 @@
 import ReplyList from './ReplyList'
 import urlObj from "../../common/api";
 
+import {mapState} from 'vuex'
+
 export default {
   name: "TopicDetail",
   data() {
     return {
       info: {},
+      replyContent: ''
     };
   },
   mounted() {
@@ -38,13 +46,27 @@ export default {
         id: this.$route.params.id,
       };
       this.$http.get(urlObj.getTopicDetail(params)).then((res) => {
-        console.log(res.data);
         if (res.data) {
           this.info = res.data;
         }
-        
       });
     },
+    addReply(){
+      const params ={
+        accesstoken: this.token,
+        content: this.replyContent,
+      }
+      this.$http.post(urlObj.addReply(this.info.id), params).then( res => {
+        if(res.success){
+          this.$message.success('回复成功~')
+          this.getDetailInfo()
+          this.replyContent = ''
+        }
+      })
+    }
+  },
+  computed: {
+    ...mapState(['token'])
   },
   components: {
     ReplyList
@@ -91,6 +113,11 @@ export default {
       height: 40px;
       line-height: 40px;
       background: #f6f6f6;
+    }
+    .add-reply{
+      .el-textarea{
+        margin-bottom: 20px;
+      }
     }
   }
 }

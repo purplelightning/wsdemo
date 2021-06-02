@@ -46,13 +46,16 @@ export default {
         content: this.form.content,
       };
       this.$http.post(urlObj.addTopic(), params).then((res) => {
-        if (res.data) {
+        if (res.success) {
           this.$message({
             type: "success",
             message: "话题添加成功",
           });
           this.form.title = "";
           this.form.content = "";
+          setTimeout(()=>{
+            this.$router.history.push({name: 'Home'})
+          }, 1000)
         }
       });
     },

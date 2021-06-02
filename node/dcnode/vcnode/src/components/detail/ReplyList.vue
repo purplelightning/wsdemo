@@ -8,25 +8,61 @@
         <div class="content" v-html="item.content"></div>
       </div>
       <div class="fav">点赞数：{{item.ups && item.ups.length}}</div>
+      <div class="icon" v-show="token&&!replyId" @click="openReply(item.id, item.author.loginname)">回复</div>
+      <div class="icon" v-show="token&&replyId&&replyId === item.id" @click="closeReply">收起回复</div>
+    </div>
+    <div class="add-reply" v-show="replyId">
+      <el-input type="textarea" rows="4" v-model="replyContent"></el-input>
+      <el-button type="primary" @click="addReply">回复</el-button>
     </div>
   </div>
 
 </template>
 <script>
+import { mapState } from 'vuex'
+import urlObj from '../../common/api'
 
 export default {
   name: 'ReplyList',
-  props: ['replyList'],
+  props: ['replyList', 'topicId'],
   data(){
     return {
+      replyId: '',
+      replyContent: ''
     }
   },
   methods: {
+    openReply(id, name){
+      this.replyId = id
+      this.replyContent = '@' + name + ' '
+    },
+    closeReply(){
+      this.replyId = ''
+      this.replyContent = ''
+    },
+    addReply(){
+      const params ={
+        accesstoken: this.token,
+        content: this.replyContent,
+        reply_id: this.replyId
+      }
+      this.$http.post(urlObj.addReply(this.topicId), params).then( res => {
+        if(res.success){
+          this.$message.success('回复成功~')
+          this.$emit('addReply')
+          this.replyContent = ''
+          this.replyId = ''
+        }
+      })
+    }
   },
   filters:{
     sliceTime(time){
       return time.slice(5,10)
     }
+  },
+  computed:{
+    ...mapState(['token'])
   }
 }
 </script>
@@ -66,6 +102,10 @@ export default {
       .fav{
         flex: 0 0 80px;
         line-height: 60px;
+      }
+      .icon{
+        display: inline-block;
+        cursor: pointer;
       }
     }
   }

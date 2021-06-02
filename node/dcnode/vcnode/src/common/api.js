@@ -10,5 +10,7 @@ export default {
   getTopicDetail: (params) => {
     return `/topic/${params.id}`
   },
-  addTopic: () => '/topics'
+  addTopic: () => '/topics',
+  //添加评论，回复
+  addReply: (topicId) => `/topic/${topicId}/replies`
 }

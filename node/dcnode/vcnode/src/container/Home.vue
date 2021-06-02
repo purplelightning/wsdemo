@@ -23,7 +23,7 @@ import { mapState } from "vuex";
 export default {
   data() {
     return{
-      selectIndex: 0,
+      selectIndex: 5,
       tabs:[
         { name: '全部', value: 'all'},
         { name: '精华', value: 'good'},
