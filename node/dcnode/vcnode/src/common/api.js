@@ -11,6 +11,7 @@ export default {
     return `/topic/${params.id}`
   },
   addTopic: () => '/topics',
+  updateTopic: () => '/topics/update',
   //添加评论，回复
   addReply: (topicId) => `/topic/${topicId}/replies`
 }

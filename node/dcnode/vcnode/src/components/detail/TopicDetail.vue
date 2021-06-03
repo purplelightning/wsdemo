@@ -1,5 +1,6 @@
 <template>
   <div class="detail-wrapper">
+    <div class="edit" @click="editTopic">编辑</div>
     <div class="detail">
       <div class="title">{{info.title}}</div>
       <div class="des">
@@ -63,6 +64,15 @@ export default {
           this.replyContent = ''
         }
       })
+    },
+    editTopic(){
+      const params = {
+        type: 'edit',
+        ftitle: this.info.title,
+        fcontent: this.info.content,
+        topicId: this.info.id
+      }
+      this.$router.history.push({name: 'ManageTopic', params})
     }
   },
   computed: {
@@ -84,6 +94,13 @@ export default {
 
 <style scoped lang="less">
 .detail-wrapper {
+  position: relative;
+  .edit{
+    position: absolute;
+    top: 10px;
+    right: 100px;
+    cursor: pointer;
+  }
   .detail{
     margin: 20px 30px 0 30px;
     padding: 0 15px;

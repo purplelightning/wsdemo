@@ -25,10 +25,18 @@ export default {
   data() {
     return {
       form: {
-        title: "",
-        content: "",
+        title: this.$route.params.ftitle || "",
+        content: this.$route.params.fcontent || "",
       },
+      topicId: this.$route.params.topicId || ""
     };
+  },
+  mounted(){
+    if(this.form.content){
+      let dom = document.createElement('div')
+      dom.innerHTML = this.form.content
+      this.form.content = dom.innerText
+    }
   },
   methods: {
     doSubmit() {
@@ -45,19 +53,32 @@ export default {
         tab: "dev",
         content: this.form.content,
       };
-      this.$http.post(urlObj.addTopic(), params).then((res) => {
-        if (res.success) {
-          this.$message({
-            type: "success",
-            message: "话题添加成功",
-          });
-          this.form.title = "";
-          this.form.content = "";
-          setTimeout(()=>{
-            this.$router.history.push({name: 'Home'})
-          }, 1000)
-        }
-      });
+      if(!this.topicId){
+        this.$http.post(urlObj.addTopic(), params).then((res) => {
+          if (res.success) {
+            this.$message.success('话题添加成功')
+            this.form.title = "";
+            this.form.content = "";
+            setTimeout(()=>{
+              this.$router.history.push({name: 'Home'})
+            }, 1000)
+          }
+        });
+      }else{
+        params.topic_id = this.topicId
+        this.$http.post(urlObj.updateTopic(), params).then((res) => {
+          if (res.success) {
+            this.$message.success('话题修改成功')
+            this.form.title = "";
+            this.form.content = "";
+            setTimeout(()=>{
+              this.$router.history.push({name: 'Home'})
+            }, 1000)
+          }else{
+            this.$message.error(res.error_msg)
+          }
+        })
+      }
     },
   },
   computed: {
