@@ -1,4 +1,4 @@
-export const baseUrl = ' https://cnodejs.org/api/v1'
+export const baseUrl = 'https://cnodejs.org/api/v1'
 
 export default {
   getUserInfo: () => {
@@ -12,6 +12,9 @@ export default {
   },
   addTopic: () => '/topics',
   updateTopic: () => '/topics/update',
+  getTopicCollections: (name) => `/topic_collect/${name}`,
+  addFav: () => `/topic_collect/collect`,
+  cancelFav: () => `/topic_collect/de_collect`,
   //添加评论，回复
   addReply: (topicId) => `/topic/${topicId}/replies`
 }

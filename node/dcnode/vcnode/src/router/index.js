@@ -6,6 +6,7 @@ import Apipage from '@/container/Apipage'
 import About from '@/container/About'
 import TopicDetail from '@/components/detail/TopicDetail'
 import ManageTopic from '@/components/detail/ManageTopic'
+import Collection from '@/container/Collection'
 
 Vue.use(Router)
 
@@ -32,6 +33,11 @@ export default new Router({
       path: '/about',
       name: 'About',
       component: About
+    },
+    {
+      path: '/collection',
+      name: 'Collection',
+      component: Collection
     },
     {
       path: '/topic/detail/:id',

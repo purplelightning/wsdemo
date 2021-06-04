@@ -1,6 +1,8 @@
 <template>
   <div class="detail-wrapper">
-    <div class="edit" v-show="info.author && info.author.loginname===loginname" @click="editTopic">编辑</div>
+    <el-button v-show="!info.is_collect" type="primary" size="mini" @click="handleFav(true)">收藏</el-button>
+    <el-button v-show="info.is_collect" type="primary" size="mini" @click="handleFav(false)">取消收藏</el-button>
+    <el-button type="success" size="mini" class="edit" v-show="info.author && info.author.loginname===loginname" @click="editTopic">编辑</el-button>
     <div class="detail">
       <div class="title">{{info.title}}</div>
       <div class="des">
@@ -65,6 +67,25 @@ export default {
         }
       })
     },
+    handleFav(flag){
+      // CNODE的详情页is_collect字段值有问题
+      const params ={
+        accesstoken: this.token,
+        topic_id: this.info.id,
+      }
+      let url = urlObj.addFav()
+      let msg = '收藏成功~'
+      if(!flag){
+        url = urlObj.cancelFav()
+        msg = '取消收藏成功~'
+      }
+      this.$http.post(url, params).then( res => {
+        if(res.success){
+          this.$message.success(msg)
+          this.getDetailInfo
+        }
+      })
+    },
     editTopic(){
       const params = {
         type: 'edit',
@@ -95,10 +116,9 @@ export default {
 <style scoped lang="less">
 .detail-wrapper {
   position: relative;
-  .edit{
-    position: absolute;
-    top: 10px;
-    right: 100px;
+  .el-button{
+    float: right;
+    margin-right: 50px;
     cursor: pointer;
   }
   .detail{

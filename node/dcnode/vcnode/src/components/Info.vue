@@ -2,7 +2,7 @@
   <div id="info-wrapper">
     <div id="info">
       <div class="top">
-        <img width="50" height="50" :src="avatarImg" />
+        <img @click="goFav" width="50" height="50" :src="avatarImg" />
         <span>{{loginname}}</span>
       </div>
     </div>
@@ -22,6 +22,9 @@ export default {
     goCreate() {
       this.$router.history.push({name:"ManageTopic", params: {type:'add'}});
     },
+    goFav(){
+      this.$router.history.push({name:"Collection"});
+    }
   },
   computed: {
     ...mapState(["loginname", "avatarImg"]),
@@ -39,6 +42,7 @@ export default {
       vertical-align: top;
       img{
         float: left;
+        cursor: pointer;
       }
       span{
         line-height: 50px;
