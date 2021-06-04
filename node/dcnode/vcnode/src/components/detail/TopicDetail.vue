@@ -152,6 +152,7 @@ export default {
       background: #f6f6f6;
     }
     .add-reply{
+      height: 200px;
       .el-textarea{
         margin-bottom: 20px;
       }
