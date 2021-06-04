@@ -1,6 +1,6 @@
 <template>
   <div class="detail-wrapper">
-    <div class="edit" @click="editTopic">编辑</div>
+    <div class="edit" v-show="info.author && info.author.loginname===loginname" @click="editTopic">编辑</div>
     <div class="detail">
       <div class="title">{{info.title}}</div>
       <div class="des">
@@ -70,13 +70,13 @@ export default {
         type: 'edit',
         ftitle: this.info.title,
         fcontent: this.info.content,
-        topicId: this.info.id
+        topicId: this.info.id,
       }
       this.$router.history.push({name: 'ManageTopic', params})
     }
   },
   computed: {
-    ...mapState(['token'])
+    ...mapState(['token', 'loginname'])
   },
   components: {
     ReplyList

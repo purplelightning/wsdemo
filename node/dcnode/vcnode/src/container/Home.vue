@@ -10,6 +10,15 @@
       </div>
     </div>
     <topic-list :bolist="list"></topic-list>
+    <el-pagination
+      background
+      layout="prev, pager, next, sizes, jumper"
+      :pager-count="5"
+      :page-sizes="[10,15,20,30]"
+      @size-change="handleSizeChange"
+      @current-change="handlePageChange"
+      :total="500">
+    </el-pagination>
   </div>
 </template>
 
@@ -33,7 +42,7 @@ export default {
         { name: '客户端测试', value: 'dev'},
       ],
       list: [],
-      pageSize: 20,
+      pageSize: 10,
       pageIndex: 1,
     }
   },
@@ -44,6 +53,14 @@ export default {
     ...mapState(['token'])
   },
   methods:{
+    handlePageChange(page){
+      this.pageIndex=page
+      this.getData()
+    },
+    handleSizeChange(size){
+      this.pageSize=size
+      this.getData()
+    },
     getData(){
       const params ={
         tab: this.tabs[this.selectIndex].value,
@@ -97,6 +114,10 @@ export default {
       color: #fff;
       background: #80bd01;
     }
+  }
+  .el-pagination{
+    margin-top: 10px;
+    text-align: right;
   }
 }
 </style>

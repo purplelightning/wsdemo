@@ -62,6 +62,8 @@ export default {
             setTimeout(()=>{
               this.$router.history.push({name: 'Home'})
             }, 1000)
+          }else{
+            this.$message.error(err.error_msg)
           }
         });
       }else{
@@ -75,7 +77,7 @@ export default {
               this.$router.history.push({name: 'Home'})
             }, 1000)
           }else{
-            this.$message.error(res.error_msg)
+            this.$message.error('话题修改失败')
           }
         })
       }
