@@ -1,3 +1,10 @@
+const path = require('path');
+
+// 拼接路径
+function resolve(dir) {
+  return path.join(__dirname, dir)
+}
+
 module.exports = {
   publicPath: process.env.NODE_ENV === 'production' ? '/apps/' : '/',  //基本路径
   outputDir: 'dist', //构建时的输出目录
@@ -8,7 +15,7 @@ module.exports = {
 
   //组件是如何被渲染到页面中的？ （ast：抽象语法树；vDom：虚拟DOM）template ---> ast ---> render ---> vDom ---> 真实的Dom ---> 页面
   //runtime-only：将template在打包的时候，就已经编译为render函数runtime-compiler：在运行的时候才去编译template
-  runtimeCompiler: false,
+  runtimeCompiler: true,//热更新
 
   transpileDependencies: [],//babel-loader 默认会跳过 node_modules 依赖。
   productionSourceMap: false,//是否为生产环境构建生成 source map？
@@ -16,7 +23,13 @@ module.exports = {
   //调整内部的 webpack 配置
   configureWebpack: () => { },
 
-  chainWebpack: () => { },
+  chainWebpack: (config) => {
+    config.resolve.alias
+      .set('@', resolve('src'))
+      .set('assets', resolve('src/assets'))
+      .set('components', resolve('src/components'))
+      .set('common', resolve('src/common'))
+  },
 
   // 配置 webpack-dev-server 行为。
   devServer: {
@@ -43,7 +56,7 @@ module.exports = {
   },
   css: {
     // 将组件内的 CSS 提取到一个单独的 CSS 文件 (只用在生产环境中)也可以是一个传递给 `extract-text-webpack-plugin` 的选项对象
-    extract: true,
+    // extract: true, 热更新时这行注释掉，打包时取消注释
     // 是否开启 CSS source map？
     sourceMap: false,
 
