@@ -8,6 +8,9 @@ import router from '../router'
 import store from '../store/index'
 import { Message } from 'element-ui'
 
+// const baseUrl = 'https://cnodejs.org/api/v1'
+const baseUrl = 'http://localhost:3301'
+
 /** 
  * 提示函数 
  */
@@ -64,7 +67,7 @@ const errorHandle = (status, other) => {
 // 创建axios实例
 let instance = axios.create({ timeout: 1000 * 12 })
 
-const baseUrl = 'https://cnodejs.org/api/v1'
+
 instance.defaults.baseURL = baseUrl
 
 /** 

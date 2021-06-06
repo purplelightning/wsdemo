@@ -2,6 +2,10 @@ import instance from './http.js'
 
 
 export default {
+  //测试接口
+  getInfo: () => {
+    return instance.get('/user/test')
+  },
   getUserInfo: (params) => {
     return instance.post(`/accessToken`, params)
   },

@@ -1,17 +1,25 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+let createError = require('http-errors');
+let express = require('express');
+let path = require('path');
+let cookieParser = require('cookie-parser');
+let logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+let indexRouter = require('./routes/index');
+let usersRouter = require('./routes/user');
+let topicRouter = require('./routes/topic');
+const methods = require('./wares/methods');
 
-var app = express();
+let app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+//跨域  后期删
+app.all('*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "http://localhost:8888"); //为了跨域保持session，所以指定地址，不能用*
+  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Credentials', true); 
+  next();
+});
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -19,8 +27,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(methods())
+
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/user', usersRouter);
+app.use('/topic', topicRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
