@@ -48,7 +48,6 @@ export default {
   },
   created(){
     api.getInfo().then(res=>{
-      console.log('bbbbbbbbb');
       console.log(res);
     })
     this.getData()

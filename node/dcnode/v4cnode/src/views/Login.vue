@@ -43,7 +43,7 @@ export default {
           this.$message.error(res.error)
         }else{
           this.$message.success(res.data)
-          this.$router.push({path:'Home'})
+          this.$router.push({path:'/'})
         }
         console.log(res)
         this.disablebtn=false
