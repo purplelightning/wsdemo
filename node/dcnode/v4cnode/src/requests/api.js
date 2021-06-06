@@ -47,7 +47,7 @@ const expressApi = {
   getTopicDetail: (params) => {
     return instance.get(`/topic/${params.id}`)
   },
-  addTopic: (params) => instance.post('/topics', params),
+  addTopic: (params) => instance.post('/topic/addTopic', params),
   updateTopic: (params) => instance.post('/topics/update', params),
 
   //收藏接口

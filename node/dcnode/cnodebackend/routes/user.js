@@ -1,6 +1,7 @@
 let express = require('express');
 let router = express.Router();
 let crypto = require('crypto');
+const jwt = require('../utils/jwt');
 
 const User = require('../models/user');
 
@@ -21,8 +22,17 @@ router.post('/signin', (req, res) => {
       res.error('请输入正确的用户名')
     } else if (pwd !== doc.password) {
       res.error('密码错误')
-    } else { // 登录成功保存状态 TODO jwt或session
-      res.success('登录成功')
+    } else { // 登录成功保存状态 jwt或session
+      let jwtToken = jwt.sign({id: doc._id, username: doc.username, userType: doc.userType})
+      let obj = {
+        token: jwtToken,
+        username: req.body.username,
+        avatarImg: doc.avatarImg,
+        phone: doc.phone,
+        id: doc._id
+      }
+      
+      res.success(obj, '登录成功')
     }
   })
 })

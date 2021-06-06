@@ -42,7 +42,8 @@ export default {
         if(res.error){
           this.$message.error(res.error)
         }else{
-          this.$message.success(res.data)
+          this.$message.success(res.msg)
+          console.log(res)
           this.$router.push({path:'/'})
         }
         console.log(res)
