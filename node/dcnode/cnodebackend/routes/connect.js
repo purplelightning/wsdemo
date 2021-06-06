@@ -4,10 +4,14 @@ const { DB_URL } = require('../config');
 //调试模式
 mongoose.set('debug', true)
 
-const db = mongoose.createConnection(DB_URL)
+mongoose.connect(DB_URL)
+  .then(res => console.log('数据库连接成功'))
+  .catch(err => console.log('数据库连接失败'))
 
-db.on('error', () => console.log('数据库连接失败'))
+  // const db = mongoose.createConnection(DB_URL)
 
-db.on('connected', () => console.log('数据库连接成功'))
+// db.on('error', () => console.log('数据库连接失败'))
 
-module.exports = db;
+// db.on('connected', () => console.log('数据库连接成功'))
+
+// module.exports = db;

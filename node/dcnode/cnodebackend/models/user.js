@@ -15,7 +15,7 @@ UserSchema = new mongoose.Schema({
   },
   avatarImg: {
     type: String,
-    required: true
+    required: false
   },
   topicList: {
     type: Array,

@@ -39,9 +39,10 @@ export default {
         username: this.username,
         password: this.password
       }).then(res=>{
-        if(res.data.err){
-          alert(res.data.err)
+        if(res.error){
+          this.$message.error(res.error)
         }else{
+          this.$message.success(res.data)
           this.$router.push({path:'Home'})
         }
         console.log(res)
@@ -57,9 +58,13 @@ export default {
         username: this.username,
         password: this.password
       }).then(res=>{
-        alert(res.data.msg)
+        if(res.status){
+          this.$message.success(res.data)
+        }else{
+          this.$message.error(res.error)
+        }
       }).catch(err=>{
-        console.log(err.data.err);
+        console.log(err);
       })
     }
   },
