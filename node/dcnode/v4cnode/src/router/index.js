@@ -7,6 +7,8 @@ import TopicDetail from '@/components/detail/TopicDetail'
 import ManageTopic from '@/components/detail/ManageTopic'
 import Collection from '@/views/Collection'
 
+import Login from '@/views/Login'
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -14,6 +16,11 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: Login,
   },
   {
     path: "/about",

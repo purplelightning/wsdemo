@@ -43,7 +43,7 @@ export default {
   methods: {
     ...mapMutations(['doLogin', 'doLogout']),
     login(){
-      this.showLoginBox = true
+      this.$router.history.push({name: 'Login'})
     },
     onSubmit(){
       const token = this.form.token
