@@ -19,7 +19,7 @@ export default new Vuex.Store({
       let token = params.token
       state.token = token
       state.id = params.id
-      state.loginname = params.loginname
+      state.loginname = params.username
       state.avatarImg = params.avatarImg
       state.isLogin = true
       params.isLogin = true

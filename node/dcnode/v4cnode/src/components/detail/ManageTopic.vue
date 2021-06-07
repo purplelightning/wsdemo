@@ -48,14 +48,14 @@ export default {
         return;
       }
       const params = {
-        accesstoken: this.token,
         title: this.form.title,
         tab: "dev",
         content: this.form.content,
+        author: this.loginname,
       };
       if(!this.topicId){
         api.addTopic(params).then((res) => {
-          if (res.success) {
+          if (res.status) {
             this.$message.success('话题添加成功')
             this.form.title = "";
             this.form.content = "";
@@ -87,7 +87,7 @@ export default {
     type() {
       return this.$route.params.type;
     },
-    ...mapState(["token"]),
+    ...mapState(["loginname"]),
   },
 };
 </script>

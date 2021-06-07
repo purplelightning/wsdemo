@@ -13,6 +13,10 @@ TopicSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  tab: {
+    type: String,
+    required: true
+  },
   author: {
     type: Object,
     required: true

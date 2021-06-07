@@ -9,17 +9,24 @@ let usersRouter = require('./routes/user');
 let topicRouter = require('./routes/topic');
 const methods = require('./wares/methods');
 
+let cors = require('cors');// 跨域
+
 let app = express();
 
 //跨域  后期删
-app.all('*', function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:8888"); //为了跨域保持session，所以指定地址，不能用*
-  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  res.header('Access-Control-Allow-Credentials', true); 
-  next();
-});
+// app.all('*', function(req, res, next) {
+  // console.log(req);
+  // res.header("Access-Control-Allow-Origin", "http://localhost:8888"); //为了跨域保持session，所以指定地址，不能用*
+  // res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+  // // 用来跨域，否则安装CORS插件
+  // res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With');
+  // res.header('Access-Control-Allow-Credentials', true); 
+  // res.header("Content-Type", "application/json;charset=utf-8");
+  // next();
+// });
+
+
+app.use(cors())
 
 app.use(logger('dev'));
 app.use(express.json());

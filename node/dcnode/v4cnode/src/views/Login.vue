@@ -20,6 +20,7 @@
 
 <script>
 import api from '@/requests/api'
+import { mapMutations } from 'vuex'
 
 export default {
   name: "Login",
@@ -32,6 +33,7 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(['doLogin']),
     login(){
       this.disablebtn=true
       // this.logText='登录中...'
@@ -43,10 +45,9 @@ export default {
           this.$message.error(res.error)
         }else{
           this.$message.success(res.msg)
-          console.log(res)
+          this.doLogin(res.data)
           this.$router.push({path:'/'})
         }
-        console.log(res)
         this.disablebtn=false
         this.loginText='登录'
       }).catch(err=>{
