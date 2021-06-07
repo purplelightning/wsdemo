@@ -6,15 +6,14 @@ const uuid = require('node-uuid');
 
 const Topic = require('../models/topic');
 const jwt = require('../utils/jwt');
+const { formatDate } = require('../utils/date');
 
 router.get('/list', (req, res) => {
+  console.log(req);
   const obj = url.parse(req.url, true).query
-  Topic.find(obj, (err, docs) => {
-    if(err){
-      console.log(err);
-    }else{
-      res.success(docs)
-    }
+  Topic.find({tab: obj.tab}).skip((obj.page-1)*obj.pageSize).limit().then(docs => {
+    console.log(docs);
+    res.success(docs)
   })
 })
 
@@ -24,11 +23,13 @@ router.post('/addTopic', jwt.verify(), (req, res) => {
     content: req.body.content,
     tab: req.body.tab,
     replyLIst:[],
-    createTime: new Date().getTime(),
-    author: req.body.author,
-    id: uuid.v1()
+    createTime: formatDate(),
+    author: {name: req.body.author, avatarUrl: req.body.avatarImg || ''},
+    id: uuid.v1(),
+    top: false,
+    replyCount: 0,
+    visitCount: 0,
   })
-  console.log(tmp);
   tmp.save((err, doc) => {
     if(err){
       console.log(err)

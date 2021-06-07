@@ -42,7 +42,7 @@ const expressApi = {
   },
   //topic接口
   getTopic: (params) => {
-    return instance.get(`/topic/list?tab=${params.tab}&page=${params.page ? params.page : 1}&limit=${params.limit ? params.limit : 20}`)
+    return instance.get(`/topic/list?tab=${params.tab}&page=${params.page ? params.page : 1}&pageSize=${params.limit ? params.limit : 20}`)
   },
   getTopicDetail: (params) => {
     return instance.get(`/topic/${params.id}`)

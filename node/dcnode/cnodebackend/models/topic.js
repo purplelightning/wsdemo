@@ -29,6 +29,18 @@ TopicSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  top: {
+    type: Boolean,
+    required: false
+  },
+  replyCount: {
+    type: Number,
+    required: false
+  },
+  visitCount: {
+    type: Number,
+    required: false
+  },
 })
 
 let TopicModel = mongoose.model('topic', TopicSchema)

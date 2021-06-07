@@ -1,8 +1,8 @@
 <template>
   <div class="list">
     <div class="item" :key=index v-for="(item,index) in bolist">
-      <img class="user-avatar" :src="item.author.avatar_url" />
-      <span class="count">{{item.reply_count}}/{{item.visit_count}}</span>
+      <img class="user-avatar" :src="item.author.avatarUrl" />
+      <span class="count">{{item.replyCount}}/{{item.visitCount}}</span>
       <div class="name" v-show="item.tab !== 'dev' ">{{item.top ? '置顶' : tabObj[item.tab]}}</div>
       <div class="title" @click="goDetail(item.id)">{{item.title}}</div>
       <div class="last-reply">{{item.last_reply_at | sliceTime}}</div>
@@ -32,7 +32,10 @@ export default {
   },
   filters:{
     sliceTime(time){
-      return time.slice(5,10)
+      if(time){
+        return time.slice(5,10)
+      }
+      return ''
     }
   }
 }
