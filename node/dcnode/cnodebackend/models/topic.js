@@ -1,10 +1,8 @@
 const mongoose = require('mongoose');
 
+mongoose.set('useFindAndModify', false); // 解决findoneandupdate报错问题
+
 TopicSchema = new mongoose.Schema({
-  id: {
-    type: String,
-    required: true
-  },
   title: {
     type: String,
     required: true

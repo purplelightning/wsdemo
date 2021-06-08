@@ -42,7 +42,7 @@ export default {
         { name: '客户端测试', value: 'dev'},
       ],
       list: [],
-      pageSize: 10,
+      pageSize: 5,
       pageIndex: 1,
     }
   },
@@ -78,6 +78,7 @@ export default {
     },
     changeList(val){
       this.selectIndex = val
+      this.pageIndex = 1
       this.getData()
     },
   },

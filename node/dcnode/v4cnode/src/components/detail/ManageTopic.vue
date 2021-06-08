@@ -51,7 +51,6 @@ export default {
         title: this.form.title,
         tab: "dev",
         content: this.form.content,
-        author: this.loginname,
       };
       if(!this.topicId){
         api.addTopic(params).then((res) => {
@@ -67,9 +66,9 @@ export default {
           }
         });
       }else{
-        params.topic_id = this.topicId
+        params.id = this.topicId
         api.updateTopic(params).then((res) => {
-          if (res.success) {
+          if (res.status) {
             this.$message.success('话题修改成功')
             this.form.title = "";
             this.form.content = "";

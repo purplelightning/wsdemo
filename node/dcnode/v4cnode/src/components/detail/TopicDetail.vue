@@ -2,12 +2,12 @@
   <div class="detail-wrapper">
     <el-button v-show="!info.is_collect && token" type="primary" size="mini" @click="handleFav(true)">收藏</el-button>
     <el-button v-show="info.is_collect && token" type="primary" size="mini" @click="handleFav(false)">取消收藏</el-button>
-    <el-button type="success" size="mini" class="edit" v-show="info.author && info.author.loginname===loginname" @click="editTopic">编辑</el-button>
+    <el-button type="success" size="mini" class="edit" v-show="info.author && info.author.name===loginname" @click="editTopic">编辑</el-button>
     <div class="detail">
       <div class="title">{{info.title}}</div>
       <div class="des">
-        发布于&nbsp;{{info.create_at | sliceTime}}&nbsp;&nbsp;&nbsp;作者&nbsp;{{info.author && info.author.loginname}}&nbsp;&nbsp;&nbsp;
-        {{info.visit_count}}&nbsp;次浏览
+        发布于&nbsp;{{info.createTime | sliceTime}}&nbsp;&nbsp;&nbsp;作者&nbsp;{{info.author && info.author.name}}&nbsp;&nbsp;&nbsp;
+        {{info.visitCount}}&nbsp;次浏览
       </div>
       <div v-html="info.content"></div>
     </div>
@@ -39,6 +39,7 @@ export default {
   },
   mounted() {
     this.getDetailInfo();
+    console.log(this.loginname);
   },
   methods: {
     getDetailInfo() {
@@ -51,6 +52,7 @@ export default {
       api.getTopicDetail(params).then((res) => {
         if (res.data) {
           this.info = res.data;
+          console.log(this.info);
         }
       });
     },
@@ -94,7 +96,7 @@ export default {
         type: 'edit',
         ftitle: this.info.title,
         fcontent: this.info.content,
-        topicId: this.info.id,
+        topicId: this.info._id,
       }
       this.$router.history.push({name: 'ManageTopic', params})
     }
@@ -108,7 +110,7 @@ export default {
   filters:{
     sliceTime(time){
       if(time){
-        return time.slice(5,10)
+        return time.split(' ')[0].slice(5,10)
       }
       return ''
     }

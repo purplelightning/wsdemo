@@ -3,7 +3,7 @@ const { SECRET } = require('../config');
 
 const sign = (payload) => {
   return jwt.sign(payload, SECRET, {
-    expiresIn: 300 //单位秒
+    expiresIn: 600 //单位秒
   })
 }
 

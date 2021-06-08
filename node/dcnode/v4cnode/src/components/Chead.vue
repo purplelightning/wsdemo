@@ -65,6 +65,7 @@ export default {
     logout(){
       this.doLogout()
       this.$message({type:'success', message:'退出登录'})
+      this.$router.history.push({name: 'Login'})
     },
     closeModal(){
       this.showLoginBox = false

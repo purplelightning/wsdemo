@@ -45,10 +45,10 @@ const expressApi = {
     return instance.get(`/topic/list?tab=${params.tab}&page=${params.page ? params.page : 1}&pageSize=${params.limit ? params.limit : 20}`)
   },
   getTopicDetail: (params) => {
-    return instance.get(`/topic/${params.id}`)
+    return instance.get(`/topic/getDetail?id=${params.id}`)
   },
   addTopic: (params) => instance.post('/topic/addTopic', params),
-  updateTopic: (params) => instance.post('/topics/update', params),
+  updateTopic: (params) => instance.post('/topic/updateTopic', params),
 
   //收藏接口
   getTopicCollections: (name) => instance.get(`/topic_collect/${name}`),

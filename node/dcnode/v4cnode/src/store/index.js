@@ -23,6 +23,8 @@ export default new Vuex.Store({
       state.avatarImg = params.avatarImg
       state.isLogin = true
       params.isLogin = true
+      params.loginname = params.username
+      delete params.username
       delete params.token
       localStorage.setItem('loginInfo', JSON.stringify(params))
       localStorage.setItem('acToken', token)
