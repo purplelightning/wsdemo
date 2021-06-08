@@ -12,8 +12,8 @@
       <div v-html="info.content"></div>
     </div>
     <div class="reply">
-      <div class="reply-head">{{info.reply_count}}回复</div>
-      <reply-list :topicId="info.id" :replyList="info.replies"
+      <div class="reply-head">{{info.replyCount}}回复</div>
+      <reply-list :topicId="info._id" :replyList="info.replyList"
       @addReply="getDetailInfo"></reply-list>
       <div class="add-reply" v-show="token">
         <el-input type="textarea" rows="4" v-model="replyContent"></el-input>
@@ -39,7 +39,6 @@ export default {
   },
   mounted() {
     this.getDetailInfo();
-    console.log(this.loginname);
   },
   methods: {
     getDetailInfo() {
@@ -52,17 +51,20 @@ export default {
       api.getTopicDetail(params).then((res) => {
         if (res.data) {
           this.info = res.data;
-          console.log(this.info);
         }
       });
     },
     addReply(){
       const params ={
-        accesstoken: this.token,
+        id: this.info._id,
         content: this.replyContent,
+        author: {
+          name: this.loginname,
+          avatarImg: this.avatarImg
+        }
       }
-      api.addReply(this.info.id, params).then( res => {
-        if(res.success){
+      api.addReply(params).then( res => {
+        if(res.status){
           this.$message.success('回复成功~')
           this.getDetailInfo()
           this.replyContent = ''
@@ -102,7 +104,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['token', 'loginname'])
+    ...mapState(['token', 'loginname', 'avatarImg'])
   },
   components: {
     ReplyList

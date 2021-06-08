@@ -6,6 +6,7 @@ const url = require('url');
 const Topic = require('../models/topic');
 const jwt = require('../utils/jwt');
 const { formatDate } = require('../utils/date');
+const uuid = require('node-uuid');
 
 router.get('/list', (req, res) => {
   const obj = url.parse(req.url, true).query
@@ -41,7 +42,8 @@ router.post('/addTopic', jwt.verify(), (req, res) => {
 })
 
 router.get('/getDetail', (req, res) => {
-  Topic.find({id: req.query.id}, (err, docs) => {
+  let obj = url.parse(req.url, true).query
+  Topic.find({_id: obj.id}, (err, docs) => {
     if(err){
       console.log(err);
     }else if(!docs.length){
@@ -63,6 +65,33 @@ router.post('/updateTopic', jwt.verify(), (req, res) => {
       res.error('文章修改失败')
     }else{
       res.success('文章修改成功')
+    }
+  })
+})
+
+router.post('/addReply', jwt.verify(), (req, res) => {
+  Topic.findOne({_id: req.body.id}, (err, doc) =>{
+    if(err){
+      console.log(err);
+    }else{
+      let replyList = doc.replyList
+      let tmp = {
+        id: uuid.v1().replace(/-/g, ''),
+        content: req.body.content,
+        replyId: '',
+        author: req.body.author,
+        createTime: formatDate(),
+        ups: 0,
+
+      }
+      replyList.push(tmp)
+      Topic.findByIdAndUpdate({_id: doc._id}, {replyList: replyList}, (err, doc)=>{
+        if(err){
+          console.log(err);
+        }else{
+          res.success('添加回复成功')
+        }
+      })
     }
   })
 })

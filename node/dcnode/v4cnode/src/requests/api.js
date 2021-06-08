@@ -56,7 +56,7 @@ const expressApi = {
   cancelFav: (params) => instance.post(`/topic_collect/de_collect`, params),
 
   //添加评论，回复
-  addReply: (topicId, params) => instance.post(`/topic/${topicId}/replies`, params)
+  addReply: (params) => instance.post(`/topic/addReply`, params)
 }
 
 export default expressApi

@@ -2,14 +2,14 @@
   <div class="list">
     <div class="item" :key="index" v-for="(item,index) in levelList">
       <div class="primary">
-        <img class="user-avatar" :src="item.author.avatar_url" />
+        <img class="user-avatar" :src="item.author.avatarImg" />
         <div class="main">
           <span class="name">{{item.author.loginname}}</span>
-          <span class="des">{{index+1}}楼&nbsp;{{item.create_at | sliceTime}}</span>
+          <span class="des">{{index+1}}楼&nbsp;{{item.createTime | sliceTime}}</span>
           <div class="content" v-html="item.content"></div>
         </div>
         <div class="fav">点赞数：{{item.ups && item.ups.length}}</div>
-        <div class="icon" v-show="token&&!replyId||replyId !== item.id" @click="openReply(item.id, item.author.loginname)">回复</div>
+        <div class="icon" v-show="token&&!replyId||replyId !== item.id" @click="openReply(item.id, item.author.name)">回复</div>
         <div class="icon" v-show="token&&replyId&&replyId === item.id" @click="closeReply">收起回复</div>
       </div>
       <div class="sub-list" v-show="item.additionArr">
@@ -21,7 +21,7 @@
             <div class="content" v-html="tt.content"></div>
           </div>
           <div class="fav">点赞数：{{tt.ups && tt.ups.length}}</div>
-          <div class="icon" v-show="token&&!replyId||replyId !== tt.id" @click="openReply(tt.id, tt.author.loginname)">回复</div>
+          <div class="icon" v-show="token&&!replyId||replyId !== tt.id" @click="openReply(tt.id, tt.author.name)">回复</div>
           <div class="icon" v-show="token&&replyId&&replyId === tt.id" @click="closeReply">收起回复</div>
         </div>
       </div>
@@ -46,6 +46,9 @@ export default {
       replyContent: '',
     }
   },
+  mounted(){
+    console.log(this.replyList);
+  },
   methods: {
     openReply(id, name){
       this.replyId = id
@@ -59,7 +62,7 @@ export default {
       const params ={
         accesstoken: this.token,
         content: this.replyContent,
-        reply_id: this.replyId
+        replyId: this.replyId
       }
       api.addReply(this.topicId, params).then( res => {
         if(res.success){
@@ -73,7 +76,10 @@ export default {
   },
   filters:{
     sliceTime(time){
-      return time.slice(5,10)
+      if(time){
+        return time.split(' ')[0].slice(5,10)
+      }
+      return ''
     }
   },
   computed:{

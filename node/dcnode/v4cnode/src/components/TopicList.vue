@@ -4,7 +4,7 @@
       <img class="user-avatar" :src="item.author.avatarUrl" />
       <span class="count">{{item.replyCount}}/{{item.visitCount}}</span>
       <div class="name" v-show="item.tab !== 'dev' ">{{item.top ? '置顶' : tabObj[item.tab]}}</div>
-      <div class="title" @click="goDetail(item.id)">{{item.title}}</div>
+      <div class="title" @click="goDetail(item._id)">{{item.title}}</div>
       <div class="last-reply">{{item.last_reply_at | sliceTime}}</div>
     </div>
   </div>
