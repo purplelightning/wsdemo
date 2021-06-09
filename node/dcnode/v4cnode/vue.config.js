@@ -29,6 +29,7 @@ module.exports = {
       .set('assets', resolve('src/assets'))
       .set('components', resolve('src/components'))
       .set('common', resolve('src/common'))
+      .set('requests', resolve('src/requests'))
   },
 
   // 配置 webpack-dev-server 行为。

@@ -2,8 +2,12 @@ let express = require('express');
 let router = express.Router();
 let crypto = require('crypto');
 const jwt = require('../utils/jwt');
+const jtt = require('jsonwebtoken');
 
 const User = require('../models/user');
+
+const multer = require('multer');
+const upload = multer({dest: 'public/avatar/'})
 
 router.get('/test', async (req, res) => {
   res.success('接口测试返回')
@@ -54,7 +58,7 @@ router.post('/signup', async (req, res) => {
         password: pwd,
         userType: req.body.userType ? req.body.userType : 'primaryUser',
         phone: '',
-        avatarImg: '/static/avatar/default.jpg',
+        avatarImg: '/avatar/default.jpg',
         topList: [],
         favTopicList: [],
       })
@@ -66,6 +70,22 @@ router.post('/signup', async (req, res) => {
       })
     }
   })
+})
+
+router.post('/uploadAvatar', upload.single('avatar'), (req, res) => {
+  let authorization = req.headers.authorization
+  const info = jtt.decode(authorization)
+  console.log(info)
+  var selectors = [
+    {"_id": info.id},
+    {"$set":{
+        "avatarImg": req.file.path,
+      }
+    }
+  ];
+
+  console.log(req.file)
+  res.success('头像上传成功')
 })
 
 

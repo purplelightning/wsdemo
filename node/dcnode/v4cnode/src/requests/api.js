@@ -37,8 +37,9 @@ const expressApi = {
   getRegister: (params) => {
     return instance.post(`/user/signup`, params)
   },
-  getUserInfo: (params) => {
-    return instance.post(`/accessToken`, params)
+  uploadAvatar: (data) => {
+    return instance.post('/user/uploadAvatar', data,
+    {header: {'content-type':'multipart/form-data'}})
   },
   //topic接口
   getTopic: (params) => {

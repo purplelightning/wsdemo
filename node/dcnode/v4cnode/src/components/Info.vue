@@ -2,28 +2,35 @@
   <div id="info-wrapper">
     <div id="info">
       <div class="top">
-        <img @click="goFav" width="50" height="50" :src="avatarImg" />
-        <span>{{loginname}}</span>
+        <img @click="showAvatarModal"  width="50" height="50" :src="avatarImg" />
+        <span @click="goFav">{{loginname}}</span>
       </div>
     </div>
     <el-button type="success" @click="goCreate">发布话题</el-button>
+    <change-avatar></change-avatar>
   </div>
 </template>
 <script>
 import { mapState } from "vuex";
+import ChangeAvatar from 'common/ChangeAvatar.vue';
 
 export default {
   name: "Info",
   data() {
-    return {};
+    return {
+      showFlag: false
+    };
   },
-  components: {},
+  components: {ChangeAvatar},
   methods: {
     goCreate() {
       this.$router.history.push({name:"ManageTopic", params: {type:'add'}});
     },
     goFav(){
       this.$router.history.push({name:"Collection"});
+    },
+    showAvatarModal(){
+      this.showFlag = true
     }
   },
   computed: {
