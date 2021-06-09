@@ -13,7 +13,7 @@
     </div>
     <div class="reply">
       <div class="reply-head">{{info.replyCount}}回复</div>
-      <reply-list :topicId="info._id" :replyList="info.replyList"
+      <reply-list v-show="info.replyList" :topicId="info._id" :replyList="info.replyList"
       @addReply="getDetailInfo"></reply-list>
       <div class="add-reply" v-show="token">
         <el-input type="textarea" rows="4" v-model="replyContent"></el-input>
@@ -55,6 +55,10 @@ export default {
       });
     },
     addReply(){
+      if(!this.replyContent){
+        this.$message.error('回复内容不能为空')
+        return
+      }
       const params ={
         id: this.info._id,
         content: this.replyContent,

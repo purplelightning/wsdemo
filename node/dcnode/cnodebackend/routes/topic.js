@@ -78,7 +78,7 @@ router.post('/addReply', jwt.verify(), (req, res) => {
       let tmp = {
         id: uuid.v1().replace(/-/g, ''),
         content: req.body.content,
-        replyId: '',
+        replyId: req.body.replyId || '',
         author: req.body.author,
         createTime: formatDate(),
         ups: 0,

@@ -2,9 +2,9 @@
   <div class="list">
     <div class="item" :key="index" v-for="(item,index) in levelList">
       <div class="primary">
-        <img class="user-avatar" :src="item.author.avatarImg" />
+        <img class="user-avatar" :src="item.author && item.author.avatarImg" />
         <div class="main">
-          <span class="name">{{item.author.loginname}}</span>
+          <span class="name">{{ item.author && item.author.loginname}}</span>
           <span class="des">{{index+1}}楼&nbsp;{{item.createTime | sliceTime}}</span>
           <div class="content" v-html="item.content"></div>
         </div>
@@ -14,10 +14,10 @@
       </div>
       <div class="sub-list" v-show="item.additionArr">
         <div class="primary sub-item" :key="index" v-for="(tt, index) in item.additionArr">
-          <img class="user-avatar" :src="tt.author.avatar_url" />
+          <img class="user-avatar" :src="tt.author.avatarUrl" />
           <div class="main">
             <span class="name">{{tt.author.loginname}}</span>
-            <span class="des">{{tt.create_at | sliceTime}}</span>
+            <span class="des">{{tt.createTime | sliceTime}}</span>
             <div class="content" v-html="tt.content"></div>
           </div>
           <div class="fav">点赞数：{{tt.ups && tt.ups.length}}</div>
@@ -46,9 +46,6 @@ export default {
       replyContent: '',
     }
   },
-  mounted(){
-    console.log(this.replyList);
-  },
   methods: {
     openReply(id, name){
       this.replyId = id
@@ -60,12 +57,16 @@ export default {
     },
     addReply(){
       const params ={
-        accesstoken: this.token,
+        id: this.topicId,
         content: this.replyContent,
+        author: {
+          name: this.loginname,
+          avatarImg: this.avatarImg
+        },
         replyId: this.replyId
       }
-      api.addReply(this.topicId, params).then( res => {
-        if(res.success){
+      api.addReply(params).then( res => {
+        if(res.status){
           this.$message.success('回复成功~')
           this.$emit('addReply')
           this.replyContent = ''
@@ -77,20 +78,21 @@ export default {
   filters:{
     sliceTime(time){
       if(time){
-        return time.split(' ')[0].slice(5,10)
+        return time.slice(5,14)
       }
       return ''
     }
   },
   computed:{
-    ...mapState(['token']),
+    ...mapState(['token', 'loginname', 'avatarImg']),
     levelList(){
       if(this.replyList){
-        let arr = this.replyList.filter(v=>v.reply_id === null)
-        let brr = this.replyList.filter(v=>v.reply_id !== null)
+        console.log(this.replyList)
+        let arr = this.replyList.filter(v=>v.replyId === '')
+        let brr = this.replyList.filter(v=>v.replyId !== '')
         for(let i of arr){
           for(let j of brr){
-            if(j.reply_id === i.id){
+            if(j.replyId === i.id){
               j.getHandled = true
               if(i.additionArr){
                 i.additionArr.push(j)
@@ -102,6 +104,7 @@ export default {
           }
         }
         arr = arr.concat(brr.filter(v=>v.getHandled === undefined))
+        console.log(arr)
         return arr
       }
       return []
