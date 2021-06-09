@@ -4,7 +4,7 @@
       <div class="primary">
         <img class="user-avatar" :src="item.author && item.author.avatarImg" />
         <div class="main">
-          <span class="name">{{ item.author && item.author.loginname}}</span>
+          <span class="name">{{ item.author && item.author.name}}</span>
           <span class="des">{{index+1}}楼&nbsp;{{item.createTime | sliceTime}}</span>
           <div class="content" v-html="item.content"></div>
         </div>
@@ -14,9 +14,9 @@
       </div>
       <div class="sub-list" v-show="item.additionArr">
         <div class="primary sub-item" :key="index" v-for="(tt, index) in item.additionArr">
-          <img class="user-avatar" :src="tt.author.avatarUrl" />
+          <img class="user-avatar" :src="tt.author.avatarImg" />
           <div class="main">
-            <span class="name">{{tt.author.loginname}}</span>
+            <span class="name">{{tt.author.name}}</span>
             <span class="des">{{tt.createTime | sliceTime}}</span>
             <div class="content" v-html="tt.content"></div>
           </div>
@@ -87,7 +87,6 @@ export default {
     ...mapState(['token', 'loginname', 'avatarImg']),
     levelList(){
       if(this.replyList){
-        console.log(this.replyList)
         let arr = this.replyList.filter(v=>v.replyId === '')
         let brr = this.replyList.filter(v=>v.replyId !== '')
         for(let i of arr){
@@ -104,7 +103,6 @@ export default {
           }
         }
         arr = arr.concat(brr.filter(v=>v.getHandled === undefined))
-        console.log(arr)
         return arr
       }
       return []

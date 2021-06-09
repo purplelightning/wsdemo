@@ -51,6 +51,8 @@ export default {
         title: this.form.title,
         tab: "dev",
         content: this.form.content,
+        author: this.loginname,
+        avatarImg: this.avatarImg
       };
       if(!this.topicId){
         api.addTopic(params).then((res) => {
@@ -86,7 +88,7 @@ export default {
     type() {
       return this.$route.params.type;
     },
-    ...mapState(["loginname"]),
+    ...mapState(["loginname", "avatarImg"]),
   },
 };
 </script>

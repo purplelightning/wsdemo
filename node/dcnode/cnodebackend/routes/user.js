@@ -54,7 +54,7 @@ router.post('/signup', async (req, res) => {
         password: pwd,
         userType: req.body.userType ? req.body.userType : 'primaryUser',
         phone: '',
-        avatarImg: '',
+        avatarImg: '/static/avatar/default.jpg',
         topList: [],
         favTopicList: [],
       })

@@ -21,6 +21,7 @@
 <script>
 import api from '@/requests/api'
 import { mapMutations } from 'vuex'
+import { baseUrl } from '@/requests/http'
 
 export default {
   name: "Login",
@@ -45,6 +46,8 @@ export default {
           this.$message.error(res.error)
         }else{
           this.$message.success(res.msg)
+          const obj = res.data
+          obj.avatarImg = baseUrl + obj.avatarImg
           this.doLogin(res.data)
           this.$router.push({path:'/'})
         }
