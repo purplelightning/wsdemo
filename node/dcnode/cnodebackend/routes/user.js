@@ -7,7 +7,23 @@ const jtt = require('jsonwebtoken');
 const User = require('../models/user');
 
 const multer = require('multer');
-const upload = multer({dest: 'public/avatar/'})
+
+//1.进行Multer的自定义配置  上传设置
+const storage = multer.diskStorage({
+  //设置文件上传的位置，cb(callback简写)
+  destination: 'public/avatar/',
+     //设置上传文件名称的操作
+  filename: function (req, file, cb) {
+    //对于文件名进行相关的操作
+    //获取原始文件的扩展名
+    var extension = file.originalname.toLowerCase();
+    //生成新的文件名 文件名不用引入函数，不能用分号
+    var filename = new Date().getMonth()+1+ '-' + new Date().getDate() + '-'+  new Date().getHours()+'-'+
+    (new Date().getMinutes()+1) + '.' + extension;
+    cb(null, filename);
+  }
+});
+const upload = multer({storage: storage})
 
 router.get('/test', async (req, res) => {
   res.success('接口测试返回')
