@@ -7,7 +7,9 @@
   </div>
 </template>
 <script>
-import api from 'requests/api' 
+import api from 'requests/api'
+import { mapMutations } from 'vuex'
+import { baseUrl } from '@/requests/http'
 
 export default {
   name: 'ChangeAvatar',
@@ -17,16 +19,22 @@ export default {
   },
   mounted(){},
   methods: {
+    ...mapMutations(['setAvatar']),
     uploadAvatar(e){
       let tmp = e.target.files[0]
       let data = new FormData()
       data.append('avatar', tmp)
       api.uploadAvatar(data).then(res=>{
-        if(res.success){
+        if(res.status){
+          this.setAvatar(baseUrl + res.data)
           this.$message.success('头像修改成功')
         }else{
           this.$message.error('头像上传失败')
         }
+        this.$emit('closeAvatar')
+      }).catch(err=>{
+        this.$message.error(err)
+        this.$emit('closeAvatar')
       })
     }
   },

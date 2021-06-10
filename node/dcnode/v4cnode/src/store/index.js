@@ -38,6 +38,13 @@ export default new Vuex.Store({
       state.loginname= ''
       state.avatarImg = ''
       state.isLogin = false
+    },
+    setAvatar(state, url){
+      const loginInfo = JSON.parse(localStorage.getItem('loginInfo'))
+      console.log(url)
+      state.avatarImg = url
+      loginInfo.avatarImg = url
+      localStorage.setItem('loginInfo', JSON.stringify(loginInfo))
     }
   },
   actions: {},

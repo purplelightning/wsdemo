@@ -16,7 +16,6 @@ router.get('/test', async (req, res) => {
 router.post('/signin', (req, res) => {
   let md5 = crypto.createHash('md5')
   let pwd = md5.update(req.body.password).digest('base64')
-  console.log(req.body);
   User.findOne({ name: req.body.username }, (err, doc) => {
     if (err) {
       console.log(err);
@@ -75,17 +74,20 @@ router.post('/signup', async (req, res) => {
 router.post('/uploadAvatar', upload.single('avatar'), (req, res) => {
   let authorization = req.headers.authorization
   const info = jtt.decode(authorization)
-  console.log(info)
-  var selectors = [
-    {"_id": info.id},
-    {"$set":{
-        "avatarImg": req.file.path,
-      }
-    }
-  ];
 
-  console.log(req.file)
-  res.success('头像上传成功')
+  // req.file.path windows路径有\\， ubuntu没有\\
+  let reg = /\\/g
+  let newLogo = req.file.path
+  newLogo = newLogo.replace(reg,'/').replace('public', '')
+  User.findByIdAndUpdate({_id: info.id},
+    {"$set": {avatarImg: newLogo}},{new: true}, (err, data) => {
+      if(err){
+        console.log(err)
+        res.error('头像修改失败')
+      }else{
+        res.success(newLogo)
+      }
+    })
 })
 
 

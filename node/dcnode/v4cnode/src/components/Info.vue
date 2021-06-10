@@ -2,12 +2,14 @@
   <div id="info-wrapper">
     <div id="info">
       <div class="top">
-        <img @click="showAvatarModal"  width="50" height="50" :src="avatarImg" />
+        <img @click="showAvatarModal" title="修改头像" width="50" height="50" :src="avatarImg" />
         <span @click="goFav">{{loginname}}</span>
       </div>
     </div>
     <el-button type="success" @click="goCreate">发布话题</el-button>
-    <change-avatar></change-avatar>
+    <div v-show="showFlag">
+      <change-avatar @closeAvatar="closeModal"></change-avatar>
+    </div>
   </div>
 </template>
 <script>
@@ -31,6 +33,9 @@ export default {
     },
     showAvatarModal(){
       this.showFlag = true
+    },
+    closeModal(){
+      this.showFlag = false
     }
   },
   computed: {
