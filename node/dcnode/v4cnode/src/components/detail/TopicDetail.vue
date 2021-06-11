@@ -78,14 +78,16 @@ export default {
     handleFav(flag){
       // CNODE的详情页is_collect字段值有问题
       const params ={
-        accesstoken: this.token,
-        topic_id: this.info.id,
+        topicId: this.info._id,
+        title: this.info.title,
       }
       if(flag){
-        api.addFav(params).then( res => {
-          if(res.success){
-            this.$message.success('收藏成功~')
+        api.handleFav(params).then( res => {
+          if(res.status){
+            this.$message.success(res.data)
             this.getDetailInfo()
+          }else{
+            this.$message.error(res.error)
           }
         })
       }else{

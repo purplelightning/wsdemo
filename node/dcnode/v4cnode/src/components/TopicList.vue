@@ -1,20 +1,27 @@
 <template>
-  <div class="list">
-    <div class="item" :key=index v-for="(item,index) in bolist">
-      <img class="user-avatar" :src="item.author.avatarUrl" />
-      <span class="count">{{item.replyCount}}/{{item.visitCount}}</span>
-      <div class="name" v-show="item.tab !== 'dev' ">{{item.top ? '置顶' : tabObj[item.tab]}}</div>
-      <div class="title" @click="goDetail(item._id)">{{item.title}}</div>
-      <div class="last-reply">{{item.last_reply_at | sliceTime}}</div>
+  <div class="list-wrapper">
+    <div class="list" v-show="!favFlag">
+      <div class="item" :key=index v-for="(item,index) in bolist">
+        <img class="user-avatar" :src="item.author && item.author.avatarUrl" />
+        <span class="count">{{item.replyCount}}/{{item.visitCount}}</span>
+        <div class="name" v-show="item.tab !== 'dev' ">{{item.top ? '置顶' : tabObj[item.tab]}}</div>
+        <div class="title" @click="goDetail(item._id)">{{item.title}}</div>
+        <div class="last-reply">{{item.last_reply_at | sliceTime}}</div>
+      </div>
+    </div>
+    <div class="list" v-show="favFlag">
+      <div class="item" :key=index v-for="(item,index) in bolist">
+        <img class="user-avatar" :src="item.author && item.author.avatarUrl" />
+        <div class="title" @click="goDetail(item._id)">{{item.title}}</div>
+      </div>
     </div>
   </div>
-
 </template>
 <script>
 
 export default {
   name: 'TopicList',
-  props: ['bolist'],
+  props: ['bolist', 'favFlag'],
   data(){
     return {
       tabObj:{

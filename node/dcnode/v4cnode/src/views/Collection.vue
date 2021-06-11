@@ -2,7 +2,7 @@
   <div class="collection-wrapper">
     <div class="title">我的收藏</div>
     <div class="collection">
-      <topic-list :bolist="originList"></topic-list>
+      <topic-list :bolist="originList" :favFlag="true"></topic-list>
     </div>
   </div>
 </template>
@@ -26,9 +26,14 @@ export default {
   },
   methods: {
     getData(){
-      api.getTopicCollections(this.loginname).then(res=>{
+      api.getTopicCollections().then(res=>{
         if(res.data){
-          this.originList = res.data
+          this.originList = res.data.map(v=>{
+            return {
+              _id: v.collectTopicId,
+              title: v.topicTitle,
+            }
+          })
         }
       })
     },

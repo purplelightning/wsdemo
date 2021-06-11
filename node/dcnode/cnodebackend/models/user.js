@@ -19,11 +19,8 @@ UserSchema = new mongoose.Schema({
   },
   topicList: {
     type: Array,
-    required: false 
+    required: false
   },
-  favTopicList: {
-    
-  }
 }) 
 
 let UserModel = mongoose.model('user', UserSchema)

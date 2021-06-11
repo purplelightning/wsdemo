@@ -57,8 +57,10 @@ export default {
         cursor: pointer;
       }
       span{
+        display: inline-block;
         line-height: 50px;
         color: #999;
+        cursor: pointer;
       }
     }
   }

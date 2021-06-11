@@ -7,6 +7,7 @@ let logger = require('morgan');
 let indexRouter = require('./routes/index');
 let usersRouter = require('./routes/user');
 let topicRouter = require('./routes/topic');
+let collectionRouter = require('./routes/collection');
 const methods = require('./wares/methods');
 
 let cors = require('cors');// 跨域
@@ -39,6 +40,7 @@ app.use(methods())
 app.use('/', indexRouter);
 app.use('/user', usersRouter);
 app.use('/topic', topicRouter)
+app.use('/collection', collectionRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

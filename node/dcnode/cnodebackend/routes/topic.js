@@ -85,7 +85,7 @@ router.post('/addReply', jwt.verify(), (req, res) => {
 
       }
       replyList.push(tmp)
-      Topic.findByIdAndUpdate({_id: doc._id}, {replyList: replyList}, (err, doc)=>{
+      Topic.findByIdAndUpdate({_id: doc._id}, {replyList: replyList, replyCount: doc.replyCount+1}, (err, doc)=>{
         if(err){
           console.log(err);
         }else{
