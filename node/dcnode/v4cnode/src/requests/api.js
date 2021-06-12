@@ -54,7 +54,6 @@ const expressApi = {
   //收藏接口
   getTopicCollections: () => instance.get(`/collection/list`),
   handleFav: (params) => instance.post(`/collection/handleFav`, params),
-  cancelFav: (params) => instance.post(`/collection/delFav`, params),
 
   //添加评论，回复
   addReply: (params) => instance.post(`/topic/addReply`, params)

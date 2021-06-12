@@ -39,6 +39,10 @@ TopicSchema = new mongoose.Schema({
     type: Number,
     required: false
   },
+  isCollected:{
+    type: Boolean,
+    required: false
+  }
 })
 
 let TopicModel = mongoose.model('topic', TopicSchema)

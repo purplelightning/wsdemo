@@ -4,7 +4,9 @@ let router = express.Router();
 const url = require('url');
 
 const Topic = require('../models/topic');
+const Collection = require('../models/collection');
 const jwt = require('../utils/jwt');
+const jtt = require('jsonwebtoken');
 const { formatDate } = require('../utils/date');
 const uuid = require('node-uuid');
 
@@ -42,6 +44,10 @@ router.post('/addTopic', jwt.verify(), (req, res) => {
 })
 
 router.get('/getDetail', (req, res) => {
+  let userId = ''
+  if(req.headers.authorization){
+    userId = jtt.decode(req.headers.authorization).id
+  }
   let obj = url.parse(req.url, true).query
   Topic.find({_id: obj.id}, (err, docs) => {
     if(err){
@@ -49,8 +55,24 @@ router.get('/getDetail', (req, res) => {
     }else if(!docs.length){
       res.error('未找到该文章')
     }else{
-      res.success(docs[0])
-      Topic.findByIdAndUpdate({_id: docs[0]._id}, {visitCount: docs[0].visitCount+1}, (err, doc) => {
+      let detail = docs[0]
+      let newCount= detail.visitCount+1
+      detail.visitCount = newCount
+      if(!userId){
+        res.success(detail)
+      }else{//登录后判断是否被收藏
+        Collection.findOne({collectUserId: userId, collectTopicId:obj.id}, (err, doc)=>{
+          if(err){
+            console.log(err);
+          }else if(doc){
+            detail.isCollected = true
+          }else{
+            detail.isCollected = false
+          }
+          res.success(detail)
+        })
+      }
+      Topic.findByIdAndUpdate({_id: detail._id}, {visitCount: newCount}, (err, doc) => {
         if(err){
           console.log(err);
         }

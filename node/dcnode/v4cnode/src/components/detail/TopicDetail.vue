@@ -1,7 +1,7 @@
 <template>
   <div class="detail-wrapper">
-    <el-button v-show="!info.is_collect && token" type="primary" size="mini" @click="handleFav(true)">收藏</el-button>
-    <el-button v-show="info.is_collect && token" type="primary" size="mini" @click="handleFav(false)">取消收藏</el-button>
+    <el-button v-show="!info.isCollected && token" type="primary" size="mini" @click="handleFav()">收藏</el-button>
+    <el-button v-show="info.isCollected && token" type="primary" size="mini" @click="handleFav()">取消收藏</el-button>
     <el-button type="success" size="mini" class="edit" v-show="info.author && info.author.name===loginname" @click="editTopic">编辑</el-button>
     <div class="detail">
       <div class="title">{{info.title}}</div>
@@ -75,29 +75,20 @@ export default {
         }
       })
     },
-    handleFav(flag){
+    handleFav(){
       // CNODE的详情页is_collect字段值有问题
       const params ={
         topicId: this.info._id,
         title: this.info.title,
       }
-      if(flag){
-        api.handleFav(params).then( res => {
-          if(res.status){
-            this.$message.success(res.data)
-            this.getDetailInfo()
-          }else{
-            this.$message.error(res.error)
-          }
-        })
-      }else{
-        api.cancelFav(params).then( res => {
-          if(res.success){
-            this.$message.success('取消收藏成功~')
-            this.getDetailInfo()
-          }
-        })
-      }
+      api.handleFav(params).then( res => {
+        if(res.status){
+          this.$message.success(res.data)
+          this.getDetailInfo()
+        }else{
+          this.$message.error(res.error)
+        }
+      })
     },
     editTopic(){
       const params = {

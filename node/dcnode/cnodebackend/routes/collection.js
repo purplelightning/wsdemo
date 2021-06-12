@@ -3,7 +3,6 @@ const router = express.Router()
 
 const Collection = require('../models/collection');
 const jwt = require('../utils/jwt');
-
 const jtt = require('jsonwebtoken');
 
 
@@ -20,13 +19,17 @@ router.get('/list', jwt.verify(), (req, res) => {
 
 router.post('/handleFav', jwt.verify(), (req, res) => {
   const param = jtt.decode(req.headers.authorization)
-  Collection.findOne(req.body, (err, doc) => {
+
+  let obj = {
+    collectUserId: param.id,
+    collectTopicId: req.body.topicId,
+  }
+  Collection.findOne(obj, (err, doc) => {
     if (err) {
       console.log(err);
     } else if (!doc) {
       let tmp = new Collection({
-        collectUserId: param.id,
-        collectTopicId: req.body.topicId,
+        ...obj,
         topicTitle: req.body.title,
         createTime: new Date()
       })
