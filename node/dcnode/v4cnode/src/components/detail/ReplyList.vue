@@ -8,8 +8,8 @@
           <span class="des">{{index+1}}楼&nbsp;{{item.createTime | sliceTime}}</span>
           <div class="content" v-html="item.content"></div>
         </div>
-        <div class="fav">点赞数：{{item.ups && item.ups.length}}</div>
-        <div class="icon" v-show="token&&!replyId||replyId !== item.id" @click="openReply(item.id, item.author.name)">回复</div>
+        <div class="fav"><i class="el-icon-thumb"></i>{{item.ups && item.ups.length}}</div>
+        <i class="el-icon-chat-dot-round icon" v-show="token&&!replyId||replyId !== item.id" @click="openReply(item.id, item.author.name)"></i>
         <div class="icon" v-show="token&&replyId&&replyId === item.id" @click="closeReply">收起回复</div>
       </div>
       <div class="sub-list" v-show="item.additionArr">
@@ -20,8 +20,8 @@
             <span class="des">{{tt.createTime | sliceTime}}</span>
             <div class="content" v-html="tt.content"></div>
           </div>
-          <div class="fav">点赞数：{{tt.ups && tt.ups.length}}</div>
-          <div class="icon" v-show="token&&!replyId||replyId !== tt.id" @click="openReply(tt.id, tt.author.name)">回复</div>
+          <div class="fav"><i class="el-icon-thumb"></i>{{tt.ups && tt.ups.length}}</div>
+          <i class="el-icon-chat-dot-round icon" v-show="token&&!replyId||replyId !== tt.id" @click="openReply(tt.id, tt.author.name)"></i>
           <div class="icon" v-show="token&&replyId&&replyId === tt.id" @click="closeReply">收起回复</div>
         </div>
       </div>
@@ -115,18 +115,19 @@ export default {
     .item{
       width: 100%;
       padding: 10px;
+      box-sizing: border-box;
       .primary{
         display: flex;
         position: relative;
-        height: 80px;
+        height: 60px;
         line-height: 30px;
         box-sizing: border-box;
         font-size: 12px;
-        border-bottom:1px solid #ccc;
+        border-top:1px solid #ccc;
         .user-avatar{
-          flex: 0 0 30px;
-          width: 30px;
-          height: 30px;
+          flex: 0 0 40px;
+          width: 40px;
+          height: 40px;
           position: relative;
           top: 10px;
         }
@@ -144,8 +145,11 @@ export default {
           }
         }
         .fav{
-          flex: 0 0 80px;
+          flex: 0 0 40px;
           line-height: 60px;
+          i{
+            margin-right: 5px;
+          }
         }
         .icon{
           display: inline-block;
@@ -157,11 +161,18 @@ export default {
     }
   }
   .sub-list{
-    width: calc(100% - 50px);
-    padding-left: 50px;
+    width: calc(100% - 30px);
+    padding-left: 30px;
     .sub-item{
-      height: 60px !important;
-      background: #f6f6f6;
+      margin-bottom: 2px;
+      height: 50px !important;
+      background: #fafafa;
+      border: none !important;
+      .user-avatar{
+        flex: 0 0 30px !important;
+        width: 30px !important;
+        height: 30px !important;
+      }
       .main{
         width: 200px !important;
         .content{
@@ -170,6 +181,14 @@ export default {
           height: 30px;
         }
       }
+    }
+  }
+  .add-reply{
+    padding: 10px 15px;
+    button{
+      float: right;
+      margin-top: 5px;
+      margin-bottom: 5px;
     }
   }
 </style>

@@ -91,6 +91,16 @@ router.post('/updateTopic', jwt.verify(), (req, res) => {
   })
 })
 
+router.post('/deleteTopic', jwt.verify(), (req, res)=>{
+  Topic.findByIdAndRemove({_id: req.body.id}, (err, doc) => {
+    if(err){
+      res.error('删除失败')
+    }else{
+      res.success('删除成功')
+    }
+  })
+})
+
 router.post('/addReply', jwt.verify(), (req, res) => {
   Topic.findOne({_id: req.body.id}, (err, doc) =>{
     if(err){

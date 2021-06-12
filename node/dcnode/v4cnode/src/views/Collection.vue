@@ -32,6 +32,7 @@ export default {
             return {
               _id: v.collectTopicId,
               title: v.topicTitle,
+              author: v.author
             }
           })
         }

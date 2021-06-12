@@ -50,6 +50,7 @@ const expressApi = {
   },
   addTopic: (params) => instance.post('/topic/addTopic', params),
   updateTopic: (params) => instance.post('/topic/updateTopic', params),
+  deleteTopic: (params) => instance.post('/topic/deleteTopic', params),
 
   //收藏接口
   getTopicCollections: () => instance.get(`/collection/list`),

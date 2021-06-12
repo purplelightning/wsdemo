@@ -9,7 +9,7 @@
         <div class="last-reply">{{item.last_reply_at | sliceTime}}</div>
       </div>
     </div>
-    <div class="list" v-show="favFlag">
+    <div class="list fav" v-show="favFlag">
       <div class="item" :key=index v-for="(item,index) in bolist">
         <img class="user-avatar" :src="item.author && item.author.avatarUrl" />
         <div class="title" @click="goDetail(item._id)">{{item.title}}</div>
@@ -93,6 +93,11 @@ export default {
         right: 15px;
         color: #999;
       }
+    }
+  }
+  .fav{
+    .user-avatar{
+      margin-right: 20px;
     }
   }
 </style>

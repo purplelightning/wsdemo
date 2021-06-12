@@ -13,7 +13,11 @@ CollectionSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  createTime:{
+  author:{
+    type: Object,
+    requried: true
+  },
+  addTime:{
     type: String,
     required: false
   }

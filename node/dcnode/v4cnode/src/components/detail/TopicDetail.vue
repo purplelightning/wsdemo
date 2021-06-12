@@ -1,8 +1,11 @@
 <template>
   <div class="detail-wrapper">
-    <el-button v-show="!info.isCollected && token" type="primary" size="mini" @click="handleFav()">收藏</el-button>
-    <el-button v-show="info.isCollected && token" type="primary" size="mini" @click="handleFav()">取消收藏</el-button>
-    <el-button type="success" size="mini" class="edit" v-show="info.author && info.author.name===loginname" @click="editTopic">编辑</el-button>
+    <div class="btns">
+      <el-button v-show="!info.isCollected && token" type="primary" size="mini" @click="handleFav()">收藏</el-button>
+      <el-button v-show="info.isCollected && token" type="info" size="mini" @click="handleFav()">取消收藏</el-button>
+      <el-button type="success" size="mini" v-show="info.author && info.author.name===loginname" @click="editTopic">编辑</el-button>
+      <el-button type="danger" size="mini" v-show="info.author && info.author.name===loginname" @click="deleteTopic">删除</el-button>
+    </div>
     <div class="detail">
       <div class="title">{{info.title}}</div>
       <div class="des">
@@ -98,6 +101,19 @@ export default {
         topicId: this.info._id,
       }
       this.$router.history.push({name: 'ManageTopic', params})
+    },
+    deleteTopic(){
+      this.$confirm('确认删除该文章？').then(_ => {
+        api.deleteTopic({id: this.info._id}).then(res=>{
+          if(res.status){
+            this.$message.success(res.data)
+            this.$router.replace({name:'Home'})
+          }else{
+            this.$message.error(res.error)
+          }
+        })
+      }).catch(_=>{
+      })
     }
   },
   computed: {
@@ -120,10 +136,12 @@ export default {
 <style scoped lang="less">
 .detail-wrapper {
   position: relative;
-  .el-button{
+  .btns{
     float: right;
     margin-right: 50px;
-    cursor: pointer;
+    .el-button{
+      cursor: pointer;
+    }
   }
   .detail{
     margin: 20px 30px 0 30px;
