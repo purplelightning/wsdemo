@@ -7,7 +7,7 @@
     <div class="right">
       <router-link class="item" to="/guide">新手入门</router-link>
       <router-link class="item" to="/apipage">API</router-link>
-      <router-link class="item" to="/about">关于</router-link>
+      <router-link class="item" to="/tool">工具</router-link>
       <div v-show="!isLogin" class="item" @click="register">注册</div>
       <div v-show="!isLogin" class="item" @click="login">登录</div>
       <div v-show="isLogin" class="item">设置</div>

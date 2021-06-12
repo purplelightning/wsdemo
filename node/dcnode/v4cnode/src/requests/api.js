@@ -57,7 +57,11 @@ const expressApi = {
   handleFav: (params) => instance.post(`/collection/handleFav`, params),
 
   //添加评论，回复
-  addReply: (params) => instance.post(`/topic/addReply`, params)
+  addReply: (params) => instance.post(`/topic/addReply`, params),
+
+  //工具接口
+  uploadBill:(param) => instance.post('/tool/uploadBill', param),
+  handlePdf:() => instance.post('/tool/handlePdf', {}),
 }
 
 export default expressApi

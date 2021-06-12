@@ -65,7 +65,7 @@ const errorHandle = (status, other) => {
 }
 
 // 创建axios实例
-let instance = axios.create({ timeout: 1000 * 12 })
+let instance = axios.create({ timeout: 1000 * 24 })
 
 
 instance.defaults.baseURL = baseUrl
