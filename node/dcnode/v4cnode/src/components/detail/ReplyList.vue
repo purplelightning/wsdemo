@@ -78,7 +78,7 @@ export default {
   filters:{
     sliceTime(time){
       if(time){
-        return time.slice(5,14)
+        return time.slice(5)
       }
       return ''
     }
@@ -137,6 +137,7 @@ export default {
           width: 300px;
           padding-left: 10px;
           .name{
+            margin-right: 3px;
             width: 100px;
             color: #666;
           }

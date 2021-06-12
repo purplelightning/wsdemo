@@ -96,9 +96,9 @@ export default {
   .right-mol{
     position: absolute;
     top: 20px;
-    right: -300px;
-    width: 220px;
-    height: 200px;
+    right: -220px;
+    width: 180px;
+    height: 180px;
   }
   .tab-container{
     width: 100%;

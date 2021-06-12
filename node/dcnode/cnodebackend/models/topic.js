@@ -42,6 +42,10 @@ TopicSchema = new mongoose.Schema({
   isCollected:{
     type: Boolean,
     required: false
+  },
+  lastReplyAt: {
+    type: String,
+    required: false
   }
 })
 

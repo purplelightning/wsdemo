@@ -48,7 +48,7 @@ export default {
   padding: 10px;
   text-align: center;
   #info{
-    margin-bottom: 60px;
+    margin-bottom: 30px;
     .top{
       height: 60px;
       vertical-align: top;

@@ -3,6 +3,7 @@ let router = express.Router();
 let crypto = require('crypto');
 const jwt = require('../utils/jwt');
 const jtt = require('jsonwebtoken');
+const {formatDate1} = require('../utils/date');
 
 const User = require('../models/user');
 
@@ -17,9 +18,9 @@ const storage = multer.diskStorage({
     //对于文件名进行相关的操作
     //获取原始文件的扩展名
     var extension = file.originalname.toLowerCase();
-    //生成新的文件名 文件名不用引入函数，不能用分号
-    var filename = new Date().getMonth()+1+ '-' + new Date().getDate() + '-'+  new Date().getHours()+'-'+
-    (new Date().getMinutes()+1) + '.' + extension;
+    //生成新的文件名 文件名不能用分号
+    var de= formatDate1()
+    var filename = de + '.' + extension;
     cb(null, filename);
   }
 });

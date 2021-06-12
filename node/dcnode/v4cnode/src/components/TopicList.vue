@@ -4,9 +4,9 @@
       <div class="item" :key=index v-for="(item,index) in bolist">
         <img class="user-avatar" :src="item.author && item.author.avatarUrl" />
         <span class="count">{{item.replyCount}}/{{item.visitCount}}</span>
-        <div class="name" v-show="item.tab !== 'dev' ">{{item.top ? '置顶' : tabObj[item.tab]}}</div>
+        <div class="name">{{item.top ? '置顶' : tabObj[item.tab]}}</div>
         <div class="title" @click="goDetail(item._id)">{{item.title}}</div>
-        <div class="last-reply">{{item.last_reply_at | sliceTime}}</div>
+        <div class="last-reply" v-show="item.lastReplyAt">{{item.lastReplyAt | sliceTime}}</div>
       </div>
     </div>
     <div class="list fav" v-show="favFlag">
@@ -29,6 +29,7 @@ export default {
         'ask': '问答',
         'good': '精华',
         'job': '招聘',
+        'dev': '测试'
       }
     }
   },
@@ -40,7 +41,7 @@ export default {
   filters:{
     sliceTime(time){
       if(time){
-        return time.slice(5,10)
+        return time.slice(5)
       }
       return ''
     }
@@ -64,6 +65,7 @@ export default {
       }
       .name{
         position: relative;
+        margin-right: 4px;
         top: -10px;
         display: inline-block;
         padding: 2px 4px;
