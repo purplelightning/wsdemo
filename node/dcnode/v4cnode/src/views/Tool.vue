@@ -3,6 +3,9 @@
     <h2>工具页</h2>
     <el-button type="primary" @click="handlePdf">本地PDF处理</el-button>
     上传发票：<input type="file" accept=".pdf" @change="uploadBill"/>
+    <hr/>
+    <el-button type="success" @click="downloadExcel">本地excel处理</el-button>
+    pdf-to-excel：<input type="file" accept=".pdf" @change="ptoexc">
   </div>
 </template>
 
@@ -30,7 +33,20 @@ export default {
         let newurl = baseUrl+ res.data.url.replace('public','')
         window.open(newurl, "_blank")
       })
-    }
+    },
+    downloadExcel(){
+      api.downloadExcel().then(res => {
+        console.log(res);
+      })
+    },
+    ptoexc(e){
+      let dd = e.target.files[0]
+      let data = new FormData()
+      data.append('pte', dd)
+      api.ptoexc(data).then(res => {
+        console.log(res);
+      })
+    },
   },
   components: {
 

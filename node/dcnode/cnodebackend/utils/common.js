@@ -26,7 +26,7 @@ const formatDate1 = (t = new Date()) => {
   return `${t.getFullYear()}${month}${date}-${hour}${minute}${second}`
 }
 
-// isDidi是否是滴滴发票
+//提取发票函数 isDidi是否是滴滴发票
 const getUsefulInfo = (data, isDidi) => {
   let regCode = isDidi ? /\n0\d{11}\n/ : /\n0\d{11}\r/, codeOfPiao=''
   let regNumber = isDidi ? /\n\d{8}\n/ : /\n\d{8}\r/, numberOfPiao = ''
@@ -44,4 +44,61 @@ const getUsefulInfo = (data, isDidi) => {
   return ''
 }
 
-module.exports = { formatDate, formatDate1, getUsefulInfo }
+//获取发票全部信息
+const getAllBillInfo = (data, isDidi) => {
+  //姓名name,regCode发票代码, regNumber发票号码，开票日期：billDate，校验码6为judgeCode
+  //税号 orgNum，班组 group
+  let regCode = isDidi ? /\n0\d{11}\n/ : /\n0\d{11}\r/, codeOfPiao=''
+  let regNumber = isDidi ? /\n\d{8}\n/ : /\n\d{8}\r/, numberOfPiao = ''
+  let codeArr = regCode.exec(data)
+  if(codeArr && codeArr.length){
+    codeOfPiao = codeArr[0].slice(1,13)
+  }
+  let numberArr = regNumber.exec(data)
+  if(numberArr && numberArr.length){
+    numberOfPiao = numberArr[0].slice(1,9)
+  }
+
+  let regDate = /20(.){8}日/, billDate=''
+  if(isDidi){
+    let dateArr = regDate.exec(data)
+    if(dateArr && dateArr.length){
+      billDate = dateArr[0].replace(/\D/g, '-')
+      billDate = billDate.slice(0,billDate.length-1)
+    }
+  }else{
+    regDate = /20\d{2}\s+\d{2}\s+\d{2}\r/
+    let dateArr = regDate.exec(data)
+    if(dateArr && dateArr.length){
+      billDate = dateArr[0].replace(/\s+/g, '-')
+      billDate = billDate.slice(0,billDate.length-1)
+    }
+  }
+  
+  let regJudge = /\d{5}\s{1,2}\d{5}\s{1,2}\d{5}\s{1,2}\d{5}/, judgeCode = ''
+  let judgeArr = regJudge.exec(data)
+  if(judgeArr && judgeArr.length){
+    let b = judgeArr[0].split(/\s{1,2}/).join('').slice(14,21)
+    judgeCode= b
+  }
+
+  let regOrg = /9\d{15}X7/, orgNum = ''
+  let orgArr = regOrg.exec(data)
+  if(orgArr && orgArr.length){
+    orgNum = orgArr[0]
+  }
+
+  if(codeOfPiao && numberOfPiao && billDate && judgeCode && orgNum){
+    return {
+      codeOfPiao,
+      numberOfPiao,
+      billDate,
+      judgeCode,
+      orgNum,
+      group: '舆情产品组'
+    }
+  }
+  return ''
+}
+
+module.exports = { formatDate, formatDate1, getUsefulInfo, getAllBillInfo }

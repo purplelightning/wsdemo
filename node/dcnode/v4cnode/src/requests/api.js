@@ -62,6 +62,8 @@ const expressApi = {
   //工具接口
   uploadBill:(param) => instance.post('/tool/uploadBill', param),
   handlePdf:() => instance.post('/tool/handlePdf', {}),
+  downloadExcel:() => instance.post('/tool/handleExcel', {}),
+  ptoexc:(param) => instance.post('/tool/ptoexc', param),
 }
 
 export default expressApi
