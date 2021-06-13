@@ -3,7 +3,7 @@ let router = express.Router();
 let crypto = require('crypto');
 const jwt = require('../utils/jwt');
 const jtt = require('jsonwebtoken');
-const {formatDate1} = require('../utils/date');
+const {formatDate1} = require('../utils/common');
 
 const User = require('../models/user');
 

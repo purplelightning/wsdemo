@@ -7,7 +7,7 @@ const Topic = require('../models/topic');
 const Collection = require('../models/collection');
 const jwt = require('../utils/jwt');
 const jtt = require('jsonwebtoken');
-const { formatDate } = require('../utils/date');
+const { formatDate } = require('../utils/common');
 const uuid = require('node-uuid');
 
 router.get('/list', (req, res) => {
