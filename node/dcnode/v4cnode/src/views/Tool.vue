@@ -6,6 +6,9 @@
     <hr/>
     <el-button type="success" @click="downloadExcel">本地excel处理</el-button>
     pdf-to-excel：<input type="file" accept=".pdf" @change="ptoexc">
+    <hr/>
+    <el-button type="warning" @click="handleZip">本地压缩包处理</el-button>
+    压缩包处理：<input type="file" accept=".zip" @change="uploadZip">
   </div>
 </template>
 
@@ -44,7 +47,23 @@ export default {
       let data = new FormData()
       data.append('pte', dd)
       api.ptoexc(data).then(res => {
+        let newurl = baseUrl+ res.data.url.replace('public','')
+        window.open(newurl, "_blank")
+      })
+    },
+    handleZip(){
+      api.handleZip().then(res=>{
         console.log(res);
+      })
+    },
+    uploadZip(e){
+      let dd = e.target.files[0]
+      let data = new FormData()
+      data.append('zzz', dd)
+      api.uploadZip(data).then(res=>{
+        this.$message.success(res.data.msg)
+        let newurl = baseUrl+ res.data.url.replace('public','')
+        window.open(newurl, "_blank")
       })
     },
   },

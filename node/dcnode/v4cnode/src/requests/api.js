@@ -64,6 +64,8 @@ const expressApi = {
   handlePdf:() => instance.post('/tool/handlePdf', {}),
   downloadExcel:() => instance.post('/tool/handleExcel', {}),
   ptoexc:(param) => instance.post('/tool/ptoexc', param),
+  handleZip:() => instance.post('/tool/handleZip', {}),
+  uploadZip:(param) => instance.post('/tool/uploadZip', param),
 }
 
 export default expressApi

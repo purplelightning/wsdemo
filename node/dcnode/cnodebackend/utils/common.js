@@ -46,8 +46,7 @@ const getUsefulInfo = (data, isDidi) => {
 
 //获取发票全部信息
 const getAllBillInfo = (data, isDidi) => {
-  //姓名name,regCode发票代码, regNumber发票号码，开票日期：billDate，校验码6为judgeCode
-  //税号 orgNum，班组 group
+  //姓名name,regCode发票代码, regNumber发票号码，开票日期：billDate，校验码6为judgeCode，税号 orgNum，班组 group
   let regCode = isDidi ? /\n0\d{11}\n/ : /\n0\d{11}\r/, codeOfPiao=''
   let regNumber = isDidi ? /\n\d{8}\n/ : /\n\d{8}\r/, numberOfPiao = ''
   let codeArr = regCode.exec(data)
