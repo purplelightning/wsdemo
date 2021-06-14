@@ -30,6 +30,10 @@ router.get('/handleSpider', (req, exRes) => {
   })
 })
 
+router.get('/pushReq', (req, res) => {
+  
+})
+
 const downloadImgs = (films, outputDir) => {
   if(!fs.existsSync(outputDir)){
     fs.mkdirSync(outputDir)
