@@ -66,6 +66,9 @@ const expressApi = {
   ptoexc:(param) => instance.post('/tool/ptoexc', param),
   handleZip:() => instance.post('/tool/handleZip', {}),
   uploadZip:(param) => instance.post('/tool/uploadZip', param),
+
+  //爬虫接口
+  handleSpider: () => instance.get('/spider/handleSpider', {}),
 }
 
 export default expressApi

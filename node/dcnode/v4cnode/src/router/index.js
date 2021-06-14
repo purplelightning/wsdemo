@@ -32,6 +32,12 @@ const routes = [
       import(/* webpackChunkName: "tool" */ "../views/Tool.vue"),
   },
   {
+    path: "/spider",
+    name: "SpiderPage",
+    component: () =>
+      import(/* webpackChunkName: "tool" */ "../views/SpiderPage.vue"),
+  },
+  {
     path: '/guide',
     name: 'Guide',
     component: Guide
