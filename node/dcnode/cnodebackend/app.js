@@ -10,6 +10,7 @@ let topicRouter = require('./routes/topic');
 let collectionRouter = require('./routes/collection');
 let toolRouter = require('./routes/tool');
 let spiderRouter = require('./routes/spider');
+let crawRouter = require('./routes/crawMooc/craw');
 const methods = require('./wares/methods');
 
 let cors = require('cors');// 跨域
@@ -45,6 +46,7 @@ app.use('/topic', topicRouter)
 app.use('/collection', collectionRouter)
 app.use('/tool', toolRouter)
 app.use('/spider', spiderRouter)
+app.use('/craw', crawRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
