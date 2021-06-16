@@ -70,7 +70,12 @@ const expressApi = {
   //爬虫接口
   handleSpider: () => instance.get('/spider/handleSpider', {}),
   pushReq: () => instance.get('/spider/pushReq', {}),
-  crawMooc: (url) => instance.get(`/craw/crawMooc?courseUrl=${url}`),
+  crawMooc: (url, type) => {
+    if(type){
+      return instance.get(`/craw/crawMooc?courseUrl=${url}&type=${type}`)
+    }
+    return instance.get(`/craw/crawMooc?courseUrl=${url}`)
+  }
 }
 
 export default expressApi

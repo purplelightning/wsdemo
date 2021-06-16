@@ -7,6 +7,7 @@
     <div class="item">
       <el-input v-model="courseUrl">fffffffff</el-input>
       <el-button @click="craw">爬取</el-button>
+      <el-checkbox-button v-model="checked">课程列表</el-checkbox-button>
     </div>
     
     <div v-html="content"></div>
@@ -20,7 +21,8 @@ export default {
   data() {
     return {
       content:'',
-      courseUrl:''
+      courseUrl:'',
+      checked: false
     }
   },
   methods:{
@@ -41,7 +43,11 @@ export default {
         this.$message.error('请输入合法的url')
         return
       }
-      api.crawMooc(this.courseUrl).then(res=>{
+      let type = ''
+      if(this.checked){
+        type = 'frontend'
+      }
+      api.crawMooc(this.courseUrl, type).then(res=>{
         console.log(res.data);
         this.content=res.data
       })
@@ -56,11 +62,12 @@ export default {
 <style scoped lang="less">
 .item{
   display: flex;
-  width: 300px;
+  width: 600px;
   .el-input{
     flex: 1;
   }
   button{
+    margin-right: 30px;
     flex: 0 0 50px;
   }
 }
