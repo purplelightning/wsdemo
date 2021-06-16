@@ -45,7 +45,7 @@ export default {
       }
       let type = ''
       if(this.checked){
-        type = 'frontend'
+        type = 'fff'
       }
       api.crawMooc(this.courseUrl, type).then(res=>{
         console.log(res.data);
