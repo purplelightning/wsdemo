@@ -7,7 +7,6 @@ const request = require('request');
 const cheerio = require('cheerio');
 
 router.get('/crawMooc', (req, res) => {
-  console.log(req.query);
   let courseUrl = req.query.courseUrl
   let type = req.query.type
   if(!type){// 课程视频列表
@@ -23,7 +22,7 @@ router.get('/crawMooc', (req, res) => {
 const srequest = require('superagent');
 require('superagent-proxy')(srequest)
 var proxy = 'http://127.0.0.1:1181'
-var header= {
+var youtubeHeader= {
   'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
   'Accept-Encoding':'gzip, deflate, sdch, br',
   'Accept-Language':'zh-CN,zh;q=0.8,zh-TW;q=0.6',
@@ -39,34 +38,32 @@ var header= {
 function imgCrawer(url, callback){
   console.log(url)
   srequest(url)
-  .set('header',header)
+  .set('header', youtubeHeader)
   .proxy(proxy)
   .end(onresponse)
-}
 
-function onresponse(err, res){
-  console.log('-jfjfffff');
-  console.log(err);
-  console.log(res);
-  res.setEncoding('utf-8'); //防止中文乱码
+  function onresponse(err, res){
+    res.setEncoding('utf-8'); //防止中文乱码
     if(err){
         console.log(err);
     }else{
       console.log('status:'+res.status);
-      //console.log(res.headers);
       console.log(res.text);
       //将res.text写入json文件
-      fs.writeFile(__dirname+'/home.json',JSON.stringify({
-          status: 0,
-          data: res.text
-      }),function(err){
-          if(err){
-              return console.log(err);
-          }
-          console.log('完成');
-      });
+      // fs.writeFile(__dirname+'/youtube.json',JSON.stringify({
+      //   data: res.text
+      // }),function(err){
+      //   if(err){
+      //       return console.log(err);
+      //   }
+      //   console.log('完成');
+      // });
+
     }
+  }
 }
+
+
 
 function videocrawler(url,callback){
   //获取页面
@@ -170,4 +167,41 @@ function saveCourseToMongo(list){
   })
 }
 
+router.get('/crawManga', (req, res) => {
+  let {url, type} = req.query
+  console.log(url);
+  console.log(type);
+  mangaCrawer(url)
+})
+
+function mangaCrawer(url){
+  var mangaHeader = {
+    'cookie':'_ga=GA1.2.1194383735.1609691883; __atssc=google%3B1; __atuvc=9%7C1; dsq__=3iokdv4186k96q; Hm_lvt_07c8e2ff21896b108ed45c014aa2e8b5=1623856650,1623933948; Hm_lvt_bfaaeccba983e87596c65c3306010a81=1623856650,1623933949; Hm_lvt_5ee99fa43d3e817978c158dfc8eb72ad=1623937995; _gid=GA1.2.1834432239.1623937996; Hm_lpvt_5ee99fa43d3e817978c158dfc8eb72ad=1623940308; __cf_bm=3181634e22420ff246a1b17e4168940c5bfffad6-1623945310-1800-ASWPkl8vviRynfkpRm5LRFqIpw6rGTjh0EE1w3K2YUFWcZhvSnT2CToDHGqFPAtgw2IRn0TRTW4ckGHIoTd9OQaOiipCzIds+iSC+2ZRV2y4ftoPHXQ6JXIP10qeDJ4pNw==; Hm_lpvt_bfaaeccba983e87596c65c3306010a81=1623945332; Hm_lpvt_07c8e2ff21896b108ed45c014aa2e8b5=1623945332'
+  }
+  
+  srequest(url)
+  .set('header', mangaHeader)
+  .proxy(proxy)
+  .end(handleResult)
+
+  function handleResult(err, res){
+    res.setEncoding('utf-8');
+    if(err){
+      console.log('aaaaaaaaaaaaaaaaa');
+      console.log(err.response);
+    }
+    else{
+      console.log('final--------');
+      let $ = cheerio.load(res.text)
+      let chapterList = []
+      $('li').each(function(){
+        let dom = $(this).find('a')
+        let name = dom.text()
+        let url = 'https://v2.mangapark.net' + dom.attr('href')
+        chapterList.push({name,url})
+      })
+      console.log(chapterList);
+    }
+  }
+}
 module.exports = router

@@ -75,6 +75,9 @@ const expressApi = {
       return instance.get(`/craw/crawMooc?courseUrl=${url}&type=${type}`)
     }
     return instance.get(`/craw/crawMooc?courseUrl=${url}`)
+  },
+  crawManga: (url, type) => {
+    return instance.get(`/craw/crawManga?url=${url}&type=${type}`)
   }
 }
 

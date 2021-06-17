@@ -5,9 +5,14 @@
     <el-button type="success" @click="pushReq">发请求</el-button>
     <hr/>
     <div class="item">
-      <el-input v-model="courseUrl">fffffffff</el-input>
+      <el-input v-model="courseUrl"></el-input>
       <el-button @click="craw">爬取</el-button>
       <el-checkbox-button v-model="checked">课程列表</el-checkbox-button>
+    </div>
+    <div class="item1">
+      <el-input placeholder="网址" v-model="imgUrl"></el-input>
+      <el-input placeholder="类型" v-model="imgType"></el-input>
+      <el-button @click="crawManga">获取图片</el-button>
     </div>
     
     <div v-html="content"></div>
@@ -22,7 +27,9 @@ export default {
     return {
       content:'',
       courseUrl:'',
-      checked: false
+      checked: false,
+      imgUrl: '',
+      imgType: ''
     }
   },
   methods:{
@@ -51,6 +58,12 @@ export default {
         console.log(res.data);
         this.content=res.data
       })
+    },
+    crawManga(){
+      api.crawManga(this.imgUrl, this.imgType).then(res=>{
+        console.log(res.data);
+        this.content=res.data
+      })
     }
   },
   components: {
@@ -69,6 +82,21 @@ export default {
   button{
     margin-right: 30px;
     flex: 0 0 50px;
+  }
+}
+.item1{
+  margin-top: 30px;
+  width: 800px;
+  .el-input{
+    width: 100px;
+  }
+  .el-input:first-child{
+    margin-right: 30px;
+    width: 350px;
+  }
+  button{
+    margin-left: 30px;
+    width: 100px;
   }
 }
 </style>
