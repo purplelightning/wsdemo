@@ -14,8 +14,10 @@
       <el-input placeholder="类型" v-model="imgType"></el-input>
       <el-button @click="crawManga">获取图片</el-button>
     </div>
-    
     <div v-html="content"></div>
+    <img src="aaa"/>
+    <img src="bbb"/>
+    <img src="ccc"/>
   </div>
 </template>
 
@@ -31,6 +33,14 @@ export default {
       imgUrl: '',
       imgType: ''
     }
+  },
+  mounted(){
+    let dom = document.querySelectorAll('img');
+    let arr = []
+    dom.forEach(v=>{
+      arr.push(v.getAttribute('src'))
+    })
+    console.log(arr);
   },
   methods:{
     getData(){

@@ -1,6 +1,7 @@
 const express= require('express');
 const router = express.Router()
 const {CrawModel, CourseModel} = require('../../models/craw');
+const { basicHeader } =require('../../utils/common');
 
 const fs = require('fs');
 const request = require('request');
@@ -36,7 +37,6 @@ var youtubeHeader= {
 }
 
 function imgCrawer(url, callback){
-  console.log(url)
   srequest(url)
   .set('header', youtubeHeader)
   .proxy(proxy)
@@ -50,19 +50,126 @@ function imgCrawer(url, callback){
       console.log('status:'+res.status);
       console.log(res.text);
       //将res.text写入json文件
-      // fs.writeFile(__dirname+'/youtube.json',JSON.stringify({
-      //   data: res.text
-      // }),function(err){
-      //   if(err){
-      //       return console.log(err);
-      //   }
-      //   console.log('完成');
-      // });
+      fs.writeFile(__dirname+'/youtube.json',JSON.stringify({
+        data: res.text
+      }),function(err){
+        if(err){
+            return console.log(err);
+        }
+        console.log('完成');
+      });
 
     }
   }
 }
 
+const Nightmare = require('nightmare');
+
+const nightmare = Nightmare({
+  waitTimeout: 720000,
+  show: true,
+  executionTimeout: 60000,
+})
+let wwUrl = ''
+function mangaCrawerc(url){
+  console.log('开始爬取----------');
+  var header ={ 'referer': '' }
+
+  nightmare.goto(wwUrl,header)
+  .wait(function(){
+    var sElement = document.scrollingElement
+    var showBtn = document.querySelector('.show-btn')
+    if(showBtn){ // 加载更多
+      document.querySelector('.show-btn').click()
+      return false
+    }
+    var lastBtns = document.querySelectorAll('.hide-btn')
+    var lastBtn = lastBtns[lastBtns.length-1]
+    var lastChapter = lastBtn.parentElement.previousElementSibling.querySelector('.cartoon-list')
+    var imgs = lastChapter.querySelectorAll('img')
+    // 滚动处理懒加载，直到最后的图片的src都是真实的地址
+    if(imgs[imgs.length-1].getAttribute('data-url').length<100){
+      sElement.scrollTop += 800
+      return false
+    }else{
+      return true
+    }
+  })
+  .evaluate(function(){
+    var name = document.title.split(/(\【|\】)/)[4]
+    var cartoons = document.querySelectorAll('.cartoon-list')
+    var imgList = []
+    for(let i=0;i<cartoons.length;i++){
+      var imgs = cartoons[i].querySelectorAll('img')
+      var arr = []
+      imgs.forEach(v=>{
+        arr.push(v.getAttribute('src'))
+      })
+      imgList.push(arr)
+    }
+    return {list: imgList, name: name}
+  })
+  .end()
+  .then(res=>{
+    if(!fs.existsSync(`public/download/${res.name}`)){
+      fs.mkdirSync(`public/download/${res.name}`)
+    }
+    let count =0
+    let imgList = res.list
+    console.log(`章节数:${imgList.length}`);
+    for(let i=0;i<imgList.length;i++){
+      let chapt = imgList[i]
+      let chapterName = `public/download/${res.name}/第${i+1}话`
+      if(chapt.length && !fs.existsSync(chapterName)){
+        console.log(`下载第${i+1}话`);
+        fs.mkdirSync(chapterName)
+      }
+      for(let j=0;j<chapt.length;j++){
+        handleBase64(chapt[j], `${chapterName}/${j+1}.jpg`)
+        count++
+      }
+    }
+    console.log('完成');
+    console.log(`下载了${count}张图片`);
+  })
+  .catch(err=>console.log(err))
+}
+
+function handleBase64(base64Str, name){
+  let tmp = base64Str.replace(/^data:image\/(png|gif|jpeg|jpg);base64,/,'');
+  var dataBuffer = new Buffer.from(tmp,'base64')
+  fs.writeFileSync(name, dataBuffer)
+}
+
+// function mangaCrawer(url, callback){
+//   var mangaHeader = {
+//     ...basicHeader,
+//     'content-type': 'application/json;charset=UTF-8',
+//     'cookie':'_ga=GA1.2.1194383735.1609691883; __atssc=google%3B1; __atuvc=9%7C1; dsq__=3iokdv4186k96q; Hm_lvt_5ee99fa43d3e817978c158dfc8eb72ad=1623937995; _gid=GA1.2.1834432239.1623937996; Hm_lvt_07c8e2ff21896b108ed45c014aa2e8b5=1623856650,1623933948,1624022340; Hm_lvt_bfaaeccba983e87596c65c3306010a81=1623856650,1623933949,1624022340; __cf_bm=e4c103d9dc3a8aca866a0f9ae671a126e311485e-1624023832-1800-AVX/lF7vLJxoeGn6PJQ8UAl/8YEID542y31zhc88CziBufy/FRp50HVDNtYgdwppXWtOG5soBWHF5wd3GSjx94B1j2VgIspU48+kMizsHoVqs2yQG4pFlNAEg522rdkRxw==; Hm_lpvt_07c8e2ff21896b108ed45c014aa2e8b5=1624023853; Hm_lpvt_bfaaeccba983e87596c65c3306010a81=1624023853',
+//     'referer': '',
+//   }
+//   srequest.post(sisterUrl)
+//   .send(sisterParam)
+//   .set('header', mangaHeader)
+//   .proxy(proxy)
+//   .end((err, res)=> {
+//     // res.setEncoding('utf-8');
+//     if(err){
+//       console.log(err);
+//     }
+//     else{
+//       let $ = cheerio.load(res.text)
+//       let chapterList = []
+//       $('li').each(function(){
+//         let dom = $(this).find('a')
+//         let name = dom.text()
+//         let url = 'https://v2.mangapark.net' + dom.attr('href')
+//         chapterList.push({name,url})
+//       })
+//       console.log(chapterList);
+//     }
+//   })
+// }
 
 
 function videocrawler(url,callback){
@@ -169,39 +276,11 @@ function saveCourseToMongo(list){
 
 router.get('/crawManga', (req, res) => {
   let {url, type} = req.query
-  console.log(url);
-  console.log(type);
-  mangaCrawer(url)
+  console.log(req.query);
+  mangaCrawerc(url)
 })
 
-function mangaCrawer(url){
-  var mangaHeader = {
-    'cookie':'_ga=GA1.2.1194383735.1609691883; __atssc=google%3B1; __atuvc=9%7C1; dsq__=3iokdv4186k96q; Hm_lvt_07c8e2ff21896b108ed45c014aa2e8b5=1623856650,1623933948; Hm_lvt_bfaaeccba983e87596c65c3306010a81=1623856650,1623933949; Hm_lvt_5ee99fa43d3e817978c158dfc8eb72ad=1623937995; _gid=GA1.2.1834432239.1623937996; Hm_lpvt_5ee99fa43d3e817978c158dfc8eb72ad=1623940308; __cf_bm=3181634e22420ff246a1b17e4168940c5bfffad6-1623945310-1800-ASWPkl8vviRynfkpRm5LRFqIpw6rGTjh0EE1w3K2YUFWcZhvSnT2CToDHGqFPAtgw2IRn0TRTW4ckGHIoTd9OQaOiipCzIds+iSC+2ZRV2y4ftoPHXQ6JXIP10qeDJ4pNw==; Hm_lpvt_bfaaeccba983e87596c65c3306010a81=1623945332; Hm_lpvt_07c8e2ff21896b108ed45c014aa2e8b5=1623945332'
-  }
-  
-  srequest(url)
-  .set('header', mangaHeader)
-  .proxy(proxy)
-  .end(handleResult)
 
-  function handleResult(err, res){
-    res.setEncoding('utf-8');
-    if(err){
-      console.log('aaaaaaaaaaaaaaaaa');
-      console.log(err.response);
-    }
-    else{
-      console.log('final--------');
-      let $ = cheerio.load(res.text)
-      let chapterList = []
-      $('li').each(function(){
-        let dom = $(this).find('a')
-        let name = dom.text()
-        let url = 'https://v2.mangapark.net' + dom.attr('href')
-        chapterList.push({name,url})
-      })
-      console.log(chapterList);
-    }
-  }
-}
+
+
 module.exports = router
