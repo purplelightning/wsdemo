@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 mongoose.set('useFindAndModify', false); // 解决findoneandupdate报错问题
 
-CrawSchema = new mongoose.Schema({
+MoocVideoSchema = new mongoose.Schema({
   courseName:{ type: String, required: true},
   title: { type: String, required: true},
   duration: { type: String, required: false},
@@ -13,9 +13,9 @@ CrawSchema = new mongoose.Schema({
   courseUrl: { type: String, required: true},
 })
 
-let CrawModel = mongoose.model('mooc', CrawSchema)
+let MoocVideoModel = mongoose.model('moocVideo', MoocVideoSchema)
 
-CourseSchema = new mongoose.Schema({
+MoocCourseSchema = new mongoose.Schema({
   courseName:{ type: String, required: true},
   coursePrice: { type: String, required: true},
   courseUrl: { type: String, required: true},
@@ -24,8 +24,16 @@ CourseSchema = new mongoose.Schema({
   numOfStudents: { type: String, required: true},
 })
 
-let CourseModel = mongoose.model('moocCourse', CourseSchema)
+let MoocCourseModel = mongoose.model('moocCourse', MoocCourseSchema)
+
+MangaSchema = new mongoose.Schema({
+  title:{ type: String, required: true},
+  chapterName: { type: String, required: true},
+  chapterUrl: { type: String, required: true},
+})
+
+let MangaModel = mongoose.model('manga', MangaSchema)
 
 
 
-module.exports = { CrawModel, CourseModel}
+module.exports = { MoocVideoModel, MoocCourseModel, MangaModel}

@@ -15,9 +15,6 @@
       <el-button @click="crawManga">获取图片</el-button>
     </div>
     <div v-html="content"></div>
-    <img src="aaa"/>
-    <img src="bbb"/>
-    <img src="ccc"/>
   </div>
 </template>
 
