@@ -1,0 +1,81 @@
+<template>
+	<view>
+		<uni-drawer  @change="handleChange" :visible="true" ref="drawer" mode="left" :width="300">
+			<view class="top" style="height: 10%"></view>
+			<scroll-view style="height: 90%;" scroll-y="true">
+				<view class="item" :class='{"active": item.name===selectedName}'
+				@click="changeItem(item)" v-for="(item, index) in tabs" :key="index">{{ item.name }}</view>
+			</scroll-view>
+		</uni-drawer>
+	</view>
+</template>
+
+<script>
+	import {
+		mapState, mapMutations
+	} from 'vuex'
+
+	export default {
+		props:['showFlag'],
+		data() {
+			return {
+				tabs:[
+					{ name: '全部', value: 'all'},
+					{ name: '精华', value: 'good'},
+					{ name: '分享', value: 'share'},
+					{ name: '问答', value: 'ask'},
+					{ name: '招聘', value: 'job'},
+					{ name: '客户端测试', value: 'dev'},
+				],
+			}
+		},
+		methods: {
+			showDrawer() {
+				this.$refs.drawer.open();
+			},
+			closeDrawer() {
+				this.$refs.drawer.close();
+			},
+			handleChange(flag){
+				if(!flag){
+					this.$emit('close')
+				}
+			},
+			changeItem(item){
+				this.changeTab(item)
+				this.closeDrawer()
+			},
+			...mapMutations(['changeTab'])
+		},
+		watch:{
+			showFlag(){
+				if(this.showFlag){
+					this.showDrawer()
+				}
+			}
+		},
+		computed: {
+			...mapState(['leftOpen', 'selectedTab']),
+			selectedName(){
+				console.log(this.selectedTab);
+				return this.selectedTab.name
+			}
+		}
+	}
+</script>
+
+<style lang="less">
+	.top{
+		border-bottom: 1px solid black;
+	}
+.item{
+	text-align: center;
+	height: 50px;
+	line-height: 50px;
+	border-bottom: 1px solid black;
+	&.active{
+		color: #FFF;
+		background-color: #3AD8D5;
+	}
+}
+</style>
