@@ -1,20 +1,20 @@
 <template>
 	<view class="content">
 		<drawer @close="setFlag(false)" :showFlag="flag"></drawer>
+		<topic></topic>
 	</view>
 </template>
 
 <script>
 	import drawer from '../drawer/drawer.vue'
+	import Topic from '../Topic/Topic.vue'
 	
 	export default {
 		data() {
 			return {
 				flag: false,
+				show:false
 			}
-		},
-		onLoad() {
-
 		},
 		onNavigationBarButtonTap(e){
 			if(e.float === 'left'){
@@ -31,13 +31,15 @@
 			},
 		},
 		components:{
-			drawer
+			drawer,
+			Topic
 		}
 	}
 </script>
 
 <style>
 	.content {
+		width: 100%;
 		display: flex;
 		flex-direction: column;
 		align-items: center;

@@ -66,8 +66,11 @@ var dateUtils = {
 	}
 };
 
+const baseUrl = 'http://127.0.0.1:3301'
+
 module.exports = {
 	formatTime: formatTime,
 	formatLocation: formatLocation,
-	dateUtils: dateUtils
+	dateUtils: dateUtils,
+	baseUrl
 }

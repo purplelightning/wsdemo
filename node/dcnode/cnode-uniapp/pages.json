@@ -5,13 +5,12 @@
 			"style": {
 				"navigationBarTitleText": "News",
 				"app-plus": {
-					"titleNView":{
-						"buttons": [
-							{
-							"text": "\ue563",
-							"fontSrc": "/static/uni.ttf",
-							"color": "#999",
-							"float": "left"
+					"titleNView": {
+						"buttons": [{
+								"text": "\ue563",
+								"fontSrc": "/static/uni.ttf",
+								"color": "#999",
+								"float": "left"
 							},
 							{
 								"text": "\ue532",
@@ -23,17 +22,20 @@
 					}
 				}
 			}
+		}, {
+			"path": "pages/about/about",
+			"style": {
+				"navigationBarTitleText": "关于",
+				"enablePullDownRefresh": false
+		},
+			"path": "pages/Topic/TopicDetail/TopicDetail",
+			"style": {
+				"navigationBarTitleText": "NewsDetail",
+				"enablePullDownRefresh": false
+			}
+
 		}
-       ,{
-            "path" : "pages/about/about",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "关于",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
