@@ -30,7 +30,6 @@ import { baseUrl } from '../../common/util.js'
 					url: baseUrl + `/topic/list?tab=${params.tab}&page=${params.page ? params.page : 1}&pageSize=${params.limit ? params.limit : 20}`,
 					data: {},
 					success: res => {
-						console.log(res.data.data)
 						this.list = res.data.data
 					}
 				})

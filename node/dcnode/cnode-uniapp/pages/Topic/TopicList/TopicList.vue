@@ -1,7 +1,7 @@
 <template>
 	<view class="list-wrapper">
 		<uni-list class="list">
-			<view v-for="(item, index) in bolist" :key="" class="item" title="">
+			<view v-for="(item, index) in bolist" :key="index" class="item" title="">
 				<img class="user-avatar" :src="item.author&&item.author.avatarUrl">
 				<view class="name">{{item.top ? '置顶' : tabObj[item.tab]}}</view>
 				<view class="content">
@@ -29,18 +29,13 @@
 			}
 		},
 		onLoad() {
-			console.log(this.bolist);
-		},
-		onShow(){
-			console.log('show')
 		},
 		methods: {
 			goDetail(id) {
 				console.log(id);
 				uni.navigateTo({
-					url: '/pages/Topic/TopicDetail/TopicDetail'
+					url: `/pages/Topic/TopicDetail/TopicDetail?id=${id}`
 				});
-				// this.$router.history.push('/topic/detail/'+ id)
 			}
 		},
 		filters: {
@@ -65,8 +60,8 @@
 			font-size: 12px;
 			border-bottom: 1rpx solid #ccc;
 			.user-avatar {
-				width: 30rpx;
-				height: 30rpx;
+				width: 60rpx;
+				height: 60rpx;
 			}
 			.name {
 				position: relative;
