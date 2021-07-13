@@ -17,8 +17,8 @@
 		</view>
 		<view class="reply">
 			<view class="reply-head">{{info.replyCount}}回复</view>
-			<!-- <reply-list v-show="info.replyList" :topicId="info._id" :replyList="info.replyList"
-			@addReply="getDetailInfo"></reply-list> -->
+			<reply-list v-show="info.replyList" :topicId="info._id" :replyList="info.replyList"
+			@addReply="getDetailInfo"></reply-list>
 			<!-- <view class="add-reply" v-show="token">
 				<input type="textarea" rows="4" v-model="replyContent"></el-input>
 				<button type="primary" @click="addReply">回复</button>
@@ -29,13 +29,15 @@
 
 <script>
 	import { baseUrl } from '../../../common/util.js'
+	import ReplyList from '../ReplyList/ReplyList.vue'
 	
 	export default {
 		data() {
 			return {
 				token:'aaa',
 				info: {},
-				replyContent: ''
+				replyContent: '',
+				loginname: ''
 			};
 		},
 		onLoad(option){
@@ -67,6 +69,9 @@
 				}
 				return ''
 			}
+		},
+		components:{
+			ReplyList
 		}
 	}
 </script>
@@ -80,7 +85,6 @@
 		right: 50rpx;
   }
   .detail{
-		border:1px solid red;
     margin: 20rpx 30rpx 0 30rpx;
     padding: 0 15rpx;
     min-height: 400rpx;
