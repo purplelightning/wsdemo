@@ -95,6 +95,14 @@
 				}
 				return []
 			}
+		},
+		filters:{
+			sliceTime(time) {
+				if (time) {
+					return time.slice(5)
+				}
+				return ''
+			}
 		}
 	}
 </script>
@@ -102,23 +110,25 @@
 <style lang="less">
 .list{
     .item{
+			margin-bottom: 10rpx;
       width: 100%;
       padding: 10rpx;
       box-sizing: border-box;
       .primary{
         display: flex;
         position: relative;
-        height: 60rpx;
-        line-height: 30rpx;
+        height: 100rpx;
+        line-height: 50rpx;
         box-sizing: border-box;
-        font-size: 12rpx;
+        font-size: 28rpx;
         border-top:1rpx solid #ccc;
         .user-avatar{
-          flex: 0 0 40rpx;
-          width: 40rpx;
-          height: 40rpx;
+          flex: 0 0 80rpx;
+          width: 80rpx;
+          height: 80rpx;
           position: relative;
-          top: 10rpx;
+          top: 20rpx;
+					border-radius: 8rpx;
         }
         .main{
           display: inline-block;
@@ -126,9 +136,10 @@
           width: 300rpx;
           padding-left: 10rpx;
           .name{
-            margin-right: 3rpx;
+            margin-right: 6rpx;
             width: 100rpx;
             color: #666;
+						font-weight: 700;
           }
           .des{
             color: #515df2;
@@ -136,38 +147,41 @@
         }
         .fav{
           flex: 0 0 40rpx;
-          line-height: 60rpx;
+          line-height: 100rpx;
           i{
-            margin-right: 5rpx;
+            margin-right: 10rpx;
           }
         }
         .icon{
           display: inline-block;
-          margin-right: 10rpx;
-          line-height: 60rpx;
+          margin-right: 20rpx;
+          line-height: 100rpx;
           cursor: pointer;
         }
       }
     }
   }
   .sub-list{
+		margin-top: 10rpx;
+		padding-left: 30rpx;
     width: calc(100% - 30rpx);
-    padding-left: 30rpx;
+		
     .sub-item{
-      margin-bottom: 2rpx;
-      height: 50rpx !important;
+      height: 100rpx !important;
       background: #fafafa;
       border: none !important;
+			
       .user-avatar{
-        flex: 0 0 30rpx !important;
-        width: 30rpx !important;
-        height: 30rpx !important;
+        flex: 0 0 60rpx !important;
+        width: 60rpx !important;
+        height: 60rpx !important;
       }
       .main{
         width: 200rpx !important;
+				font-size: 24rpx;
         .content{
           margin-top: -15rpx;
-          width: 50%;
+          width: 80%;
           height: 30rpx;
         }
       }

@@ -15,6 +15,8 @@
 </template>
 
 <script>
+	import { baseUrl } from '../../../common/util.js'
+
 	export default {
 		props: ['bolist', 'favFlag'],
 		data() {
@@ -32,7 +34,6 @@
 		},
 		methods: {
 			goDetail(id) {
-				console.log(id);
 				uni.navigateTo({
 					url: `/pages/Topic/TopicDetail/TopicDetail?id=${id}`
 				});

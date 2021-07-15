@@ -9,7 +9,8 @@ import store from '../store/index'
 import { Message } from 'element-ui'
 
 // const baseUrl = 'https://cnodejs.org/api/v1'
-export const baseUrl = 'http://127.0.0.1:3301'
+// export const baseUrl = 'http://127.0.0.1:3301'
+export const baseUrl = 'http://118.31.246.131:2009'
 
 /** 
  * 提示函数 

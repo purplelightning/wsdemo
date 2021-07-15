@@ -43,17 +43,17 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    // proxy: {
-      // '/api': {
-      //   target: 'http://asoyy.xyz',
-      //   changeOrigin: true, //是否跨域
-      //   ws: false, //是否支持websocket
-      //   secure: false, //如果是https接口，需要配置这个参数
-      //   pathRewrite: {
-      //     '^/api': ''
-      //   }
-      // }
-    // }
+    proxy: {
+      '/user': {
+        target: 'http://118.31.246.131:2009/',
+        changeOrigin: true, //是否跨域
+        ws: false, //是否支持websocket
+        secure: false, //如果是https接口，需要配置这个参数
+        pathRewrite: {
+          '^/user': ''
+        }
+      }
+    }
   },
   css: {
     // 将组件内的 CSS 提取到一个单独的 CSS 文件 (只用在生产环境中)也可以是一个传递给 `extract-text-webpack-plugin` 的选项对象

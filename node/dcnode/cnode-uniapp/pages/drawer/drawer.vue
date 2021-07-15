@@ -1,8 +1,8 @@
 <template>
 	<view>
 		<uni-drawer  @change="handleChange" :visible="true" ref="drawer" mode="left" :width="300">
-			<view class="top" style="height: 10%"></view>
-			<scroll-view style="height: 90%;" scroll-y="true">
+			<view class="top" style="height: 20%"></view>
+			<scroll-view class="bottom" style="height: 80%;" scroll-y="true">
 				<view class="item" :class='{"active": item.name===selectedName}'
 				@click="changeItem(item)" v-for="(item, index) in tabs" :key="index">{{ item.name }}</view>
 			</scroll-view>
@@ -57,16 +57,20 @@
 		computed: {
 			...mapState(['leftOpen', 'selectedTab']),
 			selectedName(){
-				console.log(this.selectedTab);
 				return this.selectedTab.name
 			}
 		}
 	}
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 	.top{
-		border-bottom: 1px solid black;
+		background-image: url(../../static/sea.png);
+		background-repeat: no-repeat;
+		background-size: 100% 100%;
+	}
+	.bottom{
+		background-color: #FFF;
 	}
 .item{
 	text-align: center;
@@ -75,7 +79,7 @@
 	border-bottom: 1px solid black;
 	&.active{
 		color: #FFF;
-		background-color: #3AD8D5;
+		background-color: #CCCCCC;
 	}
 }
 </style>
