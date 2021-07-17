@@ -1,5 +1,7 @@
 <template>
 	<view class="backlogin">
+		<EloadingMP></EloadingMP>
+		<ToastMP></ToastMP>
 		<view class="login_box">
 			<view class="item">
 				<input class="myinput" type="text" placeholder="手机号/用户名" v-model="name" />
@@ -16,6 +18,7 @@
 		</view>
 		<button :disabled="disablebtn" class="login" @click="doLogin">登录</button>
 		<button :disabled="disablebtn" class="login register" @click="doLogin('new')">注册</button>
+		<button :disabled="disablebtn" class="login wechat" @click="wechatLogin">微信登录</button>
 		<button :disabled="disablebtn" class="login anny" @click="goMainPage">游客访问</button>
 	</view>
 </template>
@@ -33,9 +36,6 @@
 				remenberme: ''
 			};
 		},
-		mounted(){
-			
-		},
 		methods:{
 			doLogin(type){
 				this.disablebtn = true
@@ -47,34 +47,38 @@
 				if(type === 'new'){
 					url = `/user/signup`
 				}
+				this.$loading(true)
 				uni.request({
 					url: baseUrl + url,
 					method: 'POST',
 					data: params,
 					success: res => {
+						let data = res.data || res
 						this.disablebtn = false
 						// this.cleanData()
-						this.goMainPage()
-					},
-					fail: (err) => {
-						this.disablebtn = false
+						this.$loading(false)
+						if(data.status){
+							this.$toast(data.msg)
+						}else{
+							this.$toast({msg: data.error, type:'error'})
+						}
+						// this.goMainPage()
 					},
 				});
 			},
 			goMainPage(){
 				console.log('gomain');
 				uni.navigateTo({
-					url: 'pages/index/index'
+					url: '/pages/index/index'
 				})
+			},
+			wechatLogin(){
 			},
 			cleanData(){
 				this.name = ''
 				this.pwd = ''
 			}
 		},
-		computed:{
-			
-		}
 	}
 </script>
 
@@ -140,7 +144,10 @@
   background: #33bb33;
 }
 .anny{
-	background: #cebc23;
+	background: gold;
+}
+.wechat{
+	background: purple;
 }
 .login:hover {
   background: #2668b5;

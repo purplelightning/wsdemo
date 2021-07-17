@@ -1,30 +1,21 @@
 <template>
-  <div class="toast-wrapper" :class="[type+ '-toast']" v-show="show">
-    <div class="content">{{message}}</div>
-  </div>
+  <view class="toast-wrapper" :class="[toastType+ '_toast']" v-show="Boolean(toastMsg)">
+    <view class="content">{{toastMsg}}</view>
+  </view>
 </template>
 
 <script>
+	import { mapState } from 'vuex'
+	
 export default {
-  props:{
-    message:{
-      type: String,
-      default: ''
-    },
-    type: {
-      type: String,
-      default: 'success'
-    },
-    duration: {
-      type: Number,
-      duration: 3000
-    }
-  },
   data() {
     return {
       show: false
     }
   },
+	computed:{
+		...mapState(['toastMsg', 'toastType'])
+	}
 }
 </script>
 
@@ -35,6 +26,7 @@ export default {
   left: 0;
   bottom: 0;
   width: 100%;
+	z-index: 150;
 }
 .content{
   position: absolute;
@@ -48,21 +40,21 @@ export default {
   border-radius: 5px;
   
 }
-.success-toast{
+._toast,.success_toast{
   .content{
     border: 1px solid #99bb99;
     background: #bbffbb;
     color: green;
   }
 }
-.error-toast{
+.error_toast{
   .content{
     border: 1px solid #bb9999;
     background: #ffbbbb;
     color: red;
   }
 }
-.info-toast{
+.info_toast{
   .content{
     border: 1px solid #9999bb;
     background: #bbbbff;

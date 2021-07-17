@@ -1,7 +1,7 @@
 <template>
-  <div class="toast-wrapper" :class="[type+ '-toast']" v-show="show">
-    <div class="content">{{message}}</div>
-  </div>
+  <view class="toast-wrapper" :class="[type+ '-toast']" v-show="show">
+    <view class="content">{{message}}</view>
+  </view>
 </template>
 
 <script>

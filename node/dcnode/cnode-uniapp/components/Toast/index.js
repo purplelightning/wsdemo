@@ -1,3 +1,4 @@
+// H5插件可用
 import Vue from 'vue'
 import Toast from './Toast.vue'
 
