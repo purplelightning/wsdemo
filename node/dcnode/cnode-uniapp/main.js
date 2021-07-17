@@ -30,7 +30,9 @@ function loading(flag){
 	if(flag){
 		store.commit('openLoading')
 	}else{
-		store.commit('closeLoading')
+		setTimeout(()=>{
+			store.commit('closeLoading')
+		}, 1000)
 	}
 }
 Vue.prototype.$loading = loading

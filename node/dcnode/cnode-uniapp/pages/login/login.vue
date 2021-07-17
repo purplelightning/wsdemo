@@ -25,7 +25,7 @@
 
 <script>
 	import { baseUrl } from '../../common/util.js'
-	import { mapState } from 'vuex'
+	import { mapState, mapMutations } from 'vuex'
 	
 	export default {
 		data() {
@@ -36,7 +36,13 @@
 				remenberme: ''
 			};
 		},
+		mounted(){
+			if(this.isLogin){
+				this.goMainPage()
+			}
+		},
 		methods:{
+			...mapMutations(['handleLogin']),
 			doLogin(type){
 				this.disablebtn = true
 				const params={
@@ -55,14 +61,25 @@
 					success: res => {
 						let data = res.data || res
 						this.disablebtn = false
-						// this.cleanData()
+						this.cleanData()
 						this.$loading(false)
 						if(data.status){
-							this.$toast(data.msg)
+							console.log(data);
+							this.$toast(res.data.msg)
+							this.handleLogin({
+								id: data.data.id,
+								loginname: data.data.username,
+								token: data.data.token,
+								avatarImg: data.data.avatarImg,
+								phone: data.data.phone,
+								isLogin: true
+							})
+							setTimeout(()=>{
+								this.goMainPage()
+							},1000)
 						}else{
 							this.$toast({msg: data.error, type:'error'})
 						}
-						// this.goMainPage()
 					},
 				});
 			},
@@ -79,6 +96,9 @@
 				this.pwd = ''
 			}
 		},
+		computed:{
+			...mapState(['isLogin'])
+		}
 	}
 </script>
 

@@ -185,7 +185,7 @@ export default {
     width: 60px;
     height: 60px;
     background: radial-gradient(circle, red, #fff);
-    box-shadow:0 0 15px 0 rgba(222,222,222,.8);
+    box-shadow:0 0 15px 0 rgba(222, 222,222,.8);
     border-radius: 50%;
     animation: big-circle 1.5s linear infinite;
     @keyframes big-circle{
@@ -208,7 +208,7 @@ export default {
 		width: 60px;
 		height: 60px;
 		background: radial-gradient(circle, red, #fff);
-		box-shadow:0 0 15px 0 rgba(222,222,222,.8);
+		box-shadow:0 0 15px 0 rgba(222,0,222,.8);
 		border-radius: 50%;
 		animation: small-circle 1.5s linear infinite;
 		@keyframes small-circle{

@@ -22,11 +22,14 @@ const store = new Vuex.Store({
 		toastType:''
 	},
 	mutations:{
-		login(state, provider){
+		handleLogin(state, info){
+			console.log(info);
 			state.isLogin = true
+			uni.setStorageSync('loginInfo', JSON.stringify(info))
 		},
 		logout(state){
 			state.isLogin = false
+			uni.setStorageSync('loginInfo', '{}')
 		},
 		changeTab(state, tab){
 			state.selectedTab = tab

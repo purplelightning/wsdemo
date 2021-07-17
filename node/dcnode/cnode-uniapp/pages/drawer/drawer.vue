@@ -1,7 +1,9 @@
 <template>
 	<view>
 		<uni-drawer  @change="handleChange" :visible="true" ref="drawer" mode="left" :width="300">
-			<view class="top" style="height: 20%"></view>
+			<view class="top" style="height: 20%">
+				<Info></Info>
+			</view>
 			<scroll-view class="bottom" style="height: 80%;" scroll-y="true">
 				<view class="item" :class='{"active": item.name===selectedName}'
 				@click="changeItem(item)" v-for="(item, index) in tabs" :key="index">{{ item.name }}</view>
@@ -14,6 +16,7 @@
 	import {
 		mapState, mapMutations
 	} from 'vuex'
+	import Info from './Info.vue'
 
 	export default {
 		props:['showFlag'],
@@ -26,6 +29,7 @@
 					{ name: '问答', value: 'ask'},
 					{ name: '招聘', value: 'job'},
 					{ name: '客户端测试', value: 'dev'},
+					{ name: '退出登录', value: 'logout'},
 				],
 			}
 		},
@@ -42,10 +46,17 @@
 				}
 			},
 			changeItem(item){
+				if(item.value === 'logout'){
+					this.logout()
+					uni.navigateTo({
+						url: '/pages/login/Login'
+					})
+					return
+				}
 				this.changeTab(item)
 				this.closeDrawer()
 			},
-			...mapMutations(['changeTab'])
+			...mapMutations(['changeTab', 'logout'])
 		},
 		watch:{
 			showFlag(){
@@ -59,6 +70,9 @@
 			selectedName(){
 				return this.selectedTab.name
 			}
+		},
+		components:{
+			Info
 		}
 	}
 </script>
