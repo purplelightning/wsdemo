@@ -26,6 +26,8 @@ export default {
   components: {ChangeAvatar},
   methods: {
     goCreate() {
+      // this.$toast('aaaaaaa')
+      // this.$toast({msg:'hello',type:'error',duration:1000})
       this.$router.history.push({name:"ManageTopic", params: {type:'add'}});
     },
     goFav(){

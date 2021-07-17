@@ -9,6 +9,9 @@ Vue.use(ElementUI)
 
 Vue.config.productionTip = false;
 
+import toastMessage from './plugins/Toast'
+Vue.use(toastMessage)
+
 new Vue({
   router,
   store,
