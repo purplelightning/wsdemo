@@ -1,5 +1,5 @@
 <template>
-	<view class="detail-wrapper">
+	<scroll-view class="detail-wrapper">
 		<view class="btns">
 			<uni-icons v-show="!info.isCollected && token" type="star"  @click="handleFav()"></uni-icons>
 			<uni-icons v-show="info.isCollected && token" type="star-filled"  @click="handleFav()"></uni-icons>
@@ -24,7 +24,7 @@
 				<button type="primary" @click="addReply">回复</button>
 			</view> -->
 		 </view>
-	</view>
+	</scroll-view>
 </template>
 
 <script>

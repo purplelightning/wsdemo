@@ -1,5 +1,5 @@
 <template>
-	<view class="list-wrapper">
+	<scroll-view class="list-wrapper">
 		<uni-list class="list">
 			<view v-for="(item, index) in bolist" :key="index" class="item" title="">
 				<img class="user-avatar" :src="item.author&&item.author.avatarUrl">
@@ -11,7 +11,7 @@
 				<view class="last-reply" v-show="item.lastReplyAt">{{item.lastReplyAt | sliceTime}}</view>
 			</view>
 		</uni-list>
-	</view>
+	</scroll-view>
 </template>
 
 <script>
@@ -56,22 +56,22 @@
 			position: relative;
 			padding: 10rpx;
 			width: 100%;
-			height: 100rpx;
+			height: 150rpx;
 			box-sizing: border-box;
 			font-size: 12px;
 			border-bottom: 1rpx solid #ccc;
 			.user-avatar {
-				width: 60rpx;
-				height: 60rpx;
+				width: 80rpx;
+				height: 80rpx;
 			}
 			.name {
 				position: relative;
-				margin: 0 10rpx;
-				top: -10rpx;
+				margin: 0 12rpx;
+				top: -12rpx;
 				display: inline-block;
-				padding: 2rpx 4rpx;
-				height: 20rpx;
-				line-height: 20rpx;
+				padding: 3rpx 6rpx;
+				height: 30rpx;
+				line-height: 30rpx;
 				background: #e5e5e5;
 				color: #999;
 			}
@@ -81,7 +81,7 @@
 				height: 100%;
 				.title {
 					height: 60%;
-					font-size: 14px;
+					font-size: 16px;
 					white-space: nowrap;
 					overflow: hidden;
 					text-overflow: ellipsis;
@@ -94,7 +94,7 @@
 			}
 			.last-reply {
 				position: absolute;
-				bottom: 10rpx;
+				bottom: 15rpx;
 				right: 15rpx;
 				color: #999;
 			}

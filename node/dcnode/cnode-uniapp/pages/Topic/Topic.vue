@@ -1,6 +1,7 @@
 <template>
 	<view class="topic-wrapper">
 		<topic-list :bolist="list"></topic-list>
+		<ToastMP></ToastMP>
 	</view>
 </template>
 <script>
@@ -9,6 +10,7 @@ import { mapState } from 'vuex'
 import { baseUrl } from '../../common/util.js'
 
 	export default {
+		props:['refreshDown', 'refreshUp'],
 		data() {
 			return {
 				list:[],
@@ -19,8 +21,21 @@ import { baseUrl } from '../../common/util.js'
 		mounted(){
 			this.getData()
 		},
+		watch:{
+			refreshDown(){
+				if(this.refreshDown){
+					this.getData()
+				}
+			},
+			refreshUp(){
+				if(this.refreshUp){
+					this.pageIndex++
+					this.getData(true)
+				}
+			}
+		},
 		methods: {
-			getData(){
+			getData(flag){
 				const params = {
 					tab: this.selectedTab.value,
 					page: this.pageIndex,
@@ -30,7 +45,18 @@ import { baseUrl } from '../../common/util.js'
 					url: baseUrl + `/topic/list?tab=${params.tab}&page=${params.page ? params.page : 1}&pageSize=${params.limit ? params.limit : 20}`,
 					data: {},
 					success: res => {
-						this.list = res.data.data
+						let result = res.data.data
+						if(flag){
+							if(!result.length){
+								this.pageIndex--
+								this.$toast({msg: '没有更多数据', type:'info'})
+							}
+							this.list = this.list.concat(result)
+							this.$emit('refreshUpEnd')
+						}else{
+							this.list = result
+							this.$emit('refreshEnd')
+						}
 					}
 				})
 			}

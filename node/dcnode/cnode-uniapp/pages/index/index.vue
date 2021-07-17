@@ -1,7 +1,9 @@
 <template>
 	<view class="content">
 		<drawer @close="setFlag(false)" :showFlag="flag"></drawer>
-		<topic></topic>
+		<topic :refreshDown="refreshDown" @refreshEnd="stopRefresh"
+		:refreshUp="refreshUp" @refreshUpEnd="stopRefreshUp"></topic>
+		<EloadingMP></EloadingMP>
 	</view>
 </template>
 
@@ -13,8 +15,18 @@
 		data() {
 			return {
 				flag: false,
-				show:false
+				show: false,
+				refreshDown: false,
+				refreshUp: false
 			}
+		},
+		onPullDownRefresh(){
+			this.refreshDown = true
+		},
+		onReachBottom(){
+			this.$loading(true)
+			this.refreshUp = true
+			console.log('reach');
 		},
 		onNavigationBarButtonTap(e){
 			if(e.float === 'left'){
@@ -29,6 +41,16 @@
 			setFlag(val){
 				this.flag = val
 			},
+			stopRefresh(){
+				this.refreshDown = false
+				uni.stopPullDownRefresh()
+			},
+			stopRefreshUp(){
+				this.refreshUp = false
+				setTimeout(()=>{
+					this.$loading(false)
+				}, 500)
+			}
 		},
 		components:{
 			drawer,

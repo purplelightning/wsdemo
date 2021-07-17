@@ -65,14 +65,17 @@
 						this.$loading(false)
 						if(data.status){
 							console.log(data);
-							this.$toast(res.data.msg)
+							this.$toast(data.msg || data.data)
+							if(url === '/user/signup'){
+								return
+							}
 							this.handleLogin({
 								id: data.data.id,
 								loginname: data.data.username,
 								token: data.data.token,
 								avatarImg: data.data.avatarImg,
 								phone: data.data.phone,
-								isLogin: true
+								isLogin: Boolean(data.data.id)
 							})
 							setTimeout(()=>{
 								this.goMainPage()
