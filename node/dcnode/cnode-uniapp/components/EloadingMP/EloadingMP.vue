@@ -8,6 +8,7 @@
 							<!--轮廓开始-->
 						<view class="skewLeft"></view>
 							<view class="eyeshot"></view>
+							<view class="eyeshot-inner"></view>
 								<!--轮廓结束-->
 								<!--写轮眼开始-->
 								<view class="eyes ani-zoom">
@@ -180,6 +181,7 @@ export default {
 
   .eyeshot{ // 环绕阴影，辐射背景
     position: relative;
+		top: 60px;
     width: 60px;
     height: 60px;
     background: radial-gradient(circle, red, #fff);
@@ -199,7 +201,30 @@ export default {
       100%{
         transform:scale(8);
       }
+		}
   }
-  }
+	.eyeshot-inner{
+		position: relative;
+		width: 60px;
+		height: 60px;
+		background: radial-gradient(circle, red, #fff);
+		box-shadow:0 0 15px 0 rgba(222,222,222,.8);
+		border-radius: 50%;
+		animation: small-circle 1.5s linear infinite;
+		@keyframes small-circle{
+		  0%{
+		    transform:scale(1);
+		  }
+		  33%{
+		    transform:scale(1.5);
+		  }
+		  50%{
+		    transform:scale(2);
+		  }
+		  100%{
+		    transform:scale(4);
+		  }
+		}
+}
 }
 </style>
