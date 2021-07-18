@@ -10,6 +10,7 @@
 		{
 			"path": "pages/index/index",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "仿CNODE社区之全干工程师",
 				"enablePullDownRefresh": true,
 				"app-plus": {
@@ -36,7 +37,9 @@
 			"style": {
 				"navigationBarTitleText": "关于",
 				"enablePullDownRefresh": false
-			},
+			}
+		},
+		{
 			"path": "pages/Topic/TopicDetail/TopicDetail",
 			"style": {
 				"navigationBarTitleText": "NewsDetail",
@@ -45,6 +48,7 @@
 		}
 	],
 	"globalStyle": {
+		
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",

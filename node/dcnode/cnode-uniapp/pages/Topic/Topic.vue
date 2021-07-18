@@ -36,6 +36,9 @@ import { baseUrl } from '../../common/util.js'
 		},
 		methods: {
 			getData(flag){
+				if(!flag){
+					this.pageIndex = 1
+				}
 				const params = {
 					tab: this.selectedTab.value,
 					page: this.pageIndex,
@@ -46,6 +49,7 @@ import { baseUrl } from '../../common/util.js'
 					data: {},
 					success: res => {
 						let result = res.data.data
+						this.$toast('列表更新')
 						if(flag){
 							if(!result.length){
 								this.pageIndex--
@@ -59,6 +63,11 @@ import { baseUrl } from '../../common/util.js'
 						}
 					}
 				})
+			}
+		},
+		watch:{
+			selectedTab(){
+				this.getData()
 			}
 		},
 		computed:{

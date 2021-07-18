@@ -1,6 +1,6 @@
 <template>
 	<scroll-view class="list-wrapper">
-		<uni-list class="list">
+		<uni-list class="list" v-show="bolist.length">
 			<view v-for="(item, index) in bolist" :key="index" class="item" title="">
 				<img class="user-avatar" :src="item.author&&item.author.avatarUrl">
 				<view class="name">{{item.top ? '置顶' : tabObj[item.tab]}}</view>
@@ -11,6 +11,9 @@
 				<view class="last-reply" v-show="item.lastReplyAt">{{item.lastReplyAt | sliceTime}}</view>
 			</view>
 		</uni-list>
+		<view class="no-data" v-show="!bolist.length">
+			<view>暂无数据</view>
+		</view>
 	</scroll-view>
 </template>
 
@@ -104,6 +107,12 @@
 	.fav {
 		.user-avatar {
 			margin-right: 20rpx;
+		}
+	}
+	.no-data{
+		text-align: center;
+		view{
+			margin-top: 300rpx;
 		}
 	}
 </style>

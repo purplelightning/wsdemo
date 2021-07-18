@@ -1,9 +1,8 @@
 <template>
 	<view>
-		<uni-drawer  @change="handleChange" :visible="true" ref="drawer" mode="left" :width="300">
-			<view class="top" style="height: 20%">
-				<Info></Info>
-			</view>
+		<uni-drawer @change="handleChange" :visible="true" ref="drawer" mode="left" :width="300">
+			<image :src="imgUrl" class="top" style="float: left; width:100%;height: 20%">
+			<Info></Info>
 			<scroll-view class="bottom" style="height: 80%;" scroll-y="true">
 				<view class="item" :class='{"active": item.name===selectedName}'
 				@click="changeItem(item)" v-for="(item, index) in tabs" :key="index">{{ item.name }}</view>
@@ -17,6 +16,7 @@
 		mapState, mapMutations
 	} from 'vuex'
 	import Info from './Info.vue'
+	import imgUrl from '../../static/sea.png'
 
 	export default {
 		props:['showFlag'],
@@ -31,7 +31,22 @@
 					{ name: '客户端测试', value: 'dev'},
 					{ name: '退出登录', value: 'logout'},
 				],
+				imgUrl: imgUrl
 			}
+		},
+		mounted(){
+			// #ifdef MP
+				this.tabs = [
+					{ name: '全部', value: 'all'},
+					{ name: '精华', value: 'good'},
+					{ name: '分享', value: 'share'},
+					{ name: '问答', value: 'ask'},
+					{ name: '招聘', value: 'job'},
+					{ name: '客户端测试', value: 'dev'},
+					{ name: '设置', value: 'setting'},
+					{ name: '退出登录', value: 'logout'},
+				]
+			// #endif
 		},
 		methods: {
 			showDrawer() {
@@ -52,6 +67,11 @@
 						url: '/pages/login/Login'
 					})
 					return
+				}else if(item.value === 'setting'){
+					uni.navigateTo({
+						url: '/pages/about/about'
+					})
+					return 
 				}
 				this.changeTab(item)
 				this.closeDrawer()
@@ -78,16 +98,11 @@
 </script>
 
 <style lang="less" scoped>
-	.top{
-		background-image: url(../../static/sea.png);
-		background-repeat: no-repeat;
-		background-size: 100% 100%;
-	}
 	.bottom{
 		background-color: #FFF;
 	}
 .item{
-	text-align: center;
+	padding-left: 150rpx;
 	height: 50px;
 	line-height: 50px;
 	border-bottom: 1px solid black;

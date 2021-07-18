@@ -33,10 +33,10 @@ export default {
   top: 20%;
   left: 50%;
   text-align: center;
-  line-height: 50px;
+  line-height: 40px;
   transform: translateX(-50%);
-  width: 300px;
-  height: 50px;
+  width: 250px;
+  height: 40px;
   border-radius: 5px;
   
 }

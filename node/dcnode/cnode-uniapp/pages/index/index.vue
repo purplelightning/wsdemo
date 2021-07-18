@@ -1,5 +1,16 @@
 <template>
 	<view class="content">
+		<uni-nav-bar
+			:title="selectedTab.name"
+			leftIcon="bars"
+			@clickLeft="setFlag(true)"
+			rightIcon="gear"
+			@clickRight="goSetting"
+			color="#000"
+			backgroundColor="#fff"
+			fixed="true"
+			statusBar="true"
+		></uni-nav-bar>
 		<drawer @close="setFlag(false)" :showFlag="flag"></drawer>
 		<topic :refreshDown="refreshDown" @refreshEnd="stopRefresh"
 		:refreshUp="refreshUp" @refreshUpEnd="stopRefreshUp"></topic>
@@ -10,6 +21,7 @@
 <script>
 	import drawer from '../drawer/drawer.vue'
 	import Topic from '../Topic/Topic.vue'
+	import { mapState } from 'vuex'
 	
 	export default {
 		data() {
@@ -28,15 +40,15 @@
 			this.refreshUp = true
 			console.log('reach');
 		},
-		onNavigationBarButtonTap(e){
-			if(e.float === 'left'){
-				this.setFlag(true)
-			}else{
-				uni.navigateTo({
-					url: '/pages/about/about'
-				});
-			}
-		},
+		// onNavigationBarButtonTap(e){
+		// 	if(e.float === 'left'){
+		// 		this.setFlag(true)
+		// 	}else{
+		// 		uni.navigateTo({
+		// 			url: '/pages/about/about'
+		// 		});
+		// 	}
+		// },
 		methods: {
 			setFlag(val){
 				this.flag = val
@@ -50,7 +62,15 @@
 				setTimeout(()=>{
 					this.$loading(false)
 				}, 500)
-			}
+			},
+			goSetting(e){
+				uni.navigateTo({
+					url: '/pages/about/about'
+				});
+			},
+		},
+		computed:{
+			...mapState(['selectedTab'])
 		},
 		components:{
 			drawer,
@@ -59,7 +79,7 @@
 	}
 </script>
 
-<style>
+<style lang="less" scoped>
 	.content {
 		width: 100%;
 		display: flex;
