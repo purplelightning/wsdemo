@@ -32,6 +32,9 @@ import { baseUrl } from '../../common/util.js'
 					this.pageIndex++
 					this.getData(true)
 				}
+			},
+			selectedTab(){
+				this.getData()
 			}
 		},
 		methods: {
@@ -63,11 +66,6 @@ import { baseUrl } from '../../common/util.js'
 						}
 					}
 				})
-			}
-		},
-		watch:{
-			selectedTab(){
-				this.getData()
 			}
 		},
 		computed:{

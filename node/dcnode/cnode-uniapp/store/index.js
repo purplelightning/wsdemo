@@ -9,7 +9,7 @@ if(!uni.getStorageSync('loginInfo')){
 
 const store = new Vuex.Store({
 	state:{
-		token: uni.getStorageSync('acToken') || '',
+		token: JSON.parse(uni.getStorageSync('loginInfo')).token || '',
 		id: JSON.parse(uni.getStorageSync('loginInfo')).id || '',
 		isLogin: Boolean(JSON.parse(uni.getStorageSync('loginInfo')).isLogin),
 		loginname: JSON.parse(uni.getStorageSync('loginInfo')).loginname || '',
@@ -24,12 +24,29 @@ const store = new Vuex.Store({
 	mutations:{
 		handleLogin(state, info){
 			console.log(info);
+			// state需要赋值，更新数据
 			state.isLogin = true
+			state.id = info.id
+			state.loginname = info.loginname
+			state.phone = info.phone
+			state.avatarImg = info.avatarImg
+			state.token = info.token
 			uni.setStorageSync('loginInfo', JSON.stringify(info))
 		},
 		logout(state){
 			state.isLogin = false
+			state.id = ''
+			state.loginname = ''
+			state.phone = ''
+			state.avatarImg = ''
+			state.token = ''
 			uni.setStorageSync('loginInfo', '{}')
+		},
+		setAvatar(state, url){
+			state.avatarImg = url
+			let info = JSON.parse(uni.getStorageSync('loginInfo'))
+			info.avatarImg = url
+			uni.setStorageSync('loginInfo', JSON.stringify(info))
 		},
 		changeTab(state, tab){
 			state.selectedTab = tab

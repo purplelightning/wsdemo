@@ -65,7 +65,7 @@
 			},
 			goSetting(e){
 				uni.navigateTo({
-					url: '/pages/about/about'
+					url: '/pages/usercenter/Usercenter'
 				});
 			},
 		},

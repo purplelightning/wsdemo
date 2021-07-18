@@ -45,7 +45,14 @@
 				"navigationBarTitleText": "NewsDetail",
 				"enablePullDownRefresh": false
 			}
-		}
+		},
+		{
+				"path" : "pages/usercenter/Usercenter",
+				"style" : {
+					"navigationBarTitleText": "个人中心",
+					"enablePullDownRefresh": false
+				}
+			}
 	],
 	"globalStyle": {
 		

@@ -69,7 +69,7 @@
 					return
 				}else if(item.value === 'setting'){
 					uni.navigateTo({
-						url: '/pages/about/about'
+						url: '/pages/usercenter/Usercenter'
 					})
 					return 
 				}
