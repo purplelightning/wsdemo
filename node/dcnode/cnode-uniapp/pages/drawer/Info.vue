@@ -1,18 +1,20 @@
 <template>
 	<view class="info">
-		<text class="name">{{loginname}}</text>
+		<text class="name">{{loginname || '游客'}}</text>
 		<text class="phone">{{phone}}</text>
-		<img :src="avatarUrl">
+		<img v-show="loginname" :src="avatarUrl">
+		<img v-show="!loginname" :src="pic">
 	</view>
 </template>
 
 <script>
 	import { mapState } from 'vuex'
 	import { baseUrl } from '../../common/util.js'
+	import pic from '../../static/anoymous.jpeg'
 	export default {
 		data(){
 			return{
-				
+				pic: pic
 			}
 		},
 		computed:{

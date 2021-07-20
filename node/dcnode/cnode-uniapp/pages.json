@@ -47,6 +47,13 @@
 			}
 		},
 		{
+			"path": "pages/Topic/ManageTopic/ManageTopic",
+			"style": {
+				"navigationBarTitleText": "管理话题",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
 				"path" : "pages/usercenter/Usercenter",
 				"style" : {
 					"navigationBarTitleText": "个人中心",

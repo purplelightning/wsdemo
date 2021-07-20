@@ -29,7 +29,6 @@
 					{ name: '问答', value: 'ask'},
 					{ name: '招聘', value: 'job'},
 					{ name: '客户端测试', value: 'dev'},
-					{ name: '退出登录', value: 'logout'},
 				],
 				imgUrl: imgUrl
 			}
@@ -44,9 +43,13 @@
 					{ name: '招聘', value: 'job'},
 					{ name: '客户端测试', value: 'dev'},
 					{ name: '设置', value: 'setting'},
-					{ name: '退出登录', value: 'logout'},
 				]
 			// #endif
+			if(this.isLogin){
+				this.tabs.push({ name: '退出登录', value: 'logout'})
+			}else{
+				this.tabs.push({name: '去登录', value: 'logout'})
+			}
 		},
 		methods: {
 			showDrawer() {
@@ -62,6 +65,12 @@
 			},
 			changeItem(item){
 				if(item.value === 'logout'){
+					if(item.name === '去登录'){
+						uni.navigateTo({
+							url: '/pages/login/Login'
+						})
+						return
+					}
 					this.logout()
 					uni.navigateTo({
 						url: '/pages/login/Login'
@@ -86,10 +95,10 @@
 			}
 		},
 		computed: {
-			...mapState(['leftOpen', 'selectedTab']),
+			...mapState(['leftOpen', 'selectedTab', 'isLogin']),
 			selectedName(){
 				return this.selectedTab.name
-			}
+			},
 		},
 		components:{
 			Info

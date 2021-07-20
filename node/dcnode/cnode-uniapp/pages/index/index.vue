@@ -14,13 +14,16 @@
 		<drawer @close="setFlag(false)" :showFlag="flag"></drawer>
 		<topic :refreshDown="refreshDown" @refreshEnd="stopRefresh"
 		:refreshUp="refreshUp" @refreshUpEnd="stopRefreshUp"></topic>
+		<Efooter></Efooter>
 		<EloadingMP></EloadingMP>
+		<ToastMP></ToastMP>
 	</view>
 </template>
 
 <script>
 	import drawer from '../drawer/drawer.vue'
 	import Topic from '../Topic/Topic.vue'
+	import Efooter from '../../components/Efooter/Efooter.vue'
 	import { mapState } from 'vuex'
 	
 	export default {
@@ -64,23 +67,32 @@
 				}, 500)
 			},
 			goSetting(e){
+				if(!this.isLogin){
+					this.$toast({msg:'请先登录', type:'info'})
+					uni.navigateTo({
+						url: '/pages/login/Login'
+					});
+					return
+				}
 				uni.navigateTo({
 					url: '/pages/usercenter/Usercenter'
 				});
 			},
 		},
 		computed:{
-			...mapState(['selectedTab'])
+			...mapState(['selectedTab', 'isLogin'])
 		},
 		components:{
 			drawer,
-			Topic
+			Topic,
+			Efooter
 		}
 	}
 </script>
 
 <style lang="less" scoped>
 	.content {
+		padding-bottom: 100rpx;
 		width: 100%;
 		display: flex;
 		flex-direction: column;
