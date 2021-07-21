@@ -1,10 +1,12 @@
 <template>
 	<view class="footer">
+		<ToastMP></ToastMP>
 		<uni-icons type="plusempty" size="28" @click="addTopic"></uni-icons>
 	</view>
 </template>
 
 <script>
+	import { mapState } from 'vuex'
 	export default {
 		name:"Efooter",
 		data() {
@@ -14,11 +16,20 @@
 		},
 		methods:{
 			addTopic(){
-				console.log('hhhhhhh');
+				if(!this.isLogin){
+					this.$toast({msg:'请先登录', type:'info'})
+					uni.navigateTo({
+						url: '/pages/login/Login'
+					})
+					return
+				}
 				uni.navigateTo({
-					url: '/pages/Topic/AddTopic/AddTopic'
+					url: '/pages/Topic/ManageTopic/ManageTopic'
 				})
 			}
+		},
+		computed:{
+			...mapState(['isLogin'])
 		}
 	}
 </script>

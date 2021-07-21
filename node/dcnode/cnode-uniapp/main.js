@@ -8,8 +8,8 @@ Vue.config.productionTip = false
 // 小程序，APP不支持，用于H5
 // import Toast from 'components/Toast'
 // Vue.use(Toast)
-// import LoadingMsg from 'components/Eloading'
-// Vue.use(LoadingMsg)
+// import Eloading from 'components/Eloading'
+// Vue.use(Eloading)
 
 
 import ToastMP from 'components/ToastMP/ToastMP.vue'

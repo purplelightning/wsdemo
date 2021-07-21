@@ -54,6 +54,8 @@
 					url = `/user/signup`
 				}
 				this.$loading(true)
+				//原始插件方法
+				// this.$loading()
 				uni.request({
 					url: baseUrl + url,
 					method: 'POST',
@@ -63,6 +65,10 @@
 						this.disablebtn = false
 						this.cleanData()
 						this.$loading(false)
+						//原始插件方法
+						// setTimeout(()=>{
+						// 	this.$loading.close()
+						// },2000)
 						if(data.status){
 							console.log(data);
 							this.$toast(data.msg || data.data)

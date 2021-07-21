@@ -1,18 +1,19 @@
 // H5插件可用
 import Vue from 'vue'
-import Loading from './Eloading.vue'
-
-let instance, timer = null
+import Eloading from './Eloading.vue'
+let LoadingConstructor = Vue.extend(Eloading)
+let instance
 
 const LoadingMsg = (options) => {
-  let LoadingConstructor = Vue.extend(Loading)
   
   if(!instance){
     instance= new LoadingConstructor()
 		instance.vm = instance.$mount()
+		document.body.appendChild(instance.vm.$el)
   }
   instance.type = options
   instance.show = true
+	console.log(instance);
 }
 
 LoadingMsg.close = () =>{
@@ -20,6 +21,7 @@ LoadingMsg.close = () =>{
 	instance.type = ''
 }
 
+//暴露方法
 LoadingMsg.install = () => {
   Vue.prototype.$loading = LoadingMsg
 }
