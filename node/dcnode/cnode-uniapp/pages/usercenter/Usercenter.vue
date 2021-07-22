@@ -1,15 +1,21 @@
 <template>
 	<view class="usercenter">
 		<ToastMP></ToastMP>
-		<image :src="avatarImg" style="width: 80px;height: 80px;"></image>
-		<uni-file-picker
-			ref="files"
-			v-model="imageValue"
-			file-mediatype="image"
-			@select="select"
-			:limit="1"
-			>修改头像</uni-file-picker>
-			<button class="btn" @click="upload">上传图片</button>
+		<view class="name item">用户：{{loginname}}</view>
+		<view class="phone item">手机：{{phone}}</view>
+		<view class="item img">
+			<text>头像：</text>
+			<image :src="avatarImg" style="width: 60px;height: 60px;"></image>
+			<uni-file-picker
+				ref="files"
+				v-model="imageValue"
+				file-mediatype="image"
+				@select="select"
+				:limit="1"
+				>修改头像</uni-file-picker>
+				<button class="btn" @click="upload">上传图片</button>
+		</view>
+		
 	</view>
 </template>
 
@@ -20,6 +26,7 @@
 	export default {
 		data() {
 			return {
+				
 				imageValue:[],
 				file: ''
 			};
@@ -48,7 +55,7 @@
 					name: 'avatar',
 					header: {'Authorization': this.token},
 					success:res=>{
-						this.setAvatar(JSON.parse(res.data).data)
+						this.setAvatar(baseUrl + JSON.parse(res.data).data)
 						this.$toast('头像修改成功')
 					}
 				})
@@ -69,13 +76,34 @@
 			}
 		},
 		computed:{
-			...mapState(['avatarImg', 'token']),
+			...mapState(['avatarImg', 'loginname', 'phone', 'token']),
 		}
 	}
 </script>
 
 <style lang="less">
-.btn{
-	display: inline-block;
-}
+	.item{
+		padding: 20rpx 0;
+		border-bottom: 1px solid #ccc;
+	}
+	.img{
+		position: relative;
+		height: 80px;
+		text{
+			margin-top: 10px;
+			float: left;
+		}
+		.uni-file-picker{
+			margin-top: -66px;
+			margin-left: 120px;
+			width: 220px;
+		}
+		.btn{
+			width: 100px;
+			top: -50px;
+			left: 60px;
+		}
+	}
+	
+	
 </style>
