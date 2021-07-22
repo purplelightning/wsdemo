@@ -1,7 +1,7 @@
 <template>
 	<view class="usercenter">
 		<ToastMP></ToastMP>
-		<image :src="avatarUrl" style="width: 80px;height: 80px;"></image>
+		<image :src="avatarImg" style="width: 80px;height: 80px;"></image>
 		<uni-file-picker
 			ref="files"
 			v-model="imageValue"
@@ -59,7 +59,7 @@
 					files: tmp,
 					header: {'Authorization': this.token},
 					success: (res) => {
-						this.setAvatar(JSON.parse(res.data).data)
+						this.setAvatar(baseUrl + JSON.parse(res.data).data)
 						this.$toast('头像修改成功')
 					}
 				});
@@ -70,9 +70,6 @@
 		},
 		computed:{
 			...mapState(['avatarImg', 'token']),
-			avatarUrl(){
-				return baseUrl + this.avatarImg
-			}
 		}
 	}
 </script>

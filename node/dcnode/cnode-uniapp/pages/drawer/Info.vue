@@ -2,7 +2,7 @@
 	<view class="info">
 		<text class="name">{{loginname || '游客'}}</text>
 		<text class="phone">{{phone}}</text>
-		<img v-show="loginname" :src="avatarUrl">
+		<img v-show="loginname" :src="avatarImg">
 		<img v-show="!loginname" :src="pic">
 	</view>
 </template>
@@ -19,9 +19,6 @@
 		},
 		computed:{
 			...mapState(['avatarImg','loginname', 'phone']),
-			avatarUrl(){
-				return baseUrl + this.avatarImg
-			}
 		}
 	}
 	

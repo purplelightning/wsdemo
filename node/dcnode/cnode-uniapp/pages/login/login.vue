@@ -79,7 +79,7 @@
 								id: data.data.id,
 								loginname: data.data.username,
 								token: data.data.token,
-								avatarImg: data.data.avatarImg,
+								avatarImg: baseUrl + data.data.avatarImg,
 								phone: data.data.phone,
 								isLogin: Boolean(data.data.id)
 							})
