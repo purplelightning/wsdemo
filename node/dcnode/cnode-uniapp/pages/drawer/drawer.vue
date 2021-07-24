@@ -71,6 +71,7 @@
 						})
 						return
 					}
+					this.closeDrawer()
 					this.logout()
 					uni.navigateTo({
 						url: '/pages/login/Login'

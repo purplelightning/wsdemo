@@ -94,7 +94,7 @@
 			},
 			goMainPage(){
 				console.log('gomain');
-				uni.navigateTo({
+				uni.switchTab({
 					url: '/pages/index/index'
 				})
 			},

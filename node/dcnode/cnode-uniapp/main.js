@@ -2,6 +2,8 @@ import Vue from 'vue'
 import App from './App'
 import store from './store'
 
+import Json from './Json' //测试用数据
+
 Vue.config.productionTip = false
 
 
@@ -35,7 +37,19 @@ function loading(flag){
 		}, 1000)
 	}
 }
+
+const json = type=>{
+	//模拟异步请求数据
+	return new Promise(resolve=>{
+		setTimeout(()=>{
+			resolve(Json[type]);
+		}, 500)
+	})
+}
+
 Vue.prototype.$loading = loading
+
+Vue.prototype.$api = { json }
 
 App.mpType = 'app'
 

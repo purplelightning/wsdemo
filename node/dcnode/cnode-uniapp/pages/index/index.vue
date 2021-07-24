@@ -92,7 +92,6 @@
 
 <style lang="less" scoped>
 	.content {
-		padding-bottom: 100rpx;
 		width: 100%;
 		display: flex;
 		flex-direction: column;
