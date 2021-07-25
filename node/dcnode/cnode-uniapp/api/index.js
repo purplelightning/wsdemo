@@ -11,3 +11,6 @@ export const topicDetail = `/topic/getDetail`
 
 export const addTopic = `/topic/addTopic`
 
+export const updateTopic = `/topic/updateTopic`
+
+export const deleteTopic = `/topic/deleteTopic`

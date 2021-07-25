@@ -3,12 +3,13 @@
 		<uni-list class="list" v-show="bolist.length">
 			<view v-for="(item, index) in bolist" :key="index" class="item" title="">
 				<img class="user-avatar" :src="item.author&&item.author.avatarUrl">
-				<view class="name">{{item.top ? '置顶' : tabObj[item.tab]}}</view>
+				<view class="name">{{item.author.name}}</view>
+				<view class="tabname">{{item.top ? '置顶' : tabObj[item.tab]}}</view>
 				<view class="content">
 					<view class="title" @click="goDetail(item._id)">{{item.title}}</view>
 					<view class="count">{{item.replyCount}}/{{item.visitCount}}</view>
 				</view>
-				<view class="last-reply" v-show="item.lastReplyAt">{{item.lastReplyAt | sliceTime}}</view>
+				<view class="last-reply" v-show="item.createTime">{{item.createTime | sliceTime}}</view>
 			</view>
 		</uni-list>
 		<view class="no-data" v-show="!bolist.length">
@@ -68,6 +69,15 @@
 				height: 80rpx;
 			}
 			.name {
+				position: absolute;
+				top: 20rpx;
+				left: 100rpx;
+				display: inline-block;
+				padding: 3rpx 6rpx;
+				height: 30rpx;
+				color: #999;
+			}
+			.tabname {
 				position: relative;
 				margin: 0 12rpx;
 				top: -12rpx;

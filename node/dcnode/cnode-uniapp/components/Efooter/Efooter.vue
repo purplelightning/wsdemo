@@ -24,7 +24,7 @@
 					return
 				}
 				uni.navigateTo({
-					url: '/pages/Topic/ManageTopic/ManageTopic'
+					url: '/pages/Topic/ManageTopic/ManageTopic?type=add'
 				})
 			}
 		},

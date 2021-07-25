@@ -1,8 +1,8 @@
 <template>
 	<view class="manage-topic">
 		<ToastMP></ToastMP>
-		<view class="title">添加话题</view>
-		<!-- <view class="">管理话题</view> -->
+		<view class="title" v-show="type==='add'">添加话题</view>
+		<view class="title" v-show="type==='edit'">编辑话题</view>
 		<form @submit="formSubmit">
 			<view class="uni-form-item uni-column">
 				<view class="name">发表板块</view>
@@ -11,7 +11,7 @@
 						<label class="uni-list-cell uni-list-cell-pd" v-for="(item, index) in tabs" :key="item.value">
 							<view>{{item.name}}</view>
 							<view>
-								<radio :value="item.value" @change="radioChange(item.value)" :checked="item.value === selectedVal" />
+								<radio :disabled="type==='edit'" :value="item.value" @change="radioChange(item.value)" :checked="item.value === selectedVal" />
 							</view>
 						</label>
 					</radio-group>
@@ -36,11 +36,12 @@
 
 <script>
 	import { mapState, mapMutations } from 'vuex'
-	import { addTopic } from '../../../api/index.js'
+	import { addTopic, updateTopic } from '../../../api/index.js'
 	
 	export default {
 		data() {
 			return {
+				topicId: '',
 				title: '',
 				content: '',
 				index: 0,
@@ -51,7 +52,22 @@
 					{ name: '招聘', value: 'job'},
 					{ name: '客户端测试', value: 'dev'},
 				],
+				type: '',
 			};
+		},
+		onLoad(option){
+			this.type = option.type
+			if(this.type === 'edit'){
+				const eventChannel = this.getOpenerEventChannel()
+				// 这里this.title赋值不起作用，因为this指向了函数，需要用箭头函数
+				// eventChannel.on('editPage', function(data) {
+				eventChannel.on('editPage', data => {
+					this.title = data.ftitle
+					this.content = data.fcontent
+					this.topicId = data.topicId
+					this.selectedVal = data.tab
+				})
+			}
 		},
 		methods:{
 			...mapMutations(['logout']),
@@ -70,20 +86,40 @@
 					author: this.loginname,
 					avatarImg: this.avatarImg
 				};
-				this.$http.post(addTopic, params).then(res=>{
-					let data = res.data
-					if(data.status){
-						this.$toast('话题添加成功')
-						this.title = ''
-						this.content = ''
-						this.selectedVal = 'dev'
-						uni.navigateTo({
-							url: '/pages/index/index'
-						})
-					}else{
-						this.$toast({msg: data.error, type:'error'})
-					}
-				});
+				if(this.type === 'add'){
+					this.$http.post(addTopic, params).then(res=>{
+						if(res.status){
+							this.$toast('话题添加成功')
+							this.title = ''
+							this.content = ''
+							this.selectedVal = 'dev'
+							uni.switchTab({
+								url: '/pages/index/index'
+							})
+						}else{
+							this.$toast({msg: res.error, type:'error'})
+						}
+					});
+				}else{
+					params.id = this.topicId
+					delete params.author
+					delete params.avatarImg
+					this.$http.post(updateTopic, params).then(res=>{
+						if(res.status){
+							this.$toast('话题修改成功')
+							this.title = ''
+							this.content = ''
+							this.selectedVal = 'dev'
+							this.topicId = ''
+							uni.switchTab({
+								url: '/pages/index/index'
+							})
+						}else{
+							this.$toast({msg: res.error, type:'error'})
+						}
+					});
+				}
+				
 			},
 			reset(){
 				this.title = ''
@@ -92,7 +128,7 @@
 			}
 		},
 		computed:{
-			...mapState(['loginname', 'avatarImg', 'token'])
+			...mapState(['loginname', 'avatarImg', 'token']),
 		},
 		watch:{
 			current(){
@@ -105,6 +141,9 @@
 <style lang="less">
 .manage-topic{
 	.title{
+		font-size: 40rpx;
+		height: 100rpx;
+		line-height: 100rpx;
 		text-align: center;
 	}
 	.uni-form-item{

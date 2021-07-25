@@ -24,12 +24,14 @@
 				<button type="primary" @click="addReply">回复</button>
 			</view> -->
 		 </view>
+		 <ToastMP></ToastMP>
 	</scroll-view>
 </template>
 
 <script>
-	import { topicDetail } from '../../../api/index.js'
+	import { topicDetail, deleteTopic } from '../../../api/index.js'
 	import ReplyList from '../ReplyList/ReplyList.vue'
+	import { mapState } from 'vuex'
 	
 	export default {
 		data() {
@@ -37,7 +39,6 @@
 				token:'aaa',
 				info: {},
 				replyContent: '',
-				loginname: ''
 			};
 		},
 		onLoad(option){
@@ -56,6 +57,36 @@
 						this.info = res.data;
 					}
 				});
+			},
+			editTopic(){
+				const params = {
+					type: 'edit',
+					ftitle: this.info.title,
+					fcontent: this.info.content,
+					topicId: this.info._id,
+					tab: this.info.tab
+				}
+				// 路由传参写法
+				uni.navigateTo({
+					url: '../ManageTopic/ManageTopic?type=edit',
+					success: res=>{
+						res.eventChannel.emit('editPage', params)
+					}
+				})
+			},
+			deleteTopic(){
+				this.$http.post(deleteTopic, {id: this.info._id}).then(res=>{
+					if(res.status){
+						this.$toast(res.data)
+						setTimeout(()=>{
+							uni.navigateBack({
+								delta:1
+							})
+						}, 1500)
+					}else{
+						this.$toast({msg: res.error, type:'error'})
+					}
+				})
 			}
 		},
 		filters:{
@@ -65,6 +96,9 @@
 				}
 				return ''
 			}
+		},
+		computed:{
+			...mapState(['loginname'])
 		},
 		components:{
 			ReplyList
@@ -79,6 +113,9 @@
     position: absolute;
 		top: 10rpx;
 		right: 50rpx;
+		.uni-icons{
+			margin-left: 20rpx;
+		}
   }
   .detail{
     margin: 20rpx 30rpx 0 30rpx;

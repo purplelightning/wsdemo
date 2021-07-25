@@ -34,17 +34,6 @@
 			}
 		},
 		mounted(){
-			// #ifdef MP
-				this.tabs = [
-					{ name: '全部', value: 'all'},
-					{ name: '精华', value: 'good'},
-					{ name: '分享', value: 'share'},
-					{ name: '问答', value: 'ask'},
-					{ name: '招聘', value: 'job'},
-					{ name: '客户端测试', value: 'dev'},
-					{ name: '设置', value: 'setting'},
-				]
-			// #endif
 			if(this.isLogin){
 				this.tabs.push({ name: '退出登录', value: 'logout'})
 			}else{
@@ -77,11 +66,6 @@
 						url: '/pages/login/Login'
 					})
 					return
-				}else if(item.value === 'setting'){
-					uni.navigateTo({
-						url: '/pages/usercenter/Usercenter'
-					})
-					return 
 				}
 				this.changeTab(item)
 				this.closeDrawer()
