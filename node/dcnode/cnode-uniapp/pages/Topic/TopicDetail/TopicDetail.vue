@@ -28,7 +28,7 @@
 </template>
 
 <script>
-	import { baseUrl } from '../../../common/util.js'
+	import { topicDetail } from '../../../api/index.js'
 	import ReplyList from '../ReplyList/ReplyList.vue'
 	
 	export default {
@@ -48,17 +48,13 @@
 				if (!id) {
 					return;
 				}
-				uni.request({
-					url: baseUrl + `/topic/getDetail?id=${id}`,
-					method: 'GET',
-					data: {},
-					success: res => {
-						if(res.data){
-							this.info = res.data.data;
-						}
-					},
-					fail: () => {},
-					complete: () => {}
+				const params = {
+					id: id
+				}
+				this.$http.get(topicDetail, params).then(res=>{
+					if(res.data){
+						this.info = res.data;
+					}
 				});
 			}
 		},

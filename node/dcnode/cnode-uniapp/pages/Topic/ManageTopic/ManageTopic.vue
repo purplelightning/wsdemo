@@ -36,8 +36,8 @@
 
 <script>
 	import { mapState, mapMutations } from 'vuex'
-	import { baseUrl } from '../../../common/util.js'
-
+	import { addTopic } from '../../../api/index.js'
+	
 	export default {
 		data() {
 			return {
@@ -70,31 +70,19 @@
 					author: this.loginname,
 					avatarImg: this.avatarImg
 				};
-				uni.request({
-					url: baseUrl + '/topic/addTopic',
-					method: 'POST',
-					data: params,
-					header: {'Authorization': this.token},
-					success: res => {
-						let data = res.data
-						if(data.status){
-							this.$toast('话题添加成功')
-							this.title = ''
-							this.content = ''
-							this.selectedVal = 'dev'
-							uni.navigateTo({
-								url: '/pages/index/index'
-							})
-						}else{
-							this.$toast({msg: data.error, type:'error'})
-							if(res.statusCode === 403 || res.statusCode === 401){
-								this.logout()
-								uni.navigateTo({
-									url: '/pages/login/Login'
-								})
-							}
-						}
-					},
+				this.$http.post(addTopic, params).then(res=>{
+					let data = res.data
+					if(data.status){
+						this.$toast('话题添加成功')
+						this.title = ''
+						this.content = ''
+						this.selectedVal = 'dev'
+						uni.navigateTo({
+							url: '/pages/index/index'
+						})
+					}else{
+						this.$toast({msg: data.error, type:'error'})
+					}
 				});
 			},
 			reset(){

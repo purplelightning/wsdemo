@@ -7,7 +7,7 @@
 <script>
 import TopicList from './TopicList/TopicList.vue'
 import { mapState } from 'vuex'
-import { baseUrl } from '../../common/util.js'
+import { topicList } from '../../api/index.js'
 
 	export default {
 		props:['refreshDown', 'refreshUp'],
@@ -44,26 +44,22 @@ import { baseUrl } from '../../common/util.js'
 				}
 				const params = {
 					tab: this.selectedTab.value,
-					page: this.pageIndex,
-					limit: this.pageSize,
+					page: this.pageIndex || 1,
+					pageSize: this.pageSize || 20,
 				}
-				uni.request({
-					url: baseUrl + `/topic/list?tab=${params.tab}&page=${params.page ? params.page : 1}&pageSize=${params.limit ? params.limit : 20}`,
-					data: {},
-					success: res => {
-						let result = res.data.data
-						this.$toast('列表更新')
-						if(flag){
-							if(!result.length){
-								this.pageIndex--
-								this.$toast({msg: '没有更多数据', type:'info'})
-							}
-							this.list = this.list.concat(result)
-							this.$emit('refreshUpEnd')
-						}else{
-							this.list = result
-							this.$emit('refreshEnd')
+				this.$http.get(topicList, params).then(res=>{
+					let result = res.data
+					this.$toast('列表更新')
+					if(flag){
+						if(!result.length){
+							this.pageIndex--
+							this.$toast({msg: '没有更多数据', type:'info'})
 						}
+						this.list = this.list.concat(result)
+						this.$emit('refreshUpEnd')
+					}else{
+						this.list = result
+						this.$emit('refreshEnd')
 					}
 				})
 			}

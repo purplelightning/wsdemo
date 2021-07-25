@@ -25,6 +25,7 @@
 
 <script>
 	import { baseUrl } from '../../common/util.js'
+	import { getLogin, getRegister } from '../../api/index.js'
 	import { mapState, mapMutations } from 'vuex'
 	
 	export default {
@@ -49,48 +50,41 @@
 					username: this.name,
 					password: this.pwd
 				}
-				let url = `/user/signin`
+				let url = getLogin
 				if(type === 'new'){
-					url = `/user/signup`
+					url = getRegister
 				}
 				this.$loading(true)
 				//原始插件方法
 				// this.$loading()
-				uni.request({
-					url: baseUrl + url,
-					method: 'POST',
-					data: params,
-					success: res => {
-						let data = res.data || res
-						this.disablebtn = false
-						this.cleanData()
-						this.$loading(false)
-						//原始插件方法
-						// setTimeout(()=>{
-						// 	this.$loading.close()
-						// },2000)
-						if(data.status){
-							console.log(data);
-							this.$toast(data.msg || data.data)
-							if(url === '/user/signup'){
-								return
-							}
-							this.handleLogin({
-								id: data.data.id,
-								loginname: data.data.username,
-								token: data.data.token,
-								avatarImg: baseUrl + data.data.avatarImg,
-								phone: data.data.phone,
-								isLogin: Boolean(data.data.id)
-							})
-							setTimeout(()=>{
-								this.goMainPage()
-							},1000)
-						}else{
-							this.$toast({msg: data.error, type:'error'})
+				this.$http.post(url,params).then(res=>{
+					this.disablebtn = false
+					this.cleanData()
+					this.$loading(false)
+					//原始插件方法
+					// setTimeout(()=>{
+					// 	this.$loading.close()
+					// },2000)
+					if(res.status){
+						this.$toast(res.msg || res.data)
+						if(url === '/user/signup'){
+							return
 						}
-					},
-				});
+						this.handleLogin({
+							id: res.data.id,
+							loginname: res.data.username,
+							token: res.data.token,
+							avatarImg: baseUrl + res.data.avatarImg,
+							phone: res.data.phone,
+							isLogin: Boolean(res.data.id)
+						})
+						setTimeout(()=>{
+							this.goMainPage()
+						},1000)
+					}else{
+						this.$toast({msg: res.error, type:'error'})
+					}
+				})
 			},
 			goMainPage(){
 				console.log('gomain');
@@ -113,6 +107,7 @@
 
 <style lang="less" scoped>
 .login_box {
+	padding-top: 100rpx;
   width: 640rpx;
   margin: 60rpx auto;
 }
