@@ -6,6 +6,9 @@ import Json from './Json' //测试用数据
 
 Vue.config.productionTip = false
 
+// 引入全局方法
+import { http } from '@/utils/request';
+
 
 // 小程序，APP不支持，用于H5
 // import Toast from 'components/Toast'
@@ -37,6 +40,7 @@ function loading(flag){
 		}, 1000)
 	}
 }
+Vue.prototype.$loading = loading
 
 const json = type=>{
 	//模拟异步请求数据
@@ -47,9 +51,10 @@ const json = type=>{
 	})
 }
 
-Vue.prototype.$loading = loading
+
 
 Vue.prototype.$api = { json }
+Vue.prototype.$http = http
 
 App.mpType = 'app'
 
