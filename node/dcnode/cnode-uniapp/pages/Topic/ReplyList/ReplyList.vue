@@ -48,7 +48,6 @@
 		},
 		methods:{
 			openReply(id, name){
-				console.log(this.replyList);
 				this.replyId = id
 				this.replyContent = '@' + name + ' '
 			},
@@ -70,7 +69,6 @@
 					if(res.status){
 						this.$toast('回复成功~')
 						this.$emit('addReply')
-						console.log('aaaaaaaaa');
 						this.replyContent = ''
 						this.replyId = ''
 					}
@@ -123,7 +121,7 @@
       .primary{
         display: flex;
         position: relative;
-        height: 100rpx;
+        min-height: 100rpx;
         line-height: 50rpx;
         box-sizing: border-box;
         font-size: 28rpx;
@@ -174,7 +172,7 @@
     width: calc(100% - 30rpx);
 		
     .sub-item{
-      height: 100rpx !important;
+      min-height: 100rpx !important;
       background: #fafafa;
       border: none !important;
 			
@@ -188,8 +186,8 @@
 				font-size: 24rpx;
         .content{
           margin-top: -15rpx;
-          width: 80%;
-          height: 30rpx;
+          width: 95%;
+          min-height: 30rpx;
         }
       }
     }

@@ -13,7 +13,7 @@
 				@select="select"
 				:limit="1"
 				>修改头像</uni-file-picker>
-				<button class="btn" @click="upload">上传图片</button>
+				<button size="mini" class="btn" @click="upload">上传图片</button>
 		</view>
 		
 	</view>
@@ -99,9 +99,10 @@
 			width: 220px;
 		}
 		.btn{
+			float: right;
+			margin: 160rpx;
+			margin-top: -100rpx;
 			width: 100px;
-			top: -50px;
-			left: 60px;
 		}
 	}
 	

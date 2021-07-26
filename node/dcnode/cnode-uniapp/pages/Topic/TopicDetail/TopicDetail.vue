@@ -16,7 +16,7 @@
 			<view v-html="info.content"></view>
 		</view>
 		<view class="reply">
-			<view class="reply-head">{{info.replyCount}}回复</view>
+			<view class="reply-head" v-show="info.replyCount!==undefined">{{info.replyCount}}回复</view>
 			<reply-list v-show="info._id" :topicId="info._id" :replyList="info.replyList"
 			@addReply="getDetailInfo"></reply-list>
 			<view class="add-reply" v-show="token">
@@ -56,7 +56,6 @@
 				this.$http.get(topicDetail, params).then(res=>{
 					if(res.data){
 						this.info = res.data;
-						console.log(this.info);
 					}
 				});
 			},
