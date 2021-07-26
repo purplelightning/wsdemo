@@ -55,7 +55,7 @@ const handleResult = async response => {
 				content: '会话已过期，是否跳转登录页面？',
 				success: confirmRes => {
 					uni.navigateTo({
-						url: '/pages/login/Login'
+						url: '/pages/login/login'
 					})
 				}
 			});
@@ -64,7 +64,7 @@ const handleResult = async response => {
 			uni.removeStorageSync('token');
 			await store.commit('logout');
 			uni.navigateTo({
-				url: '/pages/login/Login'
+				url: '/pages/login/login'
 			})
 			break;
 		case 405:

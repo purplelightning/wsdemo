@@ -17,46 +17,69 @@
 		</view>
 		<view class="reply">
 			<view class="reply-head">{{info.replyCount}}回复</view>
-			<reply-list v-show="info.replyList" :topicId="info._id" :replyList="info.replyList"
+			<reply-list v-show="info._id" :topicId="info._id" :replyList="info.replyList"
 			@addReply="getDetailInfo"></reply-list>
-			<!-- <view class="add-reply" v-show="token">
-				<input type="textarea" rows="4" v-model="replyContent"></el-input>
-				<button type="primary" @click="addReply">回复</button>
-			</view> -->
+			<view class="add-reply" v-show="token">
+				<input type="text" v-model="replyContent"></el-input>
+				<button size="mini" @click="addReply">回复</button>
+			</view>
 		 </view>
 		 <ToastMP></ToastMP>
 	</scroll-view>
 </template>
 
 <script>
-	import { topicDetail, deleteTopic } from '../../../api/index.js'
+	import { topicDetail, deleteTopic, addReply } from '../../../api/index.js'
 	import ReplyList from '../ReplyList/ReplyList.vue'
 	import { mapState } from 'vuex'
 	
 	export default {
 		data() {
 			return {
-				token:'aaa',
 				info: {},
 				replyContent: '',
+				id: ''
 			};
 		},
 		onLoad(option){
-			this.getDetailInfo(option.id);
+			this.id = option.id
+			this.getDetailInfo();
 		},
 		methods:{
 			getDetailInfo(id){
-				if (!id) {
+				if (!this.id) {
 					return;
 				}
 				const params = {
-					id: id
+					id: this.id
 				}
 				this.$http.get(topicDetail, params).then(res=>{
 					if(res.data){
 						this.info = res.data;
+						console.log(this.info);
 					}
 				});
+			},
+			addReply(){
+				if(!this.replyContent){
+					this.$toast({ msg: '回复内容不能为空',type: 'error'})
+					return
+				}
+				const params ={
+					id: this.info._id,
+					content: this.replyContent,
+					author: {
+						name: this.loginname,
+						avatarImg: this.avatarImg
+					}
+				}
+				this.$http.post(addReply, params).then(res => {
+					if(res.status){
+						this.$toast('回复成功~')
+						this.getDetailInfo()
+						this.replyContent = ''
+					}
+				})
 			},
 			editTopic(){
 				const params = {
@@ -98,7 +121,7 @@
 			}
 		},
 		computed:{
-			...mapState(['loginname'])
+			...mapState(['loginname', 'token', 'avatarImg'])
 		},
 		components:{
 			ReplyList
@@ -139,6 +162,10 @@
 			}
     }
   }
+	uni-button{
+		float: right;
+		width: 200rpx;
+	}
   .reply{
     margin: 15rpx 30rpx;
     height: 300rpx;

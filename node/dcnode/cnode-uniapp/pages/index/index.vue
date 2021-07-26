@@ -70,7 +70,7 @@
 				if(!this.isLogin){
 					this.$toast({msg:'请先登录', type:'info'})
 					uni.navigateTo({
-						url: '/pages/login/Login'
+						url: '/pages/login/login'
 					});
 					return
 				}

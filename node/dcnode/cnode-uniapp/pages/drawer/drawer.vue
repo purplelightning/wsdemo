@@ -56,14 +56,14 @@
 				if(item.value === 'logout'){
 					if(item.name === '去登录'){
 						uni.navigateTo({
-							url: '/pages/login/Login'
+							url: '/pages/login/login'
 						})
 						return
 					}
 					this.closeDrawer()
 					this.logout()
 					uni.navigateTo({
-						url: '/pages/login/Login'
+						url: '/pages/login/login'
 					})
 					return
 				}

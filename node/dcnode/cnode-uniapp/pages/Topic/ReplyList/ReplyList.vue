@@ -9,7 +9,8 @@
 					<view class="content">{{item.content}}</view>
 				</view>
 				<view class="fav"><uni-icons type="hand-thumbsup"></uni-icons>{{item.ups && item.ups.length}}</view>
-				<!-- <i class="el-icon-chat-dot-round icon" v-show="token&&!replyId||replyId !== item.id" @click="openReply(item.id, item.author.name)"></i> -->
+				<view class="icon" v-show="token&&!replyId||replyId !== item.id" @click="openReply(item.id, item.author.name)">
+					<uni-icons type="chat"></uni-icons></view>
 				<view class="icon" v-show="token&&replyId&&replyId === item.id" @click="closeReply">收起回复</view>
 			</view>
 			<view class="sub-list" v-show="item.additionArr">
@@ -21,30 +22,33 @@
 						<view class="content">{{tt.content}}</view>
 					</view>
 					<view class="fav"><uni-icons type="hand-thumbsup"></uni-icons>{{tt.ups && tt.ups.length}}</view>
-					<!-- <i class="el-icon-chat-dot-round icon" v-show="token&&!replyId||replyId !== tt.id" @click="openReply(tt.id, tt.author.name)"></i> -->
+					<view class="chat" v-show="token&&!replyId||replyId !== tt.id" @click="openReply(tt.id, tt.author.name)"><uni-icons type="chat"></uni-icons></view>
 					<view class="icon" v-show="token&&replyId&&replyId === tt.id" @click="closeReply">收起回复</view>
 				</view>
 			</view>
 		</view>
 		<view class="add-reply" v-show="replyId">
-			<input type="textarea" rows="4" v-model="replyContent"></input>
-			<button type="primary" @click="addReply">回复</button>
+			<input v-model="replyContent"></input>
+			<button size="mini" type="primary" @click="addReply">回复</button>
 		</view>
 	</view>
 </template>
 
 <script>
+	import { addReply } from '../../../api/index.js'
+	import { mapState } from 'vuex'
+	
 	export default {
 		props: ['replyList', 'topicId'],
 		data() {
 			return {
-				token:'aaa',
 				replyId: '',
 				replyContent: '',
 			};
 		},
 		methods:{
 			openReply(id, name){
+				console.log(this.replyList);
 				this.replyId = id
 				this.replyContent = '@' + name + ' '
 			},
@@ -62,17 +66,19 @@
 					},
 					replyId: this.replyId
 				}
-				// api.addReply(params).then( res => {
-				// 	if(res.status){
-				// 		this.$message.success('回复成功~')
-				// 		this.$emit('addReply')
-				// 		this.replyContent = ''
-				// 		this.replyId = ''
-				// 	}
-				// })
+				this.$http.post(addReply, params).then(res => {
+					if(res.status){
+						this.$toast('回复成功~')
+						this.$emit('addReply')
+						console.log('aaaaaaaaa');
+						this.replyContent = ''
+						this.replyId = ''
+					}
+				})
 			},
 		},
 		computed:{
+			...mapState(['token', 'loginname', 'avatarImg']),
 			levelList(){
 				if(this.replyList){
 					let arr = this.replyList.filter(v=>v.replyId === '')
@@ -152,9 +158,10 @@
             margin-right: 10rpx;
           }
         }
-        .icon{
+        .chat, .icon{
           display: inline-block;
           margin-right: 20rpx;
+					padding-left: 10rpx;
           line-height: 100rpx;
           cursor: pointer;
         }
@@ -188,6 +195,7 @@
     }
   }
   .add-reply{
+		margin-bottom: 100rpx;
     padding: 10rpx 15rpx;
     button{
       float: right;
@@ -195,4 +203,8 @@
       margin-bottom: 5rpx;
     }
   }
+	uni-button{
+		float: right;
+		width: 150rpx;
+	}
 </style>

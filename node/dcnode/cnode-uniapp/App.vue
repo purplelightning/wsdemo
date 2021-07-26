@@ -13,6 +13,13 @@
 </script>
 
 <style>
-	@import './common/uni.css';
 	/*每个页面公共css */
+	uni-button{
+		margin: 10px auto;
+		width: 500rpx;
+	}
+	uni-input{
+		margin-bottom: 10rpx;
+		border-bottom: 1px solid #ccc;
+	}
 </style>
