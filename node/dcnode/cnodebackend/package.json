@@ -1,0 +1,30 @@
+{
+  "name": "cnodebackend",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "supervisor ./bin/www"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.5",
+    "adm-zip-iconv": "^0.4.9",
+    "cheerio": "^1.0.0-rc.10",
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.12.13",
+    "morgan": "^1.9.1",
+    "multer": "^1.4.2",
+    "nightmare": "^3.0.2",
+    "node-uuid": "^1.4.8",
+    "node-xlsx": "^0.16.1",
+    "pdf-parse": "^1.1.1",
+    "pdf2json": "^1.2.3",
+    "request": "^2.88.2",
+    "superagent": "^6.1.0",
+    "superagent-proxy": "^2.1.0"
+  }
+}
