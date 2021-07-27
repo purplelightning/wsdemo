@@ -61,6 +61,9 @@ const handleResult = async response => {
 			});
 			break;
 		case 403:
+			uni.showToast({
+				title: '登录已过期'
+			})
 			uni.removeStorageSync('token');
 			await store.commit('logout');
 			uni.navigateTo({

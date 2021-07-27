@@ -1,7 +1,7 @@
 <template>
 	<scroll-view class="list-wrapper">
-		<uni-list class="list" v-show="bolist.length">
-			<view v-for="(item, index) in bolist" :key="index" class="item" title="">
+		<uni-list class="list" v-show="bolist.length&&!favFlag">
+			<view v-for="(item, index) in bolist" :key="index" class="item">
 				<img class="user-avatar" :src="item.author&&item.author.avatarUrl">
 				<view class="name">{{item.author.name}}</view>
 				<view class="tabname">{{item.top ? '置顶' : tabObj[item.tab]}}</view>
@@ -12,6 +12,15 @@
 				<view class="last-reply" v-show="item.createTime">{{item.createTime | sliceTime}}</view>
 			</view>
 		</uni-list>
+		<view class="list fav" v-show="bolist.length&&favFlag">
+			<view class="item" :key=index v-for="(item,index) in bolist">
+				<img class="user-avatar" :src="item.author && item.author.avatarUrl" />
+				<view class="name">{{item.author.name}}</view>
+				<view class="content">
+					<view class="title" @click="goDetail(item._id)">{{item.title}}</view>
+				</view>
+			</view>
+		</view>
 		<view class="no-data" v-show="!bolist.length">
 			<view>暂无数据</view>
 		</view>
@@ -116,7 +125,10 @@
 
 	.fav {
 		.user-avatar {
-			margin-right: 20rpx;
+			margin-right: 40rpx;
+		}
+		.content{
+			margin-left: 60rpx;
 		}
 	}
 	.no-data{

@@ -1,8 +1,8 @@
 <template>
 	<scroll-view class="detail-wrapper">
 		<view class="btns">
-			<uni-icons v-show="!info.isCollected && token" type="star"  @click="handleFav()"></uni-icons>
-			<uni-icons v-show="info.isCollected && token" type="star-filled"  @click="handleFav()"></uni-icons>
+			<uni-icons v-show="!info.isCollected && token" type="star"  @click="handleFav"></uni-icons>
+			<uni-icons v-show="info.isCollected && token" type="star-filled"  @click="handleFav"></uni-icons>
 			<uni-icons type="compose" v-show="info.author && info.author.name===loginname" @click="editTopic"></uni-icons>
 			<uni-icons v-show="info.author && info.author.name===loginname" type="trash"  @click="deleteTopic"></uni-icons>
 		</view>
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-	import { topicDetail, deleteTopic, addReply } from '../../../api/index.js'
+	import { topicDetail, deleteTopic, addReply, handleCollection } from '../../../api/index.js'
 	import ReplyList from '../ReplyList/ReplyList.vue'
 	import { mapState } from 'vuex'
 	
@@ -77,6 +77,20 @@
 						this.$toast('回复成功~')
 						this.getDetailInfo()
 						this.replyContent = ''
+					}
+				})
+			},
+			handleFav(){
+				const params ={
+					topicId: this.info._id,
+					title: this.info.title,
+				}
+				this.$http.post(handleCollection, params).then( res => {
+					if(res.status){
+						this.$toast(res.data)
+						this.getDetailInfo()
+					}else{
+						this.$toast({msg: res.error, type: 'error'})
 					}
 				})
 			},
@@ -140,7 +154,7 @@
 		}
   }
   .detail{
-    margin: 20rpx 30rpx 0 30rpx;
+    margin: 50rpx 30rpx 0 30rpx;
     padding: 0 15rpx;
     min-height: 400rpx;
     background: #fff;

@@ -15,7 +15,7 @@
 				>修改头像</uni-file-picker>
 				<button size="mini" class="btn" @click="upload">上传图片</button>
 		</view>
-		
+		<view class="collection item" @click="goCollection">我的收藏</view>
 	</view>
 </template>
 
@@ -71,8 +71,11 @@
 					}
 				});
 				// #endif
-				
-				
+			},
+			goCollection(){
+				uni.navigateTo({
+					url: '/pages/Collection/Collection'
+				})
 			}
 		},
 		computed:{
@@ -83,7 +86,7 @@
 
 <style lang="less">
 	.item{
-		padding: 20rpx 0;
+		padding: 20rpx 20rpx;
 		border-bottom: 1px solid #ccc;
 	}
 	.img{
@@ -100,7 +103,7 @@
 		}
 		.btn{
 			float: right;
-			margin: 160rpx;
+			margin-right: 100rpx;
 			margin-top: -100rpx;
 			width: 100px;
 		}
