@@ -28,7 +28,7 @@
 					{ name: '分享', value: 'share'},
 					{ name: '问答', value: 'ask'},
 					{ name: '招聘', value: 'job'},
-					{ name: '客户端测试', value: 'dev'},
+					{ name: '开发', value: 'dev'},
 				],
 				imgUrl: imgUrl
 			}

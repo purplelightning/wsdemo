@@ -3,8 +3,10 @@
 		<uni-list class="list" v-show="bolist.length&&!favFlag">
 			<view v-for="(item, index) in bolist" :key="index" class="item">
 				<img class="user-avatar" :src="item.author&&item.author.avatarUrl">
-				<view class="name">{{item.author.name}}</view>
-				<view class="tabname">{{item.top ? '置顶' : tabObj[item.tab]}}</view>
+				<view class="des">
+					<view class="name">{{item.author.name}}</view>
+					<view class="tabname">{{item.top ? '置顶' : tabObj[item.tab]}}</view>
+				</view>
 				<view class="content">
 					<view class="title" @click="goDetail(item._id)">{{item.title}}</view>
 					<view class="count">{{item.replyCount}}/{{item.visitCount}}</view>
@@ -12,10 +14,12 @@
 				<view class="last-reply" v-show="item.createTime">{{item.createTime | sliceTime}}</view>
 			</view>
 		</uni-list>
-		<view class="list fav" v-show="bolist.length&&favFlag">
+		<view class="list" v-show="bolist.length&&favFlag">
 			<view class="item" :key=index v-for="(item,index) in bolist">
 				<img class="user-avatar" :src="item.author && item.author.avatarUrl" />
-				<view class="name">{{item.author.name}}</view>
+				<view class="des">
+					<view class="name">{{item.author.name}}</view>
+				</view>
 				<view class="content">
 					<view class="title" @click="goDetail(item._id)">{{item.title}}</view>
 				</view>
@@ -67,39 +71,46 @@
 	.list {
 		.item {
 			position: relative;
+			display: flex;
 			padding: 10rpx;
 			width: 100%;
-			height: 150rpx;
+			height: 120rpx;
 			box-sizing: border-box;
 			font-size: 12px;
 			border-bottom: 1rpx solid #ccc;
 			.user-avatar {
+				flex: 0 0 80rpx;
+				margin-top: 10rpx;
+				margin-right: 10rpx;
 				width: 80rpx;
 				height: 80rpx;
 			}
+			.des{
+				flex: 0 0 80rpx;
+				display: flex;
+				flex-direction: column;
+			}
 			.name {
-				position: absolute;
-				top: 20rpx;
-				left: 100rpx;
-				display: inline-block;
-				padding: 3rpx 6rpx;
+				flex: 1;
+				width: 80rpx;
 				height: 30rpx;
 				color: #999;
+				font-size: 24rpx;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				text-wrap: no-wrap;
 			}
 			.tabname {
-				position: relative;
-				margin: 0 12rpx;
-				top: -12rpx;
-				display: inline-block;
+				flex: 0 0 30rpx;
 				padding: 3rpx 6rpx;
-				height: 30rpx;
+				width: 60rpx;
+				height: 20rpx;
 				line-height: 30rpx;
 				background: #e5e5e5;
 				color: #999;
 			}
 			.content{
-				display: inline-block;
-				width: 400rpx;
+				flex: 1;
 				height: 100%;
 				.title {
 					height: 60%;
@@ -120,15 +131,6 @@
 				right: 15rpx;
 				color: #999;
 			}
-		}
-	}
-
-	.fav {
-		.user-avatar {
-			margin-right: 40rpx;
-		}
-		.content{
-			margin-left: 60rpx;
 		}
 	}
 	.no-data{

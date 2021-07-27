@@ -6,8 +6,8 @@
 		<form @submit="formSubmit">
 			<view class="uni-form-item uni-column">
 				<view class="name">发表板块</view>
-				<view class="">
-					<radio-group @change="radioChange" :class="{'no-edit': type==='edit'}">
+				<view>
+					<radio-group class="gg" @change="radioChange" :class="{'no-edit': type==='edit'}">
 						<label class="uni-list-cell uni-list-cell-pd" v-for="(item, index) in tabs" :key="item.value">
 							<view class="name">{{item.name}}</view>
 							<view class="rd-item">
@@ -50,7 +50,7 @@
 					{ name: '分享', value: 'share'},
 					{ name: '问答', value: 'ask'},
 					{ name: '招聘', value: 'job'},
-					{ name: '客户端测试', value: 'dev'},
+					{ name: '开发', value: 'dev'},
 				],
 				type: '',
 			};
@@ -141,14 +141,14 @@
 <style lang="less" scoped>
 .manage-topic{
 	.title{
-		font-size: 40rpx;
 		height: 100rpx;
 		line-height: 100rpx;
 		text-align: center;
+		font-size: 40rpx;
 	}
 	.uni-form-item{
 		margin-bottom: 20rpx;
-		uni-radio-group{
+		.gg{
 			padding: 20rpx 0;
 			display: flex;
 			justify-content: space-around;
@@ -162,9 +162,12 @@
 			}
 		}
 		.no-edit{
-			background-color: #bbb;
+			background-color: #ddd;
+			/deep/ uni-radio .uni-radio-input{
+				background-color: #eee !important;
+				border-color: #eee !important;
+			}
 		}
-		
 	}
 }
 </style>
