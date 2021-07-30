@@ -1,7 +1,7 @@
 <template>
 	<view class="info">
 		<text class="name">{{loginname || '游客'}}</text>
-		<text class="phone">{{phone}}</text>
+		<text class="phone" v-show="phone">{{phone}}</text>
 		<img v-show="loginname" :src="avatarImg">
 		<img v-show="!loginname" :src="pic">
 	</view>
