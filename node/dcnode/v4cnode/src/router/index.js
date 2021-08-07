@@ -6,6 +6,7 @@ import Apipage from '@/views/ApiPage'
 import TopicDetail from '@/components/detail/TopicDetail'
 import ManageTopic from '@/components/detail/ManageTopic'
 import Collection from '@/views/Collection'
+import Animation from '@/views/AnimationPage'
 
 import Login from '@/views/Login'
 
@@ -52,6 +53,11 @@ const routes = [
     name: 'Collection',
     component: Collection
   },
+  // {
+  //   path: '/animation',
+  //   name: 'Animation',
+  //   component: Animation
+  // },
   {
     path: '/topic/detail/:id',
     name: 'TopicDetail',

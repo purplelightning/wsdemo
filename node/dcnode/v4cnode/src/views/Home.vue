@@ -91,8 +91,10 @@ export default {
 <style scoped lang="less">
 #home{
   position: relative;
-  padding: 20px 0 20px 40px;
+  padding: 20px;
+  margin: auto;
   width: 750px;
+  background: #fff;
   .right-mol{
     position: absolute;
     top: 20px;

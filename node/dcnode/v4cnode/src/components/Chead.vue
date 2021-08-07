@@ -11,7 +11,7 @@
       <router-link class="item" to="/spider">爬虫</router-link>
       <div v-show="!isLogin" class="item" @click="register">注册</div>
       <div v-show="!isLogin" class="item" @click="login">登录</div>
-      <div v-show="isLogin" class="item">设置</div>
+      <!-- <router-link to="/animation" class="item">动画</router-link> -->
       <div v-show="isLogin" class="item" @click="logout">退出</div>
 
       <div class="modal-wrapper" v-show="showLoginBox">
