@@ -38,9 +38,9 @@
       delete context.fn
       return res
     }
-    let foo = {
-      value: 1
-    }
+    // let foo = {
+    //   value: 1
+    // }
     // function bar(name, age) {
     //   console.log(name)
     //   console.log(age)
@@ -57,13 +57,61 @@
       return res
     }
 
-    function bar1(arr) {
-      console.log(arr[0])
-      console.log(arr[1])
-      console.log(arr[2])
-      console.log(this.value);
+    // function bar1(arr) {
+    //   console.log(arr[0])
+    //   console.log(arr[1])
+    //   console.log(arr[2])
+    //   console.log(this.value);
+    // }
+    // bar1.myApply(foo, ['aaa','bbb','ccdc'])
+
+    Function.prototype.myBind = function(context = window){
+      if(typeof this !== 'function'){
+        throw Error('error')
+      }
+      let fn = this
+      let args = [...arguments].slice(1)
+      let resFn = function(){
+        return fn.apply(this instanceof resFn ? this : context, args.concat(...arguments) )
+      }
+      function tmp() {}
+      tmp.prototype = this.prototype;
+      resFn.prototype = new tmp();
+      return resFn
     }
-    bar1.myApply(foo, ['aaa','bbb','ccdc'])
+
+    function Person(name, age) {
+      console.log(name); //'我是参数传进来的name'
+      console.log(age); //'我是参数传进来的age'
+      console.log(this); //构造函数this指向实例对象
+    }
+    // 构造函数原型的方法
+    Person.prototype.say = function() {
+      console.log(123);
+    }
+
+    let obj = {
+      objName: '我是obj传进来的name',
+      objAge: '我是obj传进来的age'
+    }
+    // 普通函数
+    function normalFun(name, age) {
+      console.log(name);   //'我是参数传进来的name'
+      console.log(age);   //'我是参数传进来的age'
+      console.log(this); //普通函数this指向绑定bind的第一个参数 也就是例子中的obj
+      console.log(this.objName); //'我是obj传进来的name'
+      console.log(this.objAge); //'我是obj传进来的age'
+    }
+
+    // 先测试作为构造函数调用
+    let bindFun = Person.myBind(obj, '我是参数传进来的name')
+    let a = new bindFun('我是参数传进来的age')
+    a.say() //123
+    console.log('-----------------')
+
+    // 再测试作为普通函数调用
+    let bindFun1 = normalFun.myBind(obj, '我是参数传进来的name')
+    bindFun1('我是参数传进来的age')
 
   </script>
 </html>

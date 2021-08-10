@@ -1,0 +1,114 @@
+<html>
+<head>
+  <title>compose, setTimeout，去重，扁平化，防抖，节流</title>
+</head>
+<body>
+</body>
+<script>
+  // const compose = (f,g) => (...arg) => f(g(...arg))
+  // let toUpperCase = (x) => x.toUpperCase();
+  // let exclaim = (x) => x + '!aaaa';
+  // let shout = compose(toUpperCase,exclaim);
+  // console.log(shout('hello world'))// HEELO WORLD !
+
+  // function compose1(...fn){
+  //   console.log(fn)
+  //   if(!fn.length){
+  //     return v => v
+  //   }
+  //   if(fn.length === 1){
+  //     return fn[0]
+  //   }
+  //   return fn.reduce((pre,cur) => (...args) => pre(cur(...args)))
+  // }
+
+  // function fn1(x) {
+  //   return x + 1;
+  // }
+  // function fn2(x) {
+  //   return x + 2;
+  // }
+  // function fn3(x) {
+  //   return x + 3;
+  // }
+  // function fn4(x) {
+  //   return x + 4;
+  // }
+  // const a = compose1(fn1, fn2, fn3, fn4);
+  // console.log(a)
+  // console.log(a(1))
+
+  function mySettingTimeout(fn, t) {
+    let timer = null
+
+    function interval() {
+      fn()
+      timer = setTimeout(interval, t)
+    }
+    interval()
+    return {
+      cancel: () => clearTimeout(timer)
+    }
+  }
+  var count = 1
+
+  function dd() {
+    console.log(count)
+    count++
+  }
+  // mySettingTimeout(dd, 1000)
+  function mySettingInterval(fn, t) {
+    const timer = setInterval(() => {
+      fn()
+      clearInterval(timer)
+    }, t)
+  }
+  mySettingInterval(dd, 1000)
+  // https://juejin.cn/post/6914201197620494350
+  // setinterval 的缺陷是什么？ ：定时器指定的时间间隔，表示的是何时将定时器的代码添加到消息队列，而不是何时执行代码。所以真正何时执行代码的时间是不能保证的，取决于何时被主线程的事件循环取到，并执行。
+  // setInterval 有两个缺点： 使用 setInterval 时，某些间隔会被跳过； 可能多个定时器会连续执行；
+
+  // 去重
+  function uniqueArr(arr) {
+    return [...new Set(arr)]
+  }
+
+  // 扁平化
+  function flattern(arr) {
+    if (!arr.length) {
+      return
+    }
+    return arr.reduce((pre, cur) => Array.isArray(cur) ? [...pre, ...flattern(cur)] : [...pre, cur], [])
+  }
+  console.log(flattern([1, 2, [1, [2, 3, [4, 5, [6]]]]]));
+
+  //防抖
+  function debounce(fn, delay) {
+    let timer
+    return function () {
+      let context = this,
+        args = arguments
+      if (timer) {
+        clearTimeout(timer)
+      }
+      timer = setTimeout(() => {
+        fn.apply(context, args)
+      }, delay)
+    }
+  }
+  //节流
+  function throttle(fn, delay) {
+    let beg = Date().now
+    return function () {
+      let context = this,
+        args = arguments,
+        now = Date().now
+      if (now - beg >= delay) {
+        fn.apply(context, args)
+        beg = now
+      }
+    }
+  }
+</script>
+
+</html>
