@@ -38,3 +38,34 @@ class EventBus {
 }
 
 export default new EventBus()
+
+// 改良版
+class EventBus1 {
+  constructor(){
+    this.events = {}
+  }
+  on(type, fn){
+    if(this.events[type]){
+      this.events[type].push(fn)
+    }else{
+      this.events[type] = [fn]
+    }
+  }
+  off(type,fn){
+    if(this.events[type]){
+      this.events[type] = this.events[type].filter(v=> v !== fn)
+    }
+  }
+  once(type, fn){
+    function tmp(){
+      fn()
+      this.off(type,tmp)
+    }
+    this.on(type, tmp)
+  }
+  emit(type, params){
+    if(this.events[type]){
+      this.events[type].forEach(fn => fn.apply(this, params))
+    }
+  }
+}
