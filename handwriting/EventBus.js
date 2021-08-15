@@ -58,13 +58,15 @@ class EventBus1 {
   }
   once(type, fn){
     function tmp(){
-      fn()
+      // 传递参数
+      fn(...arguments)
       this.off(type,tmp)
     }
     this.on(type, tmp)
   }
   emit(type, params){
     if(this.events[type]){
+      // 绑定this指向，在tmp中给off指定this
       this.events[type].forEach(fn => fn.apply(this, params))
     }
   }
