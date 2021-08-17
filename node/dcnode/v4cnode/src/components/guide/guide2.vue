@@ -21,9 +21,10 @@ export default {
 </script>
 
 <style scoped lang="less">
-.guide1{
+.guide2{
   float: left;
   width: 300px;
   height: 300px;
+  padding-top: 50px;
 }
 </style>

@@ -1,5 +1,5 @@
 // 深拷贝：考虑基本类型，引用类型，数组，循环引用
-function deepClone1(target, map = new Map()){
+function deepClone1(target, map = new WeakMap()){
   if(typeof target !== 'object'){
     return target
   }else{

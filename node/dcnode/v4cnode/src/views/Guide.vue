@@ -12,7 +12,6 @@ import guide2 from '../components/guide/guide2.vue'
 export default {
   data() {
     return {
-
     }
   },
   components: {

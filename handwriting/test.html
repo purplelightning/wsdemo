@@ -124,5 +124,33 @@
     }
     export default new EventBus()
 
+    function deepClone(target, map = new WeakMap()){
+      if(typeof target !== 'object'){
+        return target
+      }else{
+        let newTarget = Array.isArray(target) ? [] : {}
+        if(map.get(target)){
+          return map.get(target)
+        }
+        map.set(target, newTarget)
+        for(const key in target){
+          newTarget[key] = deepClone(target[key], map)
+        }
+        return newTarget
+      }
+    }
+
+    function curry(fn, ...args){
+      let len = fn.length
+      return function(...params){
+        let _args = [...args, ...params]
+        if(_args.length >= len){
+          return fn.apply(this, _args)
+        }else{
+          return curry.call(this, fn, ..._args)
+        }
+      }
+    }
+
   </script>
 </html>

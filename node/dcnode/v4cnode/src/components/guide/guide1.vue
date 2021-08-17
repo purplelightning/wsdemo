@@ -1,7 +1,7 @@
 <template>
   <div class="guide1">
-    <div>{{ num1 }}</div>
-    <div>{{ num2 }}</div>
+    <div class="item">num1：{{ num1 }}</div>
+    <div class="item">num2：{{ num2 }}</div>
   </div>
 </template>
 
@@ -31,5 +31,9 @@ export default {
   float: left;
   width: 300px;
   height: 300px;
+  padding-top: 50px;
+  .item{
+    margin-left: 150px;
+  }
 }
 </style>
