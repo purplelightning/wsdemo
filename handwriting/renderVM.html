@@ -1,0 +1,93 @@
+<html>
+<head>
+  <title>渲染虚拟DOM，模板解析</title>
+</head>
+<body>
+  <div id="app">
+  </div>
+</body>
+<script>
+  const t1 = {
+    tag: 'DIV',
+    attrs: {
+      id: 'app'
+    },
+    children: [{
+        tag: 'SPAN',
+        children: [{
+          tag: 'A',
+          children: []
+        }]
+      },
+      {
+        tag: 'SPAN',
+        children: [{
+            tag: 'A',
+            children: []
+          },
+          {
+            tag: 'A',
+            children: []
+          }
+        ]
+      }
+    ]
+  }
+
+  /* 将虚拟 Dom 转化为真实 Dom */
+  function _render(vnode) {
+    if (vnode.tag) {
+      if(typeof vnode === 'number'){
+        vnode = String(vnode)
+      }
+      if(typeof vnode === 'string'){
+        return document.createTextNode(vnode)
+      }
+      let dom = document.createElement(vnode.tag)
+      if (vnode.attrs) {
+        for (let key in vnode.attrs) {
+          dom.setAttribute(key, vnode.attrs[key])
+        }
+      }
+      if (vnode.children && vnode.children.length) {
+        vnode.children.forEach(v => {
+          dom.appendChild(_render(v))
+        })
+      }
+      return dom
+    }
+    return null
+  }
+  let container = document.querySelector('#app')
+  let dd = _render(t1)
+  container.appendChild(dd)
+
+  /* 实现模板字符串解析功能 */
+  let template = '我是{{name}}，年龄{{age}}，性别{{sex}}';
+  let data = {
+    name: '姓名',
+    age: 18,
+  }
+  function renderTemplate(template, data){
+    let reg = /\{\{\w+\}\}/g
+    let str = template.replace(reg, (match) =>{
+      console.log(match);
+      let tmp = match.slice(2,-2)
+      return data[tmp]
+    })
+    return str
+  }
+  renderTemplate(template, data)
+  function renderCopy(template, data) {
+    let computed = template.replace(/\{\{(\w+)\}\}/g, function (match, key) {
+      console.log(arguments);
+      console.log(match);
+      console.log(key);
+      return data[key];
+    });
+    return computed;
+  }
+  renderCopy(template,data)
+
+</script>
+</html>

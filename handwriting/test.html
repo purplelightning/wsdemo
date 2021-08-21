@@ -152,5 +152,34 @@
       }
     }
 
+    function renderPart(){
+      let dom = document.querySelector('.container')
+      let totalCount = 30000, once = 20
+      function loop(curCount, pageIndex){
+        if(curCount<=0){
+          return
+        }
+        let cur = Math.min(once, curCount)
+        window.requestAnimationFrame(function(){
+          for(let i=0;i<cur;i++){
+            let t = document.createElement('div')
+            t.innerText = pageIndex + i + ' : ' + Math.floor(totalCount* Math.random())
+            dom.appendChild(t)
+          }
+          loop(curCount - cur, pageIndex + cur)
+        })
+      }
+      loop(totalCount, 0)
+    }
+    // renderPart()
+
+    function myObjectIs(x,y){
+      if(x === y){
+        return x!==0 || 1/x===1/y
+      }
+      return x!==x && y!==y
+    }
+    
+
   </script>
 </html>
