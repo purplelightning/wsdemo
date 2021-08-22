@@ -1,7 +1,9 @@
 <html>
+
 <head>
-  <title>渲染虚拟DOM，模板解析</title>
+  <title>渲染虚拟DOM，模板解析，列表、树转换，大数相加</title>
 </head>
+
 <body>
   <div id="app">
   </div>
@@ -37,10 +39,10 @@
   /* 将虚拟 Dom 转化为真实 Dom */
   function _render(vnode) {
     if (vnode.tag) {
-      if(typeof vnode === 'number'){
+      if (typeof vnode === 'number') {
         vnode = String(vnode)
       }
-      if(typeof vnode === 'string'){
+      if (typeof vnode === 'string') {
         return document.createTextNode(vnode)
       }
       let dom = document.createElement(vnode.tag)
@@ -68,16 +70,17 @@
     name: '姓名',
     age: 18,
   }
-  function renderTemplate(template, data){
+
+  function renderTemplate(template, data) {
     let reg = /\{\{\w+\}\}/g
-    let str = template.replace(reg, (match) =>{
+    let str = template.replace(reg, (match) => {
       console.log(match);
-      let tmp = match.slice(2,-2)
+      let tmp = match.slice(2, -2)
       return data[tmp]
     })
     return str
   }
-  renderTemplate(template, data)
+  // renderTemplate(template, data)
   function renderCopy(template, data) {
     let computed = template.replace(/\{\{(\w+)\}\}/g, function (match, key) {
       console.log(arguments);
@@ -87,7 +90,132 @@
     });
     return computed;
   }
-  renderCopy(template,data)
+  // renderCopy(template,data)
 
+  const list = [{
+      id: 1,
+      text: '节点1',
+      parentId: 0 //这里用0表示为顶级节点
+    },
+    {
+      id: 2,
+      text: '节点1_1',
+      parentId: 1 //通过这个字段来确定子父级
+    },
+    {
+      id: 3,
+      text: '节点1_2',
+      parentId: 1 //通过这个字段来确定子父级
+    },
+    {
+      id: 4,
+      text: '节点2_1',
+      parentId: 2 //通过这个字段来确定子父级
+    },
+    {
+      id: 5,
+      text: '节点2_2',
+      parentId: 2 //通过这个字段来确定子父级
+    },
+    {
+      id: 6,
+      text: '节点3_1',
+      parentId: 3 //通过这个字段来确定子父级
+    },
+  ]
+  const treeData = [{
+    "id": 1,
+    "text": "节点1",
+    "parentId": 0,
+    "children": [{
+        "id": 2,
+        "text": "节点1_1",
+        "parentId": 1,
+        "children": [{
+            "id": 4,
+            "text": "节点2_1",
+            "parentId": 2
+          },
+          {
+            "id": 5,
+            "text": "节点2_2",
+            "parentId": 2
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "text": "节点1_2",
+        "parentId": 1,
+        "children": [{
+          "id": 6,
+          "text": "节点3_1",
+          "parentId": 3
+        }]
+      }
+    ]
+  }]
+
+  /* 列表转换成树形结构 */
+  function listToTree(data) {
+    let temp = {},
+      treeData = []
+    for (let i = 0; i < data.length; i++) {
+      temp[data[i].id] = data[i]
+    }
+    for (let i in temp) {
+      if (temp[i].parentId !== 0) {
+        if (!temp[temp[i].parentId].children) {
+          temp[temp[i].parentId].children = []
+        }
+        temp[temp[i].parentId].children.push(temp[i])
+      } else {
+        treeData.push(temp[i])
+      }
+    }
+    return treeData
+  }
+  // listToTree(list)
+  function treeToList(treeData) {
+    let res = []
+    const dfs = (tree) => {
+      tree.forEach(t => {
+        if (t.children) {
+          dfs(t.children)
+          delete(t.children)
+        }
+        res.push(t)
+      })
+    }
+    dfs(treeData)
+    return res
+  }
+  // treeToList(treeData)
+
+  /* 大数相加 */
+  function addBig(a,b){
+
+  }
+
+  /* 如何判断url中只包含qq.com
+  url有很多种形式：
+    http://www.qq.com //通过
+    http://www.qq.com.cn //不通过
+    http://www.qq.com/a/b //通过
+    http://www.qq.com?a=1 //通过
+    http://www.123qq.com?a=1 //不通过
+  */
+ let str1 = 'http://www.qq.com', str2 = 'http://www.qq.com.cn',
+ str3='http://www.qq.com/a/b',str4='http://www.qq.com?a=1',str5='http://www.123qq.com?a=1'
+  function testQQ(str){
+    let reg = /.*(\.qq\.com)([\/\?]|$)/
+    let a = reg.test(str) 
+    console.log(a);
+  }
+    testQQ(str1)
+    testQQ(str2)
+    testQQ(str3)
+    testQQ(str4)
+    testQQ(str5)
 </script>
 </html>
