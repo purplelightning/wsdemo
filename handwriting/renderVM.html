@@ -193,9 +193,58 @@
   // treeToList(treeData)
 
   /* 大数相加 */
-  function addBig(a,b){
-
+  function addBig(a, b){
+    let m = a.length, n = b.length
+    let arr = a.split('').map(v=>Number(v)).reverse()
+    let brr = b.split('').map(v=>Number(v)).reverse()
+    if(m>n){
+      brr = brr.concat(Array(m-n).fill(0))
+    }else if(m<n){
+      arr = arr.concat(Array(n-m).fill(0))
+    }
+    let t = 0
+    for(let i=0;i<arr.length;i++){
+      if(arr[i]+brr[i]+t>9){
+        arr[i] = arr[i]+brr[i] + t - 10
+        t = 1
+      }else{
+        arr[i] = arr[i]+brr[i] + t
+        t = 0
+      }
+    }
+    if(t === 1){
+      arr.push(1)
+    }
+    let res = arr.reverse().join('')
+    console.log(res)
+    return res
   }
+  addBig('234','1111')
+  add('234','1111')
+  addBig('9007199254740991', '1234567899999999999')
+  add('9007199254740991', '1234567899999999999')
+
+  function add(a ,b){
+   //取两个数字的最大长度
+   let maxLength = Math.max(a.length, b.length);
+   //用0去补齐长度
+   a = a.padStart(maxLength , 0);//"0009007199254740991"
+   b = b.padStart(maxLength , 0);//"1234567899999999999"
+   //定义加法过程中需要用到的变量
+   let t = 0;
+   let f = 0;   //"进位"
+   let sum = "";
+   for(let i=maxLength-1 ; i>=0 ; i--){
+      t = parseInt(a[i]) + parseInt(b[i]) + f;
+      f = Math.floor(t/10);
+      sum = t%10 + sum;
+   }
+   if(f!==0){
+      sum = '' + f + sum;
+   }
+   console.log(sum)
+   return sum;
+}
 
   /* 如何判断url中只包含qq.com
   url有很多种形式：
@@ -208,14 +257,15 @@
  let str1 = 'http://www.qq.com', str2 = 'http://www.qq.com.cn',
  str3='http://www.qq.com/a/b',str4='http://www.qq.com?a=1',str5='http://www.123qq.com?a=1'
   function testQQ(str){
-    let reg = /.*(\.qq\.com)([\/\?]|$)/
+    let reg = /^(http:\/\/[^=]+\.qq\.com)([\/\?]|$)/
     let a = reg.test(str) 
     console.log(a);
   }
-    testQQ(str1)
-    testQQ(str2)
-    testQQ(str3)
-    testQQ(str4)
-    testQQ(str5)
+    // testQQ(str1)
+    // testQQ(str2)
+    // testQQ(str3)
+    // testQQ(str4)
+    // testQQ(str5)
+
 </script>
 </html>
