@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div class="content"></div>
+</body>
+<script>
+  let arr = [13, 10, 12, 8, 3, 0, 2, 5, 9, 9, 13, 16, 21, 24, 29]
+  console.log(arr)
+  // function initArr(){
+  //   let t= []
+  //   for(let i=0;i<15;i++){
+  //     t.push(Math.floor(Math.random()*30))
+  //   }
+  //   console.log(t)
+  //   return t
+  // }
+  function bubbleSort(crr) {
+    let arr = [...crr]
+    let len = arr.length
+    for (let i = 0; i < len; i++) {
+      for (let j = 1; j < len - i; j++) {
+        if (arr[j - 1] > arr[j]) {
+          let tmp = arr[j - 1]
+          arr[j - 1] = arr[j]
+          arr[j] = tmp
+        }
+      }
+    }
+    console.log(`冒泡：`)
+    console.log(arr)
+    return arr
+  }
+  bubbleSort(arr)
+  function selectSort(crr){
+    let arr = [...crr], len = arr.length
+    for(let i=0;i<len;i++){
+      let tmp = arr[i], index=i
+      for(let j = i+1;j<len;j++){
+        if(tmp>arr[j]){
+          tmp = arr[j]
+          index = j
+        }
+      }
+      arr[index] = arr[i]
+      arr[i] = tmp
+    }
+    console.log('选择')
+    console.log(arr)
+    return arr
+  }
+  selectSort(arr)
+  function insertSort(crr){
+    let arr = [...crr]
+    for(let i=1;i<=len;i++){
+      let j = i-1, key = arr[j]
+      while(arr[j]>)
+    }
+  }
+  console.log('-------------------')
+  console.log(arr)
+</script>
+
+</html>
