@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from '@/views/Home'
 import Guide from '@/views/Guide'
 import Apipage from '@/views/ApiPage'
+import TestPage from '@/views/TestPage'
 import TopicDetail from '@/components/detail/TopicDetail'
 import ManageTopic from '@/components/detail/ManageTopic'
 import Collection from '@/views/Collection'
@@ -46,6 +47,11 @@ const routes = [
     path: '/apipage',
     name: 'Apipage',
     component: Apipage
+  },
+  {
+    path: '/testpage',
+    name: 'Testpage',
+    component: TestPage
   },
   {
     path: '/collection',
