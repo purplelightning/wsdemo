@@ -13,6 +13,8 @@ export default new Vuex.Store({
     isLogin: Boolean(JSON.parse(localStorage.getItem('loginInfo')).isLogin),
     loginname: JSON.parse(localStorage.getItem('loginInfo')).loginname || '',
     avatarImg: JSON.parse(localStorage.getItem('loginInfo')).avatarImg || '',
+    LOADING: false,
+    ANIMATION: false
   },
   mutations: {
     doLogin (state, params) {
@@ -45,7 +47,19 @@ export default new Vuex.Store({
       state.avatarImg = url
       loginInfo.avatarImg = url
       localStorage.setItem('loginInfo', JSON.stringify(loginInfo))
-    }
+    },
+    showLoading (state) {
+      state.LOADING = true
+    },
+    hideLoading (state) {
+      state.LOADING = false
+    },
+    showAnimation(state){
+      state.ANIMATION=true
+    },
+    hideAnimation (state) {
+      state.ANIMATION = false
+    },
   },
   actions: {},
   modules: {},

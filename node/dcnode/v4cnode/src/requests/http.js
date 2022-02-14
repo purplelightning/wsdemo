@@ -9,7 +9,8 @@ import store from '../store/index'
 import { Message } from 'element-ui'
 
 // const baseUrl = 'https://cnodejs.org/api/v1'
-export const baseUrl = 'http://127.0.0.1:3301'
+// export const baseUrl = 'http://127.0.0.1:3301'
+export const baseUrl = 'http://118.31.246.131:2009'
 
 /** 
  * 提示函数 
@@ -82,19 +83,37 @@ instance.interceptors.request.use(
     // 而后我们可以在响应拦截器中，根据状态码进行一些统一的操作。        
     const token = store.state.token;
     token && (config.headers.Authorization = token);
+    store.commit('showLoading')
+    store.commit('showAnimation')
     return config;
   },
-  error => Promise.error(error))
+  error => {
+    store.commit('hideLoading')
+    return Promise.reject(error);
+  })
 
 // 响应拦截器
 instance.interceptors.response.use(
   // 请求成功
-  res => res.status === 200 ? Promise.resolve(res.data) : Promise.reject(res.data),
+  res => {
+    setTimeout(()=>{
+      store.commit('hideAnimation')
+      // 触发爆炸动画后再关闭loading
+      setTimeout(()=>{
+        store.commit('hideLoading')
+      }, 300)
+    }, 400)
+    if(res.status === 200){
+      return Promise.resolve(res.data)
+    }
+    return Promise.reject(res.data)
+  },
   // 请求失败
   error => {
     const { response } = error;
     if (response) {
       // 请求已发出，但是不在2xx的范围 
+      store.commit('hideLoading')
       errorHandle(response.status, response.data.message);
       return Promise.reject(response);
     } else {
@@ -105,6 +124,13 @@ instance.interceptors.response.use(
       if (!window.navigator.onLine) {
         store.commit('changeNetwork', false);
       } else {
+        setTimeout(()=>{
+          store.commit('hideAnimation')
+          // 触发爆炸动画后再关闭loading
+          setTimeout(()=>{
+            store.commit('hideLoading')
+          }, 300)
+        }, 400)
         return Promise.reject(error);
       }
     }
