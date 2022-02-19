@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <title></title>
+  </head>
+  <body></body>
+  <script>
+    //  实现有并行限制的 Promise 调度器
+    class Scheduler {
+      constructor(limit){
+        this.queue = []
+        this.runCounts = 0
+        this.limit = limit
+      }
+      add = (time,order) => {
+        const promiseCreator = () => {
+          return new Promise((resolve,reject)=>{
+            setTimeout(()=>{
+              console.log(order);
+              resolve()
+            }, time)
+          })
+        } 
+        this.queue.push(promiseCreator)
+      }
+      taskStart(){
+        for(let i=0; i<this.limit;i++){
+          this.request()
+        }
+      }
+      request(){
+        if(this.runCounts>=this.limit||!this.queue||!this.queue.length){
+          return
+        }
+        this.runCounts++
+        this.queue.shift()().then(()=>{
+          this.runCounts--
+          this.request()
+        })
+      }
+    }
+    const sheduler = new Scheduler(2)
+    const addTask = (time,order) => sheduler.add(time,order)
+    addTask(1000,"1");
+    addTask(500,"2");
+    addTask(300,"3");
+    addTask(400,"4");
+    sheduler.taskStart()
+  </script>
+</html>

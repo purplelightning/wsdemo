@@ -25,6 +25,7 @@
 			</view>
 		 </view>
 		 <ToastMP></ToastMP>
+		 <EloadingMP></EloadingMP>
 	</scroll-view>
 </template>
 
@@ -42,6 +43,7 @@
 			};
 		},
 		onLoad(option){
+			this.$loading(true)
 			this.id = option.id
 			this.getDetailInfo();
 		},
@@ -54,6 +56,7 @@
 					id: this.id
 				}
 				this.$http.get(topicDetail, params).then(res=>{
+					this.$loading(false)
 					if(res.data){
 						this.info = res.data;
 					}

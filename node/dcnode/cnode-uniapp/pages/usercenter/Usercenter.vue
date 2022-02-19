@@ -2,7 +2,7 @@
 	<view class="usercenter">
 		<ToastMP></ToastMP>
 		<view class="name item">用户：{{loginname}}</view>
-		<view class="phone item">手机：{{phone}}</view>
+		<view class="phone item">手机：{{phone || ''}}</view>
 		<view class="item img">
 			<text>头像：</text>
 			<image :src="avatarImg" style="width: 60px;height: 60px;"></image>

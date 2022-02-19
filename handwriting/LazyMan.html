@@ -1,0 +1,85 @@
+<html>
+  <head>
+    <title></title>
+  </head>
+  <body>
+  </body>
+  <script>
+    /* 实现 LazyMan */
+    class _LazyManCfo {
+      constructor(name){
+        this.tasks = []
+        const task = () => {
+          console.log(`Hi! This is ${name}!`)
+          this.next()
+        }
+        this.tasks.push(task)
+        setTimeout(()=>{
+          this.next()
+        }, 0)
+      }
+      next(){
+        const task = this.tasks.shift()
+        task && task()
+      }
+      eat(name){
+        const task = () => {
+          console.log(`Eat ${name}~`)
+          this.next()
+        }
+        this.tasks.push(task)
+        return this
+      }
+      sleep(delay){
+        this._sleepWrapper(delay, false)
+        return this
+      }
+      sleepFirst(delay){
+        this._sleepWrapper(delay, true)
+        return this
+      }
+      _sleepWrapper(delay, flag){
+        const task = () => {
+          setTimeout(()=>{
+            console.log(`Wake up after ${delay}`)
+            this.next()
+          }, delay * 1000)
+        }
+        if(flag){
+          this.tasks.unshift(task)
+        }else{
+          this.tasks.push(task)
+        }
+      }
+    }
+    function LazyMan(name){
+      return new _LazyManCfo(name)
+    }
+    // LazyMan("Hank").eat("dinner").eat("supper")
+    // LazyMan("Hank").eat("dinner").eat("supper")
+    // LazyMan("Hank").eat("supper").sleepFirst(5)
+
+    /* 写版本号排序的方法 */
+    function sortVerion(arr){
+      arr.sort((a,b) => {
+        let brr = a.split('.')
+        let crr = b.split('.')
+        let i = 0
+        while(true){
+          const s1 = brr[i]
+          const s2 = crr[i]
+          if(s1 === undefined || s2 === undefined){
+            return s2.length - s1.length
+          }
+          if(s1!==s2){
+            return s2-s1
+          }
+          i++
+        }
+      })
+      console.log(arr)
+    }
+    sortVerion(['0.1.1', '2.3.3', '0.302.1', '4.2', '4.3.5', '4.3.4.5'])
+
+  </script>
+</html>

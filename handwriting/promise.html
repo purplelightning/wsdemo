@@ -1,0 +1,41 @@
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+</body>
+<script></script>
+<script src="./MyPromise.js">
+  // let p1 = new Promise((resolve,reject) => {
+    // reject('fffff')
+  //   resolve('aaa')
+  //   console.log('开始');
+  // }).then(res => {
+  //   console.log(res);
+  //   return 'bbb'
+  // }).then(res => {
+  //   console.log(res);
+  //   return 'ccc'
+  // }).then(res => {
+  //   console.log(res);
+  // }).catch(err=>{
+  //   console.log(err);
+  // }).finally(()=>{
+  //   console.log('bbyy');
+  // })
+
+const promise = new MyPromise((resolve, reject) => {
+    // resolve('success')
+    throw new Error('执行器错误')
+})
+ 
+promise.then(value => {
+  console.log(1)
+  console.log('resolve', value)
+}, reason => {
+  console.log(2)
+  console.log(reason.message)
+})
+</script>
+
+</html>
