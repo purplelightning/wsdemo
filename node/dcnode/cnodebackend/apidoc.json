@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "CNODE-API文档",
   "title": "CNODE-API Doc",
-  "url": "http://localhost:3301/api",
-  "sampleUrl": "http://localhost:3301/api",
+  "url": "http://118.31.246.131:3301",
   "forceLanguage": "zh-cn",
   "template": {
       "withCompare": true,

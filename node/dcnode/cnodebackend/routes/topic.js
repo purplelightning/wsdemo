@@ -10,6 +10,23 @@ const jtt = require('jsonwebtoken');
 const { formatDate } = require('../utils/common');
 const uuid = require('node-uuid');
 
+/**
+ * @api {get} /topic/list 专题列表
+ * @apiVersion 1.0.0
+ * @apiName 测试接口
+ * @apiGroup topic
+ *
+ * @apiParam {String} tab 类型
+ * @apiParam {String} page 页数
+ * @apiParam {String} pageSize 条数
+ * 
+ * @apiSampleRequest /topic/list
+ * 
+ * @apiSuccess {Number} status 1
+ * @apiSuccess {Number} Code 200
+ * @apiSuccess {List} data 专题列表
+ */
+
 router.get('/list', (req, res) => {
   const obj = url.parse(req.url, true).query
   let param = {}
