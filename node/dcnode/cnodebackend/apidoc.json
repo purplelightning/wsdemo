@@ -1,0 +1,12 @@
+{
+  "name": "cnodebackend",
+  "version": "1.0.0",
+  "description": "CNODE-API文档",
+  "title": "CNODE-API Doc",
+  "url": "http://118.31.246.131:3301",
+  "forceLanguage": "zh-cn",
+  "template": {
+      "withCompare": true,
+      "withGenerator": true
+  }
+}

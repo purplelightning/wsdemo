@@ -25,6 +25,10 @@ const originAPi = {
 }
 
 const expressApi = {
+  // API接口
+  getApiPage: () => {
+    return instance.get('/apipage')
+  },
   //测试接口
   getInfo: () => {
     return instance.get('/user/test')

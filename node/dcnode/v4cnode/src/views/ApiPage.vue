@@ -1,22 +1,30 @@
 <template>
   <div class="wrapper">
-    api-page
+    <div v-html="content"></div>
   </div>
 </template>
 
 <script>
+import api from "@/requests/api";
+
 export default {
   data() {
     return {
-
-    }
+      content: {},
+    };
   },
-  components: {
-
-  }
-}
+  mounted() {
+    this.getPage();
+  },
+  methods: {
+    getPage() {
+      api.getApiPage().then((res) => {
+        this.content = res;
+      });
+    },
+  },
+};
 </script>
 
 <style scoped lang="less">
-
 </style>

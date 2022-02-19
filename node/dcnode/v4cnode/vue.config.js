@@ -6,7 +6,7 @@ function resolve(dir) {
 }
 
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production' ? '/apps/' : '/',  //基本路径
+  publicPath: process.env.NODE_ENV === 'production' ? '/apps/frontend/' : '/',  //基本路径
   outputDir: 'dist', //构建时的输出目录
   assetsDir: 'static',//放置静态资源的目录
   indexPath: 'index.html',//html 的输出路径
