@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import api from "@/requests/api";
+import { baseUrl } from '@/requests/http'
 
 export default {
   data() {
@@ -14,14 +14,9 @@ export default {
     };
   },
   mounted() {
-    this.getPage();
+    location.href=`${baseUrl}/apidoc`
   },
   methods: {
-    getPage() {
-      api.getApiPage().then((res) => {
-        this.content = res;
-      });
-    },
   },
 };
 </script>
