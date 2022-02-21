@@ -1,1 +1,1 @@
-declare module '@/store/user'
+declare module "@/store/user";

@@ -1,14 +1,14 @@
-import {defineStore} from 'pinia'
+import { defineStore } from "pinia";
 
-export interface userState{
+export interface userState {
   name: string;
 }
 
-export const useUserStore:userState = defineStore({
-  id: 'user',
+export const useUserStore: userState = defineStore({
+  id: "user",
   state: () => {
     return {
-      name: 'pinia的name'
-    }
-  }
-})
+      name: "pinia的name",
+    };
+  },
+});
