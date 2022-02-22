@@ -1,9 +1,24 @@
 <script setup lang="ts">
-import { defineComponent, Ref, ref } from "vue";
+import { defineComponent, Ref, ref, onMounted } from "vue";
 import { useUserStore } from "@/store/user";
+import { getUserTest, loginAPI } from "@/api/user";
 
 const msg: Ref<string> = ref("aaa");
 const userState = useUserStore();
+onMounted(() => {
+  getUserTest().then((res: any) => {
+    console.log(res);
+  });
+  getUserTest().then((res: any) => {
+    console.log(res);
+  });
+  getUserTest().then((res: any) => {
+    console.log(res);
+  });
+  // loginAPI({ name: "ss", pwd: "123" }).then((res: any) => {
+  //   console.log(res.data);
+  // });
+});
 </script>
 
 <template>
