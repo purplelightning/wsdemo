@@ -4,8 +4,11 @@ const pendingMap = new Map();
 
 const baseUrl = "http://118.31.246.131:2009/";
 
+import { createLoading } from "../store/globalLoading";
+
+const LoadingObj = createLoading();
+
 const LoadingInstance = {
-  _target: null,
   _count: 0,
 };
 
@@ -30,7 +33,7 @@ function myAxios(axiosConfig, additionalOption) {
       if (customOptions.loading) {
         LoadingInstance._count++;
         if (LoadingInstance._count === 1) {
-          LoadingInstance._target = true;
+          LoadingObj.setLoading(true);
         }
       }
       return config;
@@ -106,7 +109,7 @@ function closeLoading(_options) {
     LoadingInstance._count--;
   }
   if (LoadingInstance._count <= 0) {
-    LoadingInstance._target = null;
+    LoadingObj.setLoading(false);
   }
 }
 

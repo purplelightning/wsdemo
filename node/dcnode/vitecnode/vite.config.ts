@@ -27,4 +27,12 @@ export default defineConfig({
     //   }
     // }
   },
+  // vite2.x
+  css: {
+    preprocessorOptions: {
+      less: {
+        javascriptEnabled: true,
+      },
+    },
+  },
 });

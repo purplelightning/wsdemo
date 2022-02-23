@@ -1,9 +1,14 @@
 <script setup lang="ts">
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
+import { createLoading } from "@/store/globalLoading";
+
+// 全局loading，在api请求中设置是否启用
+const LoadingObj = createLoading();
 </script>
 
 <template>
+  <a-spin v-show="LoadingObj.showLoading"></a-spin>
   <router-view></router-view>
 </template>
 
