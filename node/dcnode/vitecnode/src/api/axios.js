@@ -2,25 +2,28 @@ import axios from "axios";
 
 const pendingMap = new Map();
 
-const baseUrl = "http://118.31.246.131:2009/";
+const devBaseUrl = "http://127.0.0.1:3301";
+const proBaseUrl = "http://118.31.246.131:2009/";
+
+import errorHandle from "./statusHandle";
 
 import { createLoading } from "../store/globalLoading";
-
 const LoadingObj = createLoading();
-
 const LoadingInstance = {
   _count: 0,
 };
 
 function myAxios(axiosConfig, additionalOption) {
   const service = axios.create({
-    baseURL: baseUrl,
+    baseURL: devBaseUrl,
     timeout: 10000,
   });
 
   const customOptions = Object.assign(
     {
       repeatRequestCancel: true, //是否开启取消重复请求，默认开启
+      loading: false, // 是否开启全局loading
+      errorMessageShow: true, // 是否开启接口错误信息展示，默认为true
     },
     additionalOption
   );
@@ -51,7 +54,8 @@ function myAxios(axiosConfig, additionalOption) {
     },
     (err) => {
       err.config && removePending(err.config);
-      additionalOption.loading && closeLoading(customOptions);
+      customOptions.errorMessageShow && errorHandle(err); // 处理错误状态码
+      customOptions.loading && closeLoading(customOptions);
       return Promise.reject(err);
     }
   );

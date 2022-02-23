@@ -9,12 +9,6 @@ onMounted(() => {
   getUserTest().then((res: any) => {
     console.log(res);
   });
-  getUserTest().then((res: any) => {
-    console.log(res);
-  });
-  getUserTest().then((res: any) => {
-    console.log(res);
-  });
   // loginAPI({ name: "ss", pwd: "123" }).then((res: any) => {
   //   console.log(res.data);
   // });

@@ -53,7 +53,19 @@ const upload = multer({storage: storage})
  * @apiSuccess {String} data 接口测试返回
  */
 router.get('/test', async (req, res) => {
-  res.success('接口测试返回')
+  res.writeHead(400, {'Content-Type': 'text/plain;charset=utf-8'});
+
+  // res.success('接口测试返回')
+  // throw new Error('错误啦！！！');
+
+  // res.statusCode = 302;
+  // res.end('重定向');
+
+  res.statusCode = 400;
+  res.end('请求参数错误');
+
+  // res.statusCode = 500;
+  // res.end('服务器内部错误');
 })
 
 /**
