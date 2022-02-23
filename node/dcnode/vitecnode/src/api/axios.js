@@ -1,3 +1,12 @@
+/*
+  序列化参数
+  取消重复请求
+  全局loading
+  携带token
+  错误码处理
+  TODO 根据jwt拦截路由跳转，loading优化
+*/
+
 import axios from "axios";
 
 const pendingMap = new Map();
@@ -6,9 +15,12 @@ const devBaseUrl = "http://127.0.0.1:3301";
 const proBaseUrl = "http://118.31.246.131:2009/";
 
 import errorHandle from "./statusHandle";
+import { message as Message } from "ant-design-vue";
 
 import { createLoading } from "../store/globalLoading";
+import { useUserStore } from "../store/user";
 const LoadingObj = createLoading();
+const user = useUserStore();
 const LoadingInstance = {
   _count: 0,
 };
@@ -23,13 +35,19 @@ function myAxios(axiosConfig, additionalOption) {
     {
       repeatRequestCancel: true, //是否开启取消重复请求，默认开启
       loading: false, // 是否开启全局loading
+      reductDataFormat: true, // 是否开启简洁的数据结构响应, 默认为true
       errorMessageShow: true, // 是否开启接口错误信息展示，默认为true
+      codeMessageShow: true, // 是否开启status为0时的信息提示, 默认为true
     },
     additionalOption
   );
 
   service.interceptors.request.use(
     (config) => {
+      const token = user.token;
+      if (token && typeof window !== "undefined") {
+        config.headers.Authorization = token;
+      }
       removePending(config);
       customOptions.repeatRequestCancel && addPending(config);
       // 创建loading实例
@@ -50,7 +68,17 @@ function myAxios(axiosConfig, additionalOption) {
     (response) => {
       removePending(response.config);
       customOptions.loading && closeLoading(customOptions); // 关闭loading
-      return response;
+      if (
+        // 接口获取成功，给出错误返回，与后端约定
+        customOptions.codeMessageShow &&
+        response.data &&
+        response.data.status === 0
+      ) {
+        Message.error(response.data.error);
+        return Promise.reject(response.data); // status等于0, 页面具体逻辑就不执行了
+      }
+
+      return customOptions.reductDataFormat ? response.data : response;
     },
     (err) => {
       err.config && removePending(err.config);

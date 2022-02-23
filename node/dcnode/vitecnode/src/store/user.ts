@@ -4,11 +4,12 @@ export interface userState {
   name: string;
 }
 
-export const useUserStore: userState = defineStore({
+export const useUserStore: any = defineStore({
   id: "user",
   state: () => {
     return {
       name: "pinia的name",
+      token: "sss",
     };
   },
 });
