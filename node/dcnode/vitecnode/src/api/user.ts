@@ -1,19 +1,11 @@
-import myAxios from "./axios.js";
+import instance from "./axios.js";
 import qs from "qs";
 
-export const getUserTest = () => {
-  return myAxios(
-    {
-      url: "/user/test",
-      method: "get",
-    },
-    { repeatRequestCancel: true, loading: true }
-  );
-};
+import { LoginType } from "@/types/";
 
 // formData格式
 export function loginAPI(paramsList: any) {
-  return myAxios({
+  return instance({
     url: "/api/login",
     method: "post",
     data: paramsList,
@@ -27,3 +19,37 @@ export function loginAPI(paramsList: any) {
     ],
   });
 }
+
+export const getUserTest = () => {
+  return instance({
+    url: "/user/test",
+    method: "get",
+  });
+};
+
+export const getLogin = (params: LoginType) => {
+  return instance({
+    url: "/user/signin",
+    method: "post",
+    data: params,
+  });
+};
+
+export const getRegister = (params: LoginType) => {
+  return instance({
+    url: "/user/signup",
+    method: "post",
+    data: params,
+  });
+};
+
+export const uploadAvatar = (params: any) => {
+  return instance({
+    url: "/user/uploadAvatar",
+    method: "post",
+    data: params,
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
