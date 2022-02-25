@@ -8,6 +8,7 @@
 */
 
 import axios from "axios";
+import { ElLoading, ElMessage } from "element-plus";
 
 const pendingMap = new Map();
 
@@ -15,13 +16,17 @@ const devBaseUrl = "http://127.0.0.1:3301";
 const proBaseUrl = "http://118.31.246.131:2009/";
 
 import errorHandle from "./statusHandle";
-import { message as Message } from "ant-design-vue";
 
-import { createLoading } from "../store/globalLoading";
 import { useUserStore } from "../store/user";
-const LoadingObj = createLoading();
 const user = useUserStore();
+
+// interface LoadingType {
+//   _target: any;
+//   _count: number;
+// }
+
 const LoadingInstance = {
+  _target: null, // 保存Loading实例
   _count: 0,
 };
 
@@ -54,7 +59,7 @@ function myAxios(axiosConfig, additionalOption) {
       if (customOptions.loading) {
         LoadingInstance._count++;
         if (LoadingInstance._count === 1) {
-          LoadingObj.setLoading(true);
+          LoadingInstance._target = ElLoading.service();
         }
       }
       return config;
@@ -74,7 +79,7 @@ function myAxios(axiosConfig, additionalOption) {
         response.data &&
         response.data.status === 0
       ) {
-        Message.error(response.data.error);
+        ElMessage.error(response.data.error);
         return Promise.reject(response.data); // status等于0, 页面具体逻辑就不执行了
       }
 
@@ -141,7 +146,8 @@ function closeLoading(_options) {
     LoadingInstance._count--;
   }
   if (LoadingInstance._count <= 0) {
-    LoadingObj.setLoading(false);
+    LoadingInstance._target.close();
+    LoadingInstance._target = null;
   }
 }
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { message as Message } from "ant-design-vue";
+import { ElMessage } from "element-plus";
 /**
  * 处理异常
  * @param {*} error
@@ -59,7 +59,7 @@ const httpErrorStatusHandle = (error: any) => {
   if (error.message.includes("timeout")) message = "网络请求超时！";
   if (error.message.includes("Network"))
     message = window.navigator.onLine ? "服务端异常！" : "您断网了！";
-  Message.error(message);
+  ElMessage.error(message);
 };
 
 export default httpErrorStatusHandle;

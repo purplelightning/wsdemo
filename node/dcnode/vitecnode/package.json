@@ -11,8 +11,8 @@
     "prettier": "prettier --write ."
   },
   "dependencies": {
-    "ant-design-vue": "^2.2.8",
     "axios": "^0.26.0",
+    "element-plus": "^2.0.3",
     "pinia": "^2.0.11",
     "qs": "^6.10.3",
     "vue": "^3.2.25",

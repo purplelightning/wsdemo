@@ -7,7 +7,7 @@ export const getUserTest = () => {
       url: "/user/test",
       method: "get",
     },
-    { repeatRequestCancel: false, loading: true }
+    { repeatRequestCancel: true, loading: true }
   );
 };
 
