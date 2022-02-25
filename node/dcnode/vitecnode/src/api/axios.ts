@@ -7,7 +7,8 @@
   TODO 根据jwt拦截路由跳转，loading优化
 */
 
-import axios from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import { AdditionOptionType } from "@/types";
 import { ElLoading, ElMessage } from "element-plus";
 
 const pendingMap = new Map();
@@ -20,17 +21,20 @@ import errorHandle from "./statusHandle";
 import { useUserStore } from "../store/user";
 const user = useUserStore();
 
-// interface LoadingType {
-//   _target: any;
-//   _count: number;
-// }
+interface LoadingType {
+  _target: any;
+  _count: number;
+}
 
-const LoadingInstance = {
+const LoadingInstance: LoadingType = {
   _target: null, // 保存Loading实例
   _count: 0,
 };
 
-function myAxios(axiosConfig, additionalOption) {
+function myAxios(
+  axiosConfig: AxiosRequestConfig,
+  additionalOption?: AdditionOptionType
+) {
   const service = axios.create({
     baseURL: devBaseUrl,
     timeout: 10000,
@@ -48,7 +52,7 @@ function myAxios(axiosConfig, additionalOption) {
   );
 
   service.interceptors.request.use(
-    (config) => {
+    (config: AxiosRequestConfig) => {
       const token = user.token;
       if (token && typeof window !== "undefined") {
         config.headers.Authorization = token;
@@ -70,7 +74,7 @@ function myAxios(axiosConfig, additionalOption) {
   );
 
   service.interceptors.response.use(
-    (response) => {
+    (response: AxiosResponse) => {
       removePending(response.config);
       customOptions.loading && closeLoading(customOptions); // 关闭loading
       if (
@@ -102,8 +106,9 @@ function myAxios(axiosConfig, additionalOption) {
  * @param {*} config
  * @returns string
  */
-function getPendingKey(config) {
-  let { url, method, params, data } = config;
+function getPendingKey(config: AxiosRequestConfig) {
+  const { url, method, params } = config;
+  let data = config.data;
   if (typeof data === "string") data = JSON.parse(data); // response里面返回的config.data是个字符串对象
   return [url, method, JSON.stringify(params), JSON.stringify(data)].join("&");
 }
@@ -112,7 +117,7 @@ function getPendingKey(config) {
  * 储存每个请求唯一值, 也就是cancel()方法, 用于取消请求
  * @param {*} config
  */
-function addPending(config) {
+function addPending(config: AxiosRequestConfig) {
   const pendingKey = getPendingKey(config);
   config.cancelToken =
     config.cancelToken ||
@@ -128,7 +133,7 @@ function addPending(config) {
  * 删除重复的请求
  * @param {*} config
  */
-function removePending(config) {
+function removePending(config: AxiosRequestConfig) {
   const pendingKey = getPendingKey(config);
   if (pendingMap.has(pendingKey)) {
     const cancelToken = pendingMap.get(pendingKey);
@@ -141,7 +146,7 @@ function removePending(config) {
  * 关闭Loading层实例
  * @param {*} _options
  */
-function closeLoading(_options) {
+function closeLoading(_options: AdditionOptionType) {
   if (_options.loading && LoadingInstance._count > 0) {
     LoadingInstance._count--;
   }

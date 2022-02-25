@@ -19,5 +19,6 @@ module.exports = {
     "prettier/prettier": "warn",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-unused-vars": "off",
+    "vue/multi-word-component-names": 0, // 不对组件名强制使用驼峰规则
   },
 };
