@@ -1,17 +1,25 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import HomePage from "@/views/HomePage.vue";
-import ApiPage from "@/views/ApiPage.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/home",
-    name: "HomePage",
-    component: HomePage,
+    path: "/",
+    name: "Home",
+    component: () => import("@/views/home/Home.vue"),
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: () => import("@/views/login/Login.vue"),
+  },
+  {
+    path: "/register",
+    name: "Register",
+    component: () => import("@/views/login/Login.vue"),
   },
   {
     path: "/apiPage",
     name: "ApiPage",
-    component: ApiPage,
+    component: () => import("@/views/ApiPage.vue"),
   },
   {
     path: "/about",

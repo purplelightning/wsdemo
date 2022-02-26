@@ -38,3 +38,15 @@ export interface HandleFavType {
   topicId: string;
   title: string;
 }
+
+/*
+ *  ----------------------------------------------
+ *  前端类型
+ */
+
+export interface LoginParamType {
+  id: string;
+  loginName: string;
+  avatarImg: string;
+  token: string;
+}

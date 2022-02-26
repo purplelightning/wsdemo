@@ -1,24 +1,24 @@
 <script setup lang="ts">
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import { createLoading } from "@/store/globalLoading";
+import { provide } from "vue";
 
-// 全局loading，在api请求中设置是否启用
-const LoadingObj = createLoading();
+import Chead from "@/components/Chead.vue";
+import { tip } from "@/utils";
+
+provide("$msg", tip);
+
+const $msg = tip;
 </script>
 
 <template>
-  <a-spin v-show="LoadingObj.showLoading"></a-spin>
+  <Chead></Chead>
   <router-view></router-view>
 </template>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  padding: 0;
+  margin: 0;
 }
 </style>
