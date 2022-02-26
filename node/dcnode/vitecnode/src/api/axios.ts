@@ -36,14 +36,14 @@ function myAxios(
   additionalOption?: AdditionOptionType
 ) {
   const service = axios.create({
-    baseURL: devBaseUrl,
+    baseURL: proBaseUrl,
     timeout: 10000,
   });
 
   const customOptions = Object.assign(
     {
       repeatRequestCancel: true, //是否开启取消重复请求，默认开启
-      loading: false, // 是否开启全局loading
+      loading: true, // 是否开启全局loading
       reductDataFormat: true, // 是否开启简洁的数据结构响应, 默认为true
       errorMessageShow: true, // 是否开启接口错误信息展示，默认为true
       codeMessageShow: true, // 是否开启status为0时的信息提示, 默认为true
@@ -86,7 +86,6 @@ function myAxios(
         ElMessage.error(response.data.error);
         return Promise.reject(response.data); // status等于0, 页面具体逻辑就不执行了
       }
-
       return customOptions.reductDataFormat ? response.data : response;
     },
     (err) => {
@@ -151,8 +150,10 @@ function closeLoading(_options: AdditionOptionType) {
     LoadingInstance._count--;
   }
   if (LoadingInstance._count <= 0) {
-    LoadingInstance._target.close();
-    LoadingInstance._target = null;
+    setTimeout(() => {
+      LoadingInstance._target.close();
+      LoadingInstance._target = null;
+    });
   }
 }
 

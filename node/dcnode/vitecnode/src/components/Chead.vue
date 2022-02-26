@@ -1,18 +1,29 @@
 <template>
   <div class="chead">
-    <router-link class="item" to="/">CNODE社区</router-link>
-    <router-link class="item" to="/api">API</router-link>
-    <router-link class="item" to="/tool">工具</router-link>
-    <router-link class="item" to="/spider">爬虫</router-link>
-    <router-link class="item" to="/excerise">测试</router-link>
-    <router-link v-show="!userStore.isLogin" class="item" to="/register"
+    <router-link
+      :key="index"
+      v-for="(item, index) in headOption"
+      class="item"
+      :class="{ active: item.path === currentPath }"
+      :to="item.path"
+      >{{ item.name }}</router-link
+    >
+    <router-link
+      v-show="!userStore.isLogin"
+      class="item"
+      :class="{ active: '/register' === currentPath }"
+      to="/register"
       >注册</router-link
     >
-    <router-link v-show="!userStore.isLogin" class="item" to="/login"
+    <router-link
+      v-show="!userStore.isLogin"
+      class="item"
+      :class="{ active: '/login' === currentPath }"
+      to="/login"
       >登录</router-link
     >
     <el-dropdown>
-      <span v-show="!userStore.isLogin" class="item">个人中心</span>
+      <span v-show="!userStore.isLogin" class="item center">个人中心</span>
       <template #dropdown>
         <el-dropdown-menu>
           <el-dropdown-item @click="userStore.doLoginout">
@@ -32,7 +43,7 @@
 <script lang="ts" setup>
 import { useUserStore } from "@/store/user";
 import { useRouter } from "vue-router";
-import { useAttrs } from "vue";
+import { computed, ref, Ref } from "vue";
 import {
   SwitchButton,
   Avatar,
@@ -41,15 +52,23 @@ import {
   HomeFilled,
 } from "@element-plus/icons";
 
+const headOption = [
+  { path: "/", name: "CNODE社区" },
+  { path: "/tool", name: "工具" },
+  { path: "/spider", name: "爬虫" },
+  { path: "/excerise", name: "测试" },
+];
+
 const userStore = useUserStore();
 const router = useRouter();
+console.log(router.currentRoute.value.path);
+const currentPath: Ref<string> = computed(() => router.currentRoute.value.path);
 const goAddTopic = () => {
   router.push({ path: "/addTopic" });
 };
 </script>
 <style lang="less" scoped>
 .chead {
-  display: flex;
   position: fixed;
   top: 0;
   left: 0;
@@ -66,7 +85,7 @@ const goAddTopic = () => {
     text-decoration: none;
   }
   .item {
-    flex: 1;
+    margin-left: 40px;
     line-height: 60px;
     display: inline-block;
     &:hover {
@@ -76,6 +95,12 @@ const goAddTopic = () => {
   }
   .item:first-of-type {
     min-width: 90px;
+  }
+  .center {
+    float: right;
+  }
+  .active {
+    color: #fff;
   }
 }
 </style>
