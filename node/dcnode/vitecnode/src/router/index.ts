@@ -31,6 +31,11 @@ const routes: Array<RouteRecordRaw> = [
     name: "TopicDetail",
     component: () => import("@/views/home/components/TopicDetail.vue"),
   },
+  {
+    path: "/center",
+    name: "center",
+    component: () => import("@/views/usercenter/Usercenter.vue"),
+  },
 ];
 
 const router = createRouter({

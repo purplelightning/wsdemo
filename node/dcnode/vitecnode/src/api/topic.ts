@@ -57,7 +57,7 @@ export const getCollectionList = () => {
 
 export const handleFav = (params: HandleFavType) => {
   return instance({
-    url: "/topic/deleteTopic",
+    url: "/collection/handleFav",
     method: "post",
     data: params,
   });

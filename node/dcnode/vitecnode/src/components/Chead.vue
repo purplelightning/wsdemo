@@ -66,7 +66,7 @@ const goAddTopic = () => {
   router.push({ path: "/addTopic" });
 };
 const goCenter = () => {
-  router.push("/userCenter");
+  router.push("/center");
 };
 const goLogin = () => {
   userStore.doLoginout();

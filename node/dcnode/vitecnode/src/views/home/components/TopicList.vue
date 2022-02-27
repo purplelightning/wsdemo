@@ -11,8 +11,8 @@
         </div>
       </div>
     </div>
-    <div class="list fav" v-show="favFlag && boList.length">
-      <div class="item" :key="index" v-for="(item, index) in bolist">
+    <div class="list fav" v-show="favFlag && favList.length">
+      <div class="item" :key="index" v-for="(item, index) in favList">
         <img class="user-avatar" :src="item.author && item.author.avatarUrl" />
         <div class="title" @click="goDetail(item._id)">{{ item.title }}</div>
       </div>
@@ -21,6 +21,7 @@
   </div>
 </template>
 <script lang="ts" setup>
+import { computed, reactive, ref } from "vue-demi";
 import { useRouter } from "vue-router";
 const props = defineProps({
   boList: Array,
@@ -33,6 +34,7 @@ const tabObj = {
   job: "招聘",
   dev: "测试",
 };
+const favList = computed(() => props.boList);
 const router = useRouter();
 const goDetail = (id: string) => {
   router.push("/topic/detail/" + id);

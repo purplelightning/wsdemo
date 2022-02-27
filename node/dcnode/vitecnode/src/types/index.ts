@@ -88,3 +88,11 @@ export interface TopicItemType {
   top: boolean;
   visitCount: number;
 }
+
+export interface CollectionItemType {
+  author: AuthorType;
+  _id?: string;
+  title?: string;
+  collectTopicId?: string;
+  topicTitle?: string;
+}

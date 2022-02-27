@@ -5,14 +5,14 @@
         v-show="!state.info.isCollected && userStore.token"
         type="primary"
         size="mini"
-        @click="handleFav()"
+        @click="handleFavFunc()"
         >收藏</el-button
       >
       <el-button
         v-show="state.info.isCollected && userStore.token"
         type="info"
         size="mini"
-        @click="handleFav()"
+        @click="handleFavFunc()"
         >取消收藏</el-button
       >
       <el-button
@@ -68,7 +68,7 @@
 import { onMounted, reactive } from "vue-demi";
 import { useRoute } from "vue-router";
 import ReplyList from "./ReplyList.vue";
-import { addReply, getTopicDetail } from "@/api/topic";
+import { addReply, getTopicDetail, handleFav } from "@/api/topic";
 import { useUserStore } from "@/store/user";
 import { tip } from "@/utils";
 import { TopicIdType } from "@/types";
@@ -113,6 +113,21 @@ const addReplyFunc = () => {
       tip("回复成功~");
       getDetailInfo();
       state.replyContent = "";
+    }
+  });
+};
+
+const handleFavFunc = () => {
+  const params = {
+    topicId: state.info._id,
+    title: state.info.title,
+  };
+  handleFav(params).then((res: any) => {
+    if (res.status) {
+      tip(res.data);
+      getDetailInfo();
+    } else {
+      tip(res.error, "error");
     }
   });
 };
