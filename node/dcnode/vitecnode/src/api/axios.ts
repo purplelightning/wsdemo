@@ -16,6 +16,8 @@ const pendingMap = new Map();
 const devBaseUrl = "http://127.0.0.1:3301";
 const proBaseUrl = "http://118.31.246.131:2009/";
 
+export const baseUrl = proBaseUrl;
+
 import errorHandle from "./statusHandle";
 
 import { useUserStore } from "../store/user";

@@ -23,16 +23,16 @@
       >登录</router-link
     >
     <el-dropdown>
-      <span v-show="!userStore.isLogin" class="item center">个人中心</span>
+      <span v-show="userStore.isLogin" class="item center">个人中心</span>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item @click="userStore.doLoginout">
+          <el-dropdown-item @click="goCenter">
             <el-icon><User /></el-icon>主页
           </el-dropdown-item>
           <el-dropdown-item @click="goAddTopic">
             <el-icon><CirclePlus /></el-icon>发表话题
           </el-dropdown-item>
-          <el-dropdown-item @click="userStore.doLoginout">
+          <el-dropdown-item @click="goLogin">
             <el-icon><SwitchButton /></el-icon>退出
           </el-dropdown-item>
         </el-dropdown-menu>
@@ -61,10 +61,16 @@ const headOption = [
 
 const userStore = useUserStore();
 const router = useRouter();
-console.log(router.currentRoute.value.path);
 const currentPath: Ref<string> = computed(() => router.currentRoute.value.path);
 const goAddTopic = () => {
   router.push({ path: "/addTopic" });
+};
+const goCenter = () => {
+  router.push("/userCenter");
+};
+const goLogin = () => {
+  userStore.doLoginout();
+  router.push("/login");
 };
 </script>
 <style lang="less" scoped>
