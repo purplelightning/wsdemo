@@ -88,21 +88,18 @@ onMounted(() => {
 </script>
 <style lang="less" scoped>
 #home {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  bottom: 0;
-  width: 100%;
   display: flex;
-  background: #ccc;
+  width: 100%;
+  min-width: 560px;
   .left,
   .right {
-    flex: 0 0 120px;
+    flex: 0 0 100px;
     min-height: 500px;
   }
   article {
-    padding-top: 10px;
+    margin-top: 15px;
     flex: 1;
+    border: 1px solid #ccc;
     .tab-container {
       display: flex;
       width: 100%;

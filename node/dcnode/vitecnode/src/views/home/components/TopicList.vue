@@ -35,7 +35,7 @@ const tabObj = {
 };
 const router = useRouter();
 const goDetail = (id: string) => {
-  router.push("/topic/detail" + id);
+  router.push("/topic/detail/" + id);
 };
 </script>
 <style lang="less" scoped>

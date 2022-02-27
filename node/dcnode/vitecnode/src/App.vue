@@ -18,7 +18,8 @@ const $msg = tip;
 
 <style>
 #app {
-  padding: 0;
-  margin: 0;
+  padding-top: 60px;
+  height: 100%;
+  min-width: 800px;
 }
 </style>

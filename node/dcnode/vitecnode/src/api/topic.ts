@@ -1,6 +1,12 @@
 import instance from "./axios";
 
-import { TopicType, TopicIdType, AddTopicType, HandleFavType } from "@/types/";
+import {
+  TopicType,
+  TopicIdType,
+  AddTopicType,
+  HandleFavType,
+  AddReplyType,
+} from "@/types/";
 
 export const getTopicList = (params: TopicType) => {
   return instance({
@@ -52,6 +58,14 @@ export const getCollectionList = () => {
 export const handleFav = (params: HandleFavType) => {
   return instance({
     url: "/topic/deleteTopic",
+    method: "post",
+    data: params,
+  });
+};
+
+export const addReply = (params: AddReplyType) => {
+  return instance({
+    url: "/topic/addReply",
     method: "post",
     data: params,
   });

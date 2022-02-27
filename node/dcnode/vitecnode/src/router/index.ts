@@ -26,6 +26,11 @@ const routes: Array<RouteRecordRaw> = [
     name: "About",
     component: () => import("@/views/About.vue"), // 懒加载组件
   },
+  {
+    path: "/topic/detail/:id",
+    name: "TopicDetail",
+    component: () => import("@/views/home/components/TopicDetail.vue"),
+  },
 ];
 
 const router = createRouter({

@@ -10,7 +10,7 @@ export const useUserStore: any = defineStore({
   state: () => {
     return {
       id: "",
-      token: "sss",
+      token: "",
       loginName: "",
       avatarImg: "",
       isLogin: false,

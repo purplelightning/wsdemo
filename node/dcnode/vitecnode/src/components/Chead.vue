@@ -1,5 +1,5 @@
 <template>
-  <div class="chead">
+  <div id="head-wrapper">
     <router-link
       :key="index"
       v-for="(item, index) in headOption"
@@ -27,7 +27,7 @@
       <template #dropdown>
         <el-dropdown-menu>
           <el-dropdown-item @click="userStore.doLoginout">
-            <el-icon><HomeFilled /></el-icon>主页
+            <el-icon><User /></el-icon>主页
           </el-dropdown-item>
           <el-dropdown-item @click="goAddTopic">
             <el-icon><CirclePlus /></el-icon>发表话题
@@ -49,7 +49,7 @@ import {
   Avatar,
   CirclePlus,
   Tools,
-  HomeFilled,
+  User,
 } from "@element-plus/icons";
 
 const headOption = [
@@ -68,7 +68,7 @@ const goAddTopic = () => {
 };
 </script>
 <style lang="less" scoped>
-.chead {
+#head-wrapper {
   position: fixed;
   top: 0;
   left: 0;
@@ -76,10 +76,12 @@ const goAddTopic = () => {
   width: 100%;
   height: 60px;
   line-height: 60px;
+  z-index: 1000;
+
   background: linear-gradient(
     to right,
-    rgba(22, 22, 232, 0.5),
-    rgba(221, 151, 151, 0.4)
+    rgba(151, 22, 232, 1),
+    rgba(33, 151, 221, 1)
   );
   a {
     text-decoration: none;
@@ -88,8 +90,9 @@ const goAddTopic = () => {
     margin-left: 40px;
     line-height: 60px;
     display: inline-block;
+    color: #fff;
     &:hover {
-      color: #fff;
+      color: #0ff;
       font-size: 1.1em;
     }
   }
@@ -100,7 +103,9 @@ const goAddTopic = () => {
     float: right;
   }
   .active {
-    color: #fff;
+    color: #0ff;
+    text-shadow: #3faaff 1px 1px;
+    font-size: 1.1em;
   }
 }
 </style>
