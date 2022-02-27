@@ -61,6 +61,7 @@ export interface LoginParamType {
   loginName: string;
   avatarImg: string;
   token: string;
+  phone: string | null;
 }
 
 export interface ReplyItemType {

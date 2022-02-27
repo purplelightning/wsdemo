@@ -2,12 +2,16 @@ import { defineStore } from "pinia";
 import { LoginParamType } from "@/types";
 
 export interface userState {
-  name: string;
+  id: string;
+  token: string;
+  loginName: string;
+  avatarImg: string;
+  isLogin: boolean;
 }
 
-export const useUserStore: any = defineStore({
+export const useUserStore = defineStore({
   id: "user",
-  state: () => {
+  state: (): userState => {
     return {
       id: "",
       token: "",
@@ -32,5 +36,9 @@ export const useUserStore: any = defineStore({
       this.avatarImg = "";
       this.isLogin = false;
     },
+  },
+  // 开启数据缓存
+  persist: {
+    enabled: true,
   },
 });

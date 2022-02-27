@@ -15,14 +15,13 @@
         <div class="fav">
           <el-icon><CaretTop /></el-icon>{{ item.ups && item.ups.length }}
         </div>
-        <el-icon><Comment /></el-icon>
-        <i
-          class="el-icon-chat-dot-round icon"
+        <el-icon
           v-show="
             (userStore.token && !state.replyId) || state.replyId !== item.id
           "
           @click="openReply(item.id, item.author.name)"
-        ></i>
+          ><Comment
+        /></el-icon>
         <div
           class="icon"
           v-show="userStore.token && state.replyId && state.replyId === item.id"
@@ -48,14 +47,13 @@
           <div class="fav">
             <el-icon><CaretTop /></el-icon>{{ item.ups && item.ups.length }}
           </div>
-          <el-icon><Comment /></el-icon>
-          <i
-            class="el-icon-chat-dot-round icon"
+          <el-icon
             v-show="
               (userStore.token && !state.replyId) || state.replyId !== tt.id
             "
             @click="openReply(tt.id, tt.author.name)"
-          ></i>
+            ><Comment
+          /></el-icon>
           <div
             class="icon"
             v-show="userStore.token && state.replyId && state.replyId === tt.id"
@@ -89,6 +87,7 @@ const props = defineProps({
   replyList: Array,
   topicId: String,
 });
+const emits = defineEmits(["addReply"]);
 
 const state = reactive({
   replyId: "",
@@ -137,11 +136,9 @@ const addReplyFunc = () => {
     },
   };
   addReply(params).then((res) => {
-    console.log(res);
     if (res.status) {
       tip("回复成功~");
-      // TODO
-      // this.$emit("addReply");
+      emits("addReply");
       state.replyContent = "";
       state.replyId = "";
     }
@@ -190,6 +187,7 @@ const addReplyFunc = () => {
           margin-right: 5px;
         }
       }
+      .el-icon,
       .icon {
         display: inline-block;
         margin-right: 10px;

@@ -76,7 +76,13 @@ const login = () => {
       tip(res.msg);
       const obj = res.data;
       obj.avatarImg = baseUrl + obj.avatarImg;
-      userStore.doLogin(res.data);
+      userStore.doLogin({
+        token: res.data.token,
+        id: res.data.id,
+        phone: res.data.phone,
+        loginName: res.data.username,
+        avatarImg: res.data.avatarImg,
+      });
       router.push({ path: "/" });
     }
     state.disablebtn = false;

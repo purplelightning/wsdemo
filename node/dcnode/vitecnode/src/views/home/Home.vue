@@ -59,7 +59,6 @@ const changeList = (index: number) => {
 };
 
 const handlePageChange = (pageIndex: number) => {
-  console.log(pageIndex);
   state.pageIndex = pageIndex;
   getData();
 };

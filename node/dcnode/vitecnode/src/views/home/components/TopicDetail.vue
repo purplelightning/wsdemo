@@ -51,10 +51,14 @@
         v-show="state.info.replyList"
         :topicId="state.info._id"
         :replyList="state.info.replyList"
-        @addReplyFunc="getDetailInfo"
+        @addReply="getDetailInfo"
       ></reply-list>
-      <div class="add-reply" v-show="token">
-        <el-input type="textarea" rows="4" v-model="replyContent"></el-input>
+      <div class="add-reply" v-show="userStore.token">
+        <el-input
+          type="textarea"
+          rows="4"
+          v-model="state.replyContent"
+        ></el-input>
         <el-button type="primary" @click="addReplyFunc">回复</el-button>
       </div>
     </div>
@@ -87,7 +91,6 @@ const getDetailInfo = () => {
   };
   getTopicDetail(params).then((res) => {
     if (res.data) {
-      console.log(res.data);
       state.info = res.data;
     }
   });
