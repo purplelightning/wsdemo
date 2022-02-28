@@ -30,7 +30,7 @@
         v-show="
           state.info.author && state.info.author.name === userStore.loginName
         "
-        @click="deleteTopic"
+        @click="deleteTopicFunc"
         >删除</el-button
       >
     </div>
@@ -68,7 +68,7 @@
 import { onMounted, reactive } from "vue-demi";
 import { useRoute, useRouter } from "vue-router";
 import ReplyList from "./ReplyList.vue";
-import { addReply, getTopicDetail, handleFav } from "@/api/topic";
+import { addReply, deleteTopic, getTopicDetail, handleFav } from "@/api/topic";
 import { useUserStore } from "@/store/user";
 import { tip } from "@/utils";
 import { TopicIdType } from "@/types";
@@ -142,6 +142,17 @@ const editTopic = () => {
     topicId: state.info._id,
   };
   router.push({ name: "ManageTopic", params });
+};
+
+const deleteTopicFunc = () => {
+  deleteTopic({ id: state.info._id }).then((res) => {
+    if (res.status) {
+      tip(res.data);
+      router.replace({ name: "Home" });
+    } else {
+      tip(res.error, "error");
+    }
+  });
 };
 
 onMounted(() => {

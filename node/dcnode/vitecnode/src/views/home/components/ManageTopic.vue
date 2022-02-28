@@ -20,22 +20,20 @@ import { useRouter } from "vue-router";
 import { addTopic, updateTopic } from "@/api/topic";
 import { tip } from "@/utils";
 import { useUserStore } from "@/store/user";
-
-const props = defineProps({
-  topicId: String,
-});
-
-const state = reactive({
-  title: "",
-  content: "",
-});
-
-const userStore = useUserStore();
+import { UpdateTopicType } from "@/types";
 
 const router = reactive(useRouter());
 const type = computed(() => {
   return router.currentRoute?.params?.type;
 });
+
+const state = reactive({
+  title: router.currentRoute?.params?.ftitle || "",
+  content: router.currentRoute?.params?.fcontent || "",
+  topicId: router.currentRoute?.params?.topicId || "",
+});
+
+const userStore = useUserStore();
 
 const doSubmit = () => {
   if (!state.title || !state.content) {
@@ -49,7 +47,7 @@ const doSubmit = () => {
     author: userStore.loginName,
     avatarImg: userStore.avatarImg,
   };
-  if (!props.topicId) {
+  if (!state.topicId) {
     addTopic(params).then((res: any) => {
       if (res.status) {
         tip("话题添加成功");
@@ -63,8 +61,13 @@ const doSubmit = () => {
       }
     });
   } else {
-    params.id = props.topicId;
-    updateTopic(params).then((res) => {
+    const upParam = {
+      id: state.topicId,
+      title: state.title,
+      tab: "dev",
+      content: state.content,
+    };
+    updateTopic(upParam).then((res) => {
       if (res.status) {
         tip("话题修改成功");
         state.title = "";

@@ -4,6 +4,7 @@ import {
   TopicType,
   TopicIdType,
   AddTopicType,
+  UpdateTopicType,
   HandleFavType,
   AddReplyType,
 } from "@/types/";
@@ -32,7 +33,7 @@ export const addTopic = (params: AddTopicType) => {
   });
 };
 
-export const updateTopic = (params: AddTopicType) => {
+export const updateTopic = (params: UpdateTopicType) => {
   return instance({
     url: "/topic/updateTopic",
     method: "post",

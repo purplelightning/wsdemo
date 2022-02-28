@@ -7,7 +7,12 @@
         <div class="name">{{ item.top ? "置顶" : tabObj[item.tab] }}</div>
         <div class="title" @click="goDetail(item._id)">{{ item.title }}</div>
         <div class="last-reply" v-show="item.lastReplyAt">
-          {{ item.lastReplyAt ? item.lastReplyAt.slice(5) : "" }}
+          {{
+            item.lastReplyAt ? "回复于 " + item.lastReplyAt.slice(5, 16) : ""
+          }}
+        </div>
+        <div class="last-reply" v-show="!item.lastReplyAt">
+          {{ item.createTime ? item.createTime.slice(5, 16) : "" }}
         </div>
       </div>
     </div>

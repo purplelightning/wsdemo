@@ -27,11 +27,19 @@ export interface TopicIdType {
 }
 
 export interface AddTopicType {
+  id?: string;
   title: string;
   tab: string;
   content: string;
   author: string;
   avatarImg: string;
+}
+
+export interface UpdateTopicType {
+  id?: string;
+  title: string;
+  tab: string;
+  content: string;
 }
 
 export interface HandleFavType {
