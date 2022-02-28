@@ -21,7 +21,6 @@ export const baseUrl = proBaseUrl;
 import errorHandle from "./statusHandle";
 
 import { useUserStore } from "../store/user";
-const user = useUserStore();
 
 interface LoadingType {
   _target: any;
@@ -55,6 +54,7 @@ function myAxios(
 
   service.interceptors.request.use(
     (config: AxiosRequestConfig) => {
+      const user = useUserStore(); // 在用到的地方再引入，否则胡彪错
       const token = user.token;
       if (token && typeof window !== "undefined") {
         config.headers.Authorization = token;

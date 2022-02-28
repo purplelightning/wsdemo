@@ -22,6 +22,7 @@
       to="/login"
       >登录</router-link
     >
+    <a class="item" @click="goApi" :href="`${baseUrl}/apidoc`">API</a>
     <el-dropdown>
       <img
         :width="50"
@@ -50,6 +51,7 @@
 import { useUserStore } from "@/store/user";
 import { useRouter } from "vue-router";
 import { computed, ref, Ref } from "vue";
+import { baseUrl } from "@/api/axios";
 import {
   SwitchButton,
   Avatar,
