@@ -1,3 +1,4 @@
+import { toLogin } from "@/utils";
 import axios from "axios";
 import { ElMessage } from "element-plus";
 /**
@@ -22,7 +23,7 @@ const httpErrorStatusHandle = (error: any) => {
         message = "您未登录，或者登录已经超时，请先登录！";
         break;
       case 403:
-        message = "您没有权限操作！";
+        message = "token过期或无效";
         break;
       case 404:
         message = `请求地址出错: ${error.response.config.url}`;
@@ -60,6 +61,9 @@ const httpErrorStatusHandle = (error: any) => {
   if (error.message.includes("Network"))
     message = window.navigator.onLine ? "服务端异常！" : "您断网了！";
   ElMessage.error(message);
+  if (error.response.status === 403) {
+    toLogin();
+  }
 };
 
 export default httpErrorStatusHandle;

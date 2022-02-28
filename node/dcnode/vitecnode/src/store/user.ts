@@ -20,7 +20,11 @@ export const useUserStore = defineStore({
       isLogin: false,
     };
   },
-  getters: {},
+  getters: {
+    getAvatar: (state: userState) => {
+      return state.avatarImg;
+    },
+  },
   actions: {
     doLogin(params: LoginParamType) {
       this.token = params.token;
@@ -35,6 +39,9 @@ export const useUserStore = defineStore({
       this.loginName = "";
       this.avatarImg = "";
       this.isLogin = false;
+    },
+    setAvatar(url: string) {
+      this.avatarImg = url;
     },
   },
   // 开启数据缓存

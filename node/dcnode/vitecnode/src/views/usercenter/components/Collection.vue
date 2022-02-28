@@ -21,7 +21,6 @@ onMounted(() => {
 });
 const getCollection = () => {
   getCollectionList().then((res) => {
-    console.log(res);
     if (res.data) {
       state.originList = res.data.map((v: CollectionItemType) => {
         return {

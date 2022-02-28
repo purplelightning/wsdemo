@@ -8,9 +8,15 @@
       <span class="name">头像:</span>
       <img width="50" height="50" :src="userStore.avatarImg" />
     </div>
-    <el-button @click="showAvatarModal">修改头像</el-button>
+    <el-button @click="showFlag = true">修改头像</el-button>
+    <el-button type="primary" @click="showCropperFlag = true"
+      >修改头像高级</el-button
+    >
     <div v-show="showFlag">
-      <change-avatar @closeAvatar="showFlag = false"></change-avatar>
+      <ChangeAvatar @closeAvatar="showFlag = false"></ChangeAvatar>
+    </div>
+    <div v-show="showCropperFlag">
+      <CropperAvatar @closeAvatar="showCropperFlag = false"></CropperAvatar>
     </div>
   </div>
 </template>
@@ -18,11 +24,11 @@
 import { useUserStore } from "@/store/user";
 import { Ref, ref } from "vue-demi";
 const userStore = useUserStore();
+import ChangeAvatar from "@/components/ChangeAvatar.vue";
+import CropperAvatar from "@/components/CropperAvatar.vue";
 
 const showFlag: Ref<boolean> = ref(false);
-const showAvatarModal = () => {
-  showFlag.value = true;
-};
+const showCropperFlag: Ref<boolean> = ref(false);
 </script>
 <style lang="less" scoped>
 #info {

@@ -23,7 +23,13 @@
       >登录</router-link
     >
     <el-dropdown>
-      <span v-show="userStore.isLogin" class="item center">个人中心</span>
+      <img
+        :width="50"
+        :height="50"
+        :src="userStore.getAvatar"
+        v-show="userStore.isLogin"
+        class="avatar"
+      />
       <template #dropdown>
         <el-dropdown-menu>
           <el-dropdown-item @click="goCenter">
@@ -50,7 +56,7 @@ import {
   CirclePlus,
   Tools,
   User,
-} from "@element-plus/icons";
+} from "@element-plus/icons-vue";
 
 const headOption = [
   { path: "/", name: "CNODE社区" },
@@ -105,8 +111,14 @@ const goLogin = () => {
   .item:first-of-type {
     min-width: 90px;
   }
-  .center {
-    float: right;
+  .el-dropdown {
+    position: absolute;
+    top: 5px;
+    right: 60px;
+  }
+  .avatar {
+    border-radius: 50%;
+    cursor: pointer;
   }
   .active {
     color: #0ff;

@@ -79,7 +79,7 @@ import { computed, reactive } from "vue-demi";
 import { useUserStore } from "@/store/user";
 import { addReply } from "@/api/topic";
 import { tip } from "@/utils";
-import { Comment, CaretTop } from "@element-plus/icons";
+import { Comment, CaretTop } from "@element-plus/icons-vue";
 
 const userStore = useUserStore();
 

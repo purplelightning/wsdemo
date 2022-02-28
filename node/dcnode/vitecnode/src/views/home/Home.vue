@@ -85,7 +85,7 @@ onMounted(() => {
   getData();
 });
 </script>
-<style lang="less" scoped>
+<style lang="less">
 #home {
   display: flex;
   width: 100%;
@@ -132,11 +132,14 @@ onMounted(() => {
         }
       }
     }
-    .el-pagination {
-      padding-top: 10px;
-      padding-bottom: 10px;
-      background: #fff;
-    }
+  }
+}
+.el-pagination {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background: #fff;
+  .el-pagination__sizes {
+    margin-left: 20px;
   }
 }
 </style>

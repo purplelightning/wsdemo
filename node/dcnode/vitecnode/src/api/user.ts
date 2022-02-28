@@ -43,7 +43,7 @@ export const getRegister = (params: LoginType) => {
   });
 };
 
-export const uploadAvatar = (params: any) => {
+export const uploadUserAvatar = (params: any) => {
   return instance({
     url: "/user/uploadAvatar",
     method: "post",
