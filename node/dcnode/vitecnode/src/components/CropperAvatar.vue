@@ -2,7 +2,12 @@
   <div class="file-wrapper">
     <div class="bboo">
       <!-- 1.一个用于获取上传文件的input，type="file"，并且监听onchange事件  -->
-      <input type="file" accept="image/*" id="imgReader" @change="loadingImg" />
+      <el-input
+        type="file"
+        accept="image/*"
+        id="imgReader"
+        @change="loadingImg"
+      />
 
       <!-- 2.一个用于给Cropper.js覆盖使用的img  -->
       <img id="cropImg" />
@@ -11,7 +16,7 @@
       <div class="previewText">裁剪预览</div>
       <div class="previewBox"></div>
       <div class="previewBoxRound"></div>
-      <button @click="uploadAvatar">上传头像</button>
+      <el-button @click="uploadAvatar">上传头像</el-button>
     </div>
   </div>
 </template>
@@ -104,6 +109,7 @@ const uploadAvatar = () => {
   bottom: 0;
   width: 100%;
   background: rgba(111, 111, 111, 0.7);
+  z-index: 1000;
   .bboo {
     position: absolute;
     left: 140px;
@@ -117,18 +123,27 @@ const uploadAvatar = () => {
 .inpuFile {
   display: none;
 }
-.previewBox,
-.previewBoxRound {
+.previewText {
   position: absolute;
-  right: -100px;
-  top: 20px;
-  box-shadow: 0 0 5px #adadad;
+  right: 20px;
+  top: 60px;
+  color: #fff;
+}
+.previewBox {
+  position: absolute;
+  right: 0px;
+  top: 90px;
   width: 100px;
   height: 100px;
   overflow: hidden; /*这个超出设置为隐藏很重要，否则就会整个显示出来了*/
 }
 .previewBoxRound {
-  top: 180px;
+  position: absolute;
+  right: 0;
+  top: 200px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%; /*设置为圆形*/
+  overflow: hidden; /*这个超出设置为隐藏很重要，否则就会整个显示出来了*/
 }
 </style>

@@ -66,7 +66,7 @@
 </template>
 <script lang="ts" setup name="TopicDetail">
 import { onMounted, reactive } from "vue-demi";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import ReplyList from "./ReplyList.vue";
 import { addReply, getTopicDetail, handleFav } from "@/api/topic";
 import { useUserStore } from "@/store/user";
@@ -80,6 +80,7 @@ const state = reactive({
 
 const route = useRoute();
 const userStore = useUserStore();
+const router = useRouter();
 
 const getDetailInfo = () => {
   if (!route.params.id) {
@@ -130,6 +131,17 @@ const handleFavFunc = () => {
       tip(res.error, "error");
     }
   });
+};
+
+const editTopic = () => {
+  console.log("bbbbb");
+  const params = {
+    type: "edit",
+    ftitle: state.info.title,
+    fcontent: state.info.content,
+    topicId: state.info._id,
+  };
+  router.push({ name: "ManageTopic", params });
 };
 
 onMounted(() => {

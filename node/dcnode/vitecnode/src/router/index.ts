@@ -32,6 +32,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/home/components/TopicDetail.vue"),
   },
   {
+    path: "/ManageTopic",
+    name: "ManageTopic",
+    component: () => import("@/views/home/components/ManageTopic.vue"),
+  },
+  {
     path: "/center",
     name: "center",
     component: () => import("@/views/usercenter/Usercenter.vue"),

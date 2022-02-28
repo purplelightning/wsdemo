@@ -26,9 +26,11 @@ import { Ref, ref } from "vue-demi";
 const userStore = useUserStore();
 import ChangeAvatar from "@/components/ChangeAvatar.vue";
 import CropperAvatar from "@/components/CropperAvatar.vue";
+import { useRouter } from "vue-router";
 
 const showFlag: Ref<boolean> = ref(false);
 const showCropperFlag: Ref<boolean> = ref(false);
+const router = useRouter();
 </script>
 <style lang="less" scoped>
 #info {

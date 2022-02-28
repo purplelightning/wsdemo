@@ -69,7 +69,8 @@ const userStore = useUserStore();
 const router = useRouter();
 const currentPath: Ref<string> = computed(() => router.currentRoute.value.path);
 const goAddTopic = () => {
-  router.push({ path: "/addTopic" });
+  console.log("bbbbb");
+  router.push({ name: "ManageTopic", params: { type: "add" } });
 };
 const goCenter = () => {
   router.push("/center");
@@ -113,12 +114,19 @@ const goLogin = () => {
   }
   .el-dropdown {
     position: absolute;
-    top: 5px;
+    top: 2px;
     right: 60px;
   }
   .avatar {
     border-radius: 50%;
     cursor: pointer;
+    border: 2px solid #fff;
+    &:hover {
+      position: relative;
+      top: -2px;
+      width: 60px;
+      height: 60px;
+    }
   }
   .active {
     color: #0ff;
