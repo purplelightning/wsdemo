@@ -57,7 +57,9 @@ function myAxios(
       const user = useUserStore(); // 在用到的地方再引入，否则胡彪错
       const token = user.token;
       if (token && typeof window !== "undefined") {
-        config.headers.Authorization = token;
+        if (config && config.headers) {
+          config.headers.Authorization = token;
+        }
       }
       removePending(config);
       customOptions.repeatRequestCancel && addPending(config);

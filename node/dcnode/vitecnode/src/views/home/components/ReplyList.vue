@@ -19,7 +19,7 @@
           v-show="
             (userStore.token && !state.replyId) || state.replyId !== item.id
           "
-          @click="openReply(item.id, item.author.name)"
+          @click="openReply(item.replyId || item.id, item.author.name)"
           ><Comment
         /></el-icon>
         <div
@@ -51,7 +51,7 @@
             v-show="
               (userStore.token && !state.replyId) || state.replyId !== tt.id
             "
-            @click="openReply(tt.id, tt.author.name)"
+            @click="openReply(tt.replyId || tt.id, tt.author.name)"
             ><Comment
           /></el-icon>
           <div
@@ -113,8 +113,7 @@ const levelList = computed(() => {
           if (i.additionArr) {
             i.additionArr.push(j);
           } else {
-            i.additionArr = [];
-            i.additionArr.push(j);
+            i.additionArr = [j];
           }
         }
       }

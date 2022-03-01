@@ -74,7 +74,13 @@ import { tip } from "@/utils";
 import { TopicIdType } from "@/types";
 
 const state = reactive({
-  info: {},
+  info: {
+    _id: "",
+    title: "",
+    content: "",
+    replyList: [],
+    replyCount: 0,
+  },
   replyContent: "",
 });
 
@@ -105,7 +111,7 @@ const addReplyFunc = () => {
     id: state.info._id,
     content: state.replyContent,
     author: {
-      name: userStore.loginname,
+      name: userStore.loginName,
       avatarImg: userStore.avatarImg,
     },
   };

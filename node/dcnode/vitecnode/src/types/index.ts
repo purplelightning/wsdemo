@@ -55,7 +55,7 @@ export interface AuthorType {
 export interface AddReplyType {
   id: string;
   content: string;
-  replyId: string;
+  replyId?: string;
   author: AuthorType;
 }
 
