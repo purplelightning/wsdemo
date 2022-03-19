@@ -11,7 +11,6 @@ export const tip = (msg: string, msgType?: any) => {
 };
 
 export const toLogin = () => {
-  console.log(router);
   router.replace({
     path: "/login",
   });

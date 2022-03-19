@@ -140,7 +140,6 @@ const handleFavFunc = () => {
 };
 
 const editTopic = () => {
-  console.log("bbbbb");
   const params = {
     type: "edit",
     ftitle: state.info.title,

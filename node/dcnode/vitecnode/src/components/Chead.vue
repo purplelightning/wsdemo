@@ -71,7 +71,6 @@ const userStore = useUserStore();
 const router = useRouter();
 const currentPath: Ref<string> = computed(() => router.currentRoute.value.path);
 const goAddTopic = () => {
-  console.log("bbbbb");
   router.push({ name: "ManageTopic", params: { type: "add" } });
 };
 const goCenter = () => {
