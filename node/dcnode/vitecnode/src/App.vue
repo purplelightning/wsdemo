@@ -5,6 +5,7 @@ import { provide } from "vue";
 
 import Chead from "@/components/Chead.vue";
 import { tip } from "@/utils";
+import Myfoot from "@/components/Myfoot.vue"
 
 provide("$msg", tip);
 
@@ -13,6 +14,7 @@ const $msg = tip;
 
 <template>
   <Chead></Chead>
+  <myfoot></myfoot>
   <router-view></router-view>
 </template>
 
