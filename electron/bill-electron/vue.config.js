@@ -17,6 +17,7 @@ module.exports = defineConfig({
   },
   pluginOptions: {
     electronBuilder: {
+      preload: "./src/preload.js",
       builderOptions: {
         "appId": "553344", // 程序的包ID
         "productName": "发票处理",

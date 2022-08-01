@@ -1,6 +1,8 @@
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
+const path = require('path');
+
 const isDevelopment = process.env.NODE_ENV !== 'production'
  
 // Scheme must be registered before the app is ready
@@ -17,9 +19,9 @@ async function createWindow() {
       
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
-      nodeIntegration: true,
+      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION,
-      preload: __dirname+'/preload.js'
+      preload: path.join(__dirname, "./preload.js"),
     }
   })
  
@@ -107,3 +109,8 @@ function getPdfInfo(uploadPath, opts, originalName){
   });
   })
 }
+
+ipcMain.on("convert-pdf",(event, filePath, fileName )=>{
+  console.log(filePath);
+  console.log(fileName);
+})

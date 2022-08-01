@@ -1,19 +1,48 @@
 <template>
   <div id="info">
     <div class="top">
-      <label>姓名：</label><input v-model="user" type="text" placeholder="请输入姓名，否则以发票名/压缩包名命名"/>
+      <label>姓名：</label
+      ><input
+        v-model="user"
+        type="text"
+        placeholder="请输入姓名，否则以发票名/压缩包名命名"
+      />
     </div>
     <div class="item">
       <span class="des">单张发票重命名</span>
-      <input ref="pdobj" type="file" accept=".pdf" @change="handlePdf('pdf')"/>
+      <div class="upload-wrapper">
+        <input
+          class="upload-file"
+          ref="pdobj"
+          type="file"
+          accept=".pdf"
+          @change="handlePdf('pdf')"
+        />
+      </div>
     </div>
     <div class="item">
       <span class="des">单张发票重命名生成Excel</span>
-      <input ref="exobj" type="file" accept=".pdf" @change="handlePdf('excel')"/>
+      <div class="upload-wrapper">
+        <input
+          class="upload-file"
+          ref="exobj"
+          type="file"
+          accept=".pdf"
+          @change="handlePdf('excel')"
+        />
+      </div>
     </div>
     <div class="item">
-      <span class="des">发票压缩包处理<br/>(zip格式，需要不带目录压缩)</span>
-      <input ref="ziobj" type="file" accept=".zip" @change="handleZip()"/>
+      <span class="des">发票压缩包处理<br />(zip格式，需要不带目录压缩)</span>
+      <div class="upload-wrapper">
+        <input
+          class="upload-file"
+          ref="ziobj"
+          type="file"
+          accept=".zip"
+          @change="handleZip()"
+        />
+      </div>
       <div id="zip-display"></div>
       <div class="circle-progress"></div>
       <div class="line-progress"></div>
@@ -23,46 +52,35 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
-import { uploadDir, outputDir } from "../utils/config";
+import { computed, ref } from "vue"
+import { uploadDir, outputDir } from "../utils/config"
 
-const user = ref("");
-const pdobj = ref(null);
-const exobj = ref(null);
-const ziobj = ref(null);
+const user = ref("")
+const pdobj = ref(null)
+const exobj = ref(null)
+const ziobj = ref(null)
 
 const handlePdf = (type) => {
-  console.log(type);
-  let dom = null;
+  let dom = null
   if (type === "pdf") {
-    dom = pdobj.value;
+    dom = pdobj.value
   } else if (type === "excel") {
-    dom = exobj.value;
+    dom = exobj.value
   }
-  const tmp = dom.files[0];
+  const tmp = dom.files[0]
   let filePath = tmp.path,
-    fileName = user.value || tmp.name;
-  const dataBuffer = fs.readFileSync(filePath);
-  const uploadPath = uploadDir + fileName;
-  fs.writeFileSync(uploadPath, dataBuffer);
-  console.log(fileName + "写入成功");
+    fileName = user.value || tmp.name
+  electron.ipcRenderer.send("convert-pdf", filePath, fileName)
 
-  ipcRenderer.send("convert-pdf", uploadPath, fileName);
-
-  // 生成图片
-  let name = fileName.split(".")[0];
-  const opts = {
-    format: "jpeg",
-    scale: 2048,
-    out_dir: outputDir,
-    out_prefix: path.basename(uploadPath, path.extname(uploadPath)),
-    page: null,
-  };
-};
+  // const dataBuffer = fs.readFileSync(filePath)
+  // const uploadPath = uploadDir + fileName
+  // fs.writeFileSync(uploadPath, dataBuffer)
+  // console.log(fileName + "写入成功")
+}
 
 const handleZip = () => {
-  console.log("zip");
-};
+  console.log("zip")
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -106,6 +124,27 @@ const handleZip = () => {
       vertical-align: top;
       padding: 2px 3px;
       cursor: pointer;
+    }
+    .upload-wrapper {
+      display: inline-block;
+      width: 100px;
+      height: 30px;
+      line-height: 30px;
+      background: #409eff;
+      position: relative;
+      text-align: center;
+      color: #ffffff;
+      border-radius: 5px;
+      .upload-file {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /*透明度为0*/
+        opacity: 0;
+        cursor: pointer;
+      }
     }
   }
   #zip-display {
