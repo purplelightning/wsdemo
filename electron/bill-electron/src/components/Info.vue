@@ -3,6 +3,7 @@
     <div class="top">
       <label>姓名：</label
       ><input
+        id="name"
         v-model="user"
         type="text"
         placeholder="请输入姓名，否则以发票名/压缩包名命名"
@@ -11,6 +12,7 @@
     <div class="item">
       <span class="des">单张发票重命名</span>
       <div class="upload-wrapper">
+        <p>上传文件</p>
         <input
           class="upload-file"
           ref="pdobj"
@@ -19,6 +21,7 @@
           @change="handlePdf('pdf')"
         />
       </div>
+      <div class="file-name">{{state.pname}}</div>
     </div>
     <div class="item">
       <span class="des">单张发票重命名生成Excel</span>
@@ -52,13 +55,19 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue"
+import { computed, reactive, ref } from "vue"
 import { uploadDir, outputDir } from "../utils/config"
 
 const user = ref("")
 const pdobj = ref(null)
 const exobj = ref(null)
 const ziobj = ref(null)
+
+const state = reactive({
+  pname: '',
+  ename: '',
+  zname: ''
+})
 
 const handlePdf = (type) => {
   let dom = null
@@ -70,6 +79,7 @@ const handlePdf = (type) => {
   const tmp = dom.files[0]
   let filePath = tmp.path,
     fileName = user.value || tmp.name
+    state.pname = tmp.name
   electron.ipcRenderer.send("convert-pdf", filePath, fileName)
 
   // const dataBuffer = fs.readFileSync(filePath)
@@ -89,28 +99,30 @@ const handleZip = () => {
   min-height: 600px;
   .top {
     margin-bottom: 20px;
-    padding-left: 20px;
+    padding: 5px 15px;
     width: 100%;
-    height: 50px;
     line-height: 50px;
     border: 1px solid #ccc;
+    box-sizing: border-box;
     label {
       font-size: 16px;
       color: #51ece2;
     }
-    input {
-      padding: 2px 3px;
-      cursor: pointer;
-      border: none;
-    }
     #name {
+      padding: 2px 3px;
       width: 280px;
       height: 24px;
-      cursor: default;
+      cursor: text;
       border-radius: 2px;
+      border: 1px solid #ccc;
+      outline: none;
+      &:focus-visible{
+        border: 2px solid #409eff;
+      }
     }
   }
   .item {
+    position: relative;
     margin-bottom: 20px;
     padding: 20px 15px;
     border: 1px solid #ccc;
@@ -120,31 +132,42 @@ const handleZip = () => {
       width: 220px;
       color: #51ece2;
     }
-    input {
-      vertical-align: top;
-      padding: 2px 3px;
-      cursor: pointer;
-    }
     .upload-wrapper {
       display: inline-block;
-      width: 100px;
-      height: 30px;
-      line-height: 30px;
-      background: #409eff;
       position: relative;
+      width: 150px;
+      height: 30px;
       text-align: center;
-      color: #ffffff;
       border-radius: 5px;
+      p{
+        z-index: 0;
+        width: 100%;
+        padding: 10px 0;
+        background: #00bfff;
+        color: #fff;
+        font-size: 12px;
+      }
       .upload-file {
         position: absolute;
         top: 0;
         left: 0;
+        bottom: 0;
+        right: 0;
         width: 100%;
         height: 100%;
         /*透明度为0*/
         opacity: 0;
         cursor: pointer;
       }
+    }
+    .file-name{
+      position: absolute;
+      top: 30px;
+      left: 400px;
+      width: 400px;
+      height: 24px;
+      font-size: 14px;
+      color:#00bfff;
     }
   }
   #zip-display {
