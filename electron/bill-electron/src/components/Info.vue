@@ -12,7 +12,7 @@
     <div class="item">
       <span class="des">单张发票重命名</span>
       <div class="upload-wrapper">
-        <p>上传文件</p>
+        <p>选择文件/拖拽到此处</p>
         <input
           class="upload-file"
           ref="pdobj"
@@ -55,7 +55,7 @@
 </template>
 
 <script setup>
-import { computed, reactive, ref } from "vue"
+import { computed, onMounted, reactive, ref } from "vue"
 import { uploadDir, outputDir } from "../utils/config"
 
 const user = ref("")
@@ -76,10 +76,10 @@ const handlePdf = (type) => {
   } else if (type === "excel") {
     dom = exobj.value
   }
-  const tmp = dom.files[0]
-  let filePath = tmp.path,
-    fileName = user.value || tmp.name
-    state.pname = tmp.name
+  const file = dom.files[0]
+  state.pname = file.name
+  let filePath = file.path,
+    fileName = user.value || file.name
   electron.ipcRenderer.send("convert-pdf", filePath, fileName)
 
   // const dataBuffer = fs.readFileSync(filePath)
@@ -91,6 +91,27 @@ const handlePdf = (type) => {
 const handleZip = () => {
   console.log("zip")
 }
+
+onMounted(()=>{
+  pdobj.value.addEventListener('drop', e=>{
+    e.preventDefault()
+    e.stopPropagation()
+
+    const files=e.dataTransfer.files;
+    if(files.length){
+      const file = files[0]
+      console.log(file)
+      state.pname = file.name
+      let filePath = file.path,
+        fileName = user.value || file.name
+      electron.ipcRenderer.send("convert-pdf", filePath, fileName)
+    }
+  })
+  pdobj.value.addEventListener('dragover', e=>{
+    e.preventDefault()
+    e.stopPropagation()
+  })
+})
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -127,7 +148,7 @@ const handleZip = () => {
     padding: 20px 15px;
     border: 1px solid #ccc;
     .des {
-      vertical-align: top;
+      vertical-align: middle;
       display: inline-block;
       width: 220px;
       color: #51ece2;
@@ -136,16 +157,17 @@ const handleZip = () => {
       display: inline-block;
       position: relative;
       width: 150px;
-      height: 30px;
       text-align: center;
       border-radius: 5px;
       p{
         z-index: 0;
         width: 100%;
-        padding: 10px 0;
-        background: #00bfff;
-        color: #fff;
-        font-size: 12px;
+        padding: 20px 0;
+        background: #fff;
+        border: 3px solid #00bfff;
+        color: #00bfff;
+        font-size: 14px;
+        border-radius: 5px;
       }
       .upload-file {
         position: absolute;
@@ -162,7 +184,7 @@ const handleZip = () => {
     }
     .file-name{
       position: absolute;
-      top: 30px;
+      top: 40px;
       left: 400px;
       width: 400px;
       height: 24px;

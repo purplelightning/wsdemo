@@ -7,6 +7,7 @@
     </div>
     <button id="open-out" class="btn" @click="open">输出目录</button>
     <button id="delete-out" class="btn" @click="deleteOutput">清空输出目录</button>
+    <button id="reset" class="btn" @click="reset">重置</button>
     <Info/>
   </div>
 </template>
@@ -15,12 +16,15 @@
 import Info from "@/components/Info.vue";
 
 const open = () => {
-  console.log("oepn");
+  console.log("open");
 };
 
 const deleteOutput = () => {
   console.log("delete");
 };
+const reset = () => {
+  console.log('reset')
+}
 </script>
 <style lang="less" scoped>
 .home {
@@ -41,21 +45,23 @@ h2 {
   height: 40px;
   line-height: 40px;
   text-align: center;
-  color: #fff;
-  border: 1px solid #ccc;
+  border: 1px solid #666;
+  color: #666;
   border-radius: 4px;
   cursor: pointer;
+  background: #fff;
   &:hover{
-    font-size: 15px;
-    text-shadow: 1px 1px 1px blue;
+    color: cyan;
+    border: 1px solid cyan;
   }
 }
 #open-out {
-  right: 150px;
-  background: #33aa33;
+  right: 280px;
 }
 #delete-out {
-  right: 10px;
-  background: #dd3333;
+  right: 140px;
+}
+#reset {
+  right: 0;
 }
 </style>
