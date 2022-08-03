@@ -1,7 +1,14 @@
-import { app, protocol, BrowserWindow, ipcMain } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain, shell } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 const path = require('path');
+const fs = require('fs');
+import config from './utils/config'
+require('child_process');
+
+const pdfPoppler = require("pdf-poppler"); // pdf转图片
+
+const { uploadDir, outputDir, tableHeader } = config
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
  
@@ -81,36 +88,106 @@ if (isDevelopment) {
   }
 }
 
-const pdfPoppler = require("pdf-poppler"); // pdf转图片
+
+
+
+
+// 业务逻辑-----------------------------------------------------
+
+if(!fs.existsSync(uploadDir)){
+  fs.mkdirSync(uploadDir)
+}
+if(!fs.existsSync(outputDir)){
+  fs.mkdirSync(outputDir)
+}
+
+ipcMain.on('open-output', (event) => {
+  shell.openPath(outputDir)
+})
+
+ipcMain.on("convert-pdf",async (event, filePath, fileName, originName )=>{
+  const dataBuffer = fs.readFileSync(filePath)
+  const uploadPath = uploadDir + fileName
+  fs.writeFileSync(uploadPath, dataBuffer)
+  console.log(fileName + "写入成功")
+
+  let finalName = fileName.split(".")[0];
+  const opts = {
+    format: "jpeg",
+    scale: 2048,
+    out_dir: outputDir,
+    out_prefix: path.basename(uploadPath, path.extname(uploadPath)),
+    page: null,
+  };
+
+  console.log(uploadPath)
+  console.log(opts)
+  console.log(originName)
+
+  getPdfInfo(uploadPath, opts, originName)
+  // let info = await getPdfInfo(uploadPath, opts, originName)
+  // console.log(info)
+  // const arr = info.split(',')
+  // const newFile = `${outputDir}${arr[2]}_${arr[3]}_${finalName}.pdf`;
+  // fs.rename(uploadPath, newFile, (err) => {
+  //   if (err) {
+  //     console.log(err)
+  //   } else {
+  //     addContent(`输出文件：${newFile}`)
+  //   }
+  // });
+})
+
 
 function getPdfInfo(uploadPath, opts, originalName){
-  return new Promise((resolve,reject) => {
-    const pic = opts.out_dir + "\\" + opts.out_prefix + "-1.jpg";
+  const pic = opts.out_dir + "\\" + opts.out_prefix + "-1.jpg";
+    console.log('-----------')
+    console.log(pic)
     // 有同名的图片，先删除，防止无法解析
     if(fs.existsSync(pic)){
       fs.unlinkSync(pic)
     }
     // 生成图片
-  pdfPoppler.convert(uploadPath, opts)
-  .then((res) => {
-    console.log("Successfully converted： ");
-    // 解析二维码
-    qrcode.scan(pic)
-      .then((result) => {
-        fs.unlinkSync(pic)
-        resolve(result.data)
-      }).catch((error) => {
-        console.log('失败的图片：'+ pic)
-        addContent(`图片 ${originalName} 解析失败`)
-      });
-  })
-  .catch((error) => {
-    reject(error);
-  });
-  })
-}
+    pdfPoppler.convert(uploadPath, opts)
+    .then((res) => {
+      console.log("Successfully converted： ");
+      // 解析二维码
+      qrcode.scan(pic)
+        .then((result) => {
+          fs.unlinkSync(pic)
+          resolve(result.data)
+        }).catch((error) => {
+          console.log('失败的图片：'+ pic)
+          addContent(`图片 ${originalName} 解析失败`)
+        });
+    })
 
-ipcMain.on("convert-pdf",(event, filePath, fileName )=>{
-  console.log(filePath);
-  console.log(fileName);
-})
+  // return new Promise((resolve,reject) => {
+  //   const pic = opts.out_dir + "\\" + opts.out_prefix + "-1.jpg";
+  //   console.log('-----------')
+  //   console.log(pic)
+  //   // 有同名的图片，先删除，防止无法解析
+  //   if(fs.existsSync(pic)){
+  //     fs.unlinkSync(pic)
+  //   }
+  //   // 生成图片
+  //   pdfPoppler.convert(uploadPath, opts)
+  //   .then((res) => {
+  //     console.log("Successfully converted： ");
+  //     // 解析二维码
+  //     qrcode.scan(pic)
+  //       .then((result) => {
+  //         fs.unlinkSync(pic)
+  //         resolve(result.data)
+  //       }).catch((error) => {
+  //         console.log('失败的图片：'+ pic)
+  //         addContent(`图片 ${originalName} 解析失败`)
+  //       });
+  //   })
+  //   .catch((error) => {
+  //     console.log('bbbbbbbbb')
+  //     console.log('zzzzzzzzzzz')
+  //     reject(error);
+  //   });
+  // })
+}

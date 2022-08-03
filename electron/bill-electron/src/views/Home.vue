@@ -16,11 +16,11 @@
 import Info from "@/components/Info.vue";
 
 const open = () => {
-  console.log("open");
+  electron.ipcRenderer.send("open-output");
 };
 
 const deleteOutput = () => {
-  console.log("delete");
+  electron.ipcRenderer.send("delete-output");
 };
 const reset = () => {
   console.log('reset')

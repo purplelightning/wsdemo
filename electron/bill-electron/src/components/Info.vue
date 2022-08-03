@@ -55,62 +55,82 @@
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref } from "vue"
-import { uploadDir, outputDir } from "../utils/config"
+import { computed, onMounted, onUnmounted, reactive, ref } from "vue";
 
-const user = ref("")
-const pdobj = ref(null)
-const exobj = ref(null)
-const ziobj = ref(null)
+const user = ref("");
+const pdobj = ref(null);
+const exobj = ref(null);
+const ziobj = ref(null);
 
 const state = reactive({
-  pname: '',
-  ename: '',
-  zname: ''
-})
+  pname: "",
+  ename: "",
+  zname: "",
+});
 
 const handlePdf = (type) => {
-  let dom = null
+  let dom = null;
   if (type === "pdf") {
-    dom = pdobj.value
+    dom = pdobj.value;
   } else if (type === "excel") {
-    dom = exobj.value
+    dom = exobj.value;
   }
-  const file = dom.files[0]
-  state.pname = file.name
+  const file = dom.files[0];
+  state.pname = file.name;
   let filePath = file.path,
-    fileName = user.value || file.name
-  electron.ipcRenderer.send("convert-pdf", filePath, fileName)
+    fileName = user.value || file.name;
+  electron.ipcRenderer.send("convert-pdf", filePath, fileName, state.pname);
 
   // const dataBuffer = fs.readFileSync(filePath)
   // const uploadPath = uploadDir + fileName
   // fs.writeFileSync(uploadPath, dataBuffer)
   // console.log(fileName + "写入成功")
-}
+};
 
 const handleZip = () => {
-  console.log("zip")
-}
+  console.log("zip");
+};
 
-onMounted(()=>{
-  pdobj.value.addEventListener('drop', e=>{
-    e.preventDefault()
-    e.stopPropagation()
+const setDragOverColor = (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  let pDom = e.target.previousSibling;
+  pDom.style.boxShadow = "5px 5px 5px #00bccc";
+};
+const removeDragOverColor = (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  let pDom = e.target.previousSibling;
+  pDom.style.boxShadow = "";
+};
 
-    const files=e.dataTransfer.files;
-    if(files.length){
-      const file = files[0]
-      console.log(file)
-      state.pname = file.name
-      let filePath = file.path,
-        fileName = user.value || file.name
-      electron.ipcRenderer.send("convert-pdf", filePath, fileName)
-    }
-  })
-  pdobj.value.addEventListener('dragover', e=>{
-    e.preventDefault()
-    e.stopPropagation()
-  })
+const sendDragFile = (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+
+  const files = e.dataTransfer.files;
+  if (files.length) {
+    const file = files[0];
+    console.log(file);
+    state.pname = file.name;
+    let filePath = file.path;
+    const fileName = user.value || file.name;
+    electron.ipcRenderer.send("convert-pdf", filePath, fileName);
+  }
+};
+
+onMounted(() => {
+  pdobj.value.addEventListener("dragenter", setDragOverColor);
+  pdobj.value.addEventListener("dragleave", removeDragOverColor);
+  pdobj.value.addEventListener("drop", removeDragOverColor);
+  pdobj.value.addEventListener("drop", sendDragFile);
+  pdobj.value.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  });
+});
+onUnmounted(()=>{
+
 })
 </script>
 
@@ -137,7 +157,7 @@ onMounted(()=>{
       border-radius: 2px;
       border: 1px solid #ccc;
       outline: none;
-      &:focus-visible{
+      &:focus-visible {
         border: 2px solid #409eff;
       }
     }
@@ -159,7 +179,12 @@ onMounted(()=>{
       width: 150px;
       text-align: center;
       border-radius: 5px;
-      p{
+      &:drag-over {
+        p {
+          color: red;
+        }
+      }
+      p {
         z-index: 0;
         width: 100%;
         padding: 20px 0;
@@ -182,14 +207,14 @@ onMounted(()=>{
         cursor: pointer;
       }
     }
-    .file-name{
+    .file-name {
       position: absolute;
       top: 40px;
       left: 400px;
       width: 400px;
       height: 24px;
       font-size: 14px;
-      color:#00bfff;
+      color: #00bfff;
     }
   }
   #zip-display {

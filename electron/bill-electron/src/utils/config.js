@@ -15,10 +15,10 @@ const tableHeader = [
 
 export default {
   // 开发
-  // uploadDir: path.join(__dirname, './upload/'),
-  // outputDir: path.join(__dirname, './output/'),
+  uploadDir: path.join(__dirname, './upload/'),
+  outputDir: path.join(__dirname, './output/'),
   // 生产
-  uploadDir: path.join(__dirname, '../upload/'),
-  outputDir: path.join(__dirname, '../output/'),
+  // uploadDir: path.join(__dirname, '../upload/'),
+  // outputDir: path.join(__dirname, '../output/'),
   tableHeader
 }
