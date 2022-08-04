@@ -4,7 +4,6 @@ import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 const path = require('path');
 const fs = require('fs');
 import config from './utils/config'
-require('child_process');
 
 const pdfPoppler = require("pdf-poppler"); // pdf转图片
 
@@ -120,9 +119,7 @@ ipcMain.on("convert-pdf",async (event, filePath, fileName, originName )=>{
     page: null,
   };
 
-  console.log(uploadPath)
-  console.log(opts)
-  console.log(originName)
+  console.log(pdfPoppler)
 
   getPdfInfo(uploadPath, opts, originName)
   // let info = await getPdfInfo(uploadPath, opts, originName)
@@ -160,6 +157,8 @@ function getPdfInfo(uploadPath, opts, originalName){
           console.log('失败的图片：'+ pic)
           addContent(`图片 ${originalName} 解析失败`)
         });
+    }).catch(err=>{
+      console.log(err)
     })
 
   // return new Promise((resolve,reject) => {
