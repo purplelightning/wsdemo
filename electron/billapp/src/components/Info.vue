@@ -18,10 +18,10 @@
           ref="pdobj"
           type="file"
           accept=".pdf"
-          @change="handlePdf('pdf')"
+          @change="selectPdf('pdf')"
         />
       </div>
-      <div class="file-name">{{state.pname}}</div>
+      <div class="file-name">{{ state.pname }}</div>
     </div>
     <div class="item">
       <span class="des">单张发票重命名生成Excel</span>
@@ -31,7 +31,7 @@
           ref="exobj"
           type="file"
           accept=".pdf"
-          @change="handlePdf('excel')"
+          @change="selectPdf('excel')"
         />
       </div>
     </div>
@@ -55,85 +55,80 @@
 </template>
 
 <script setup>
-import { computed, onMounted, onUnmounted, reactive, ref } from "vue";
+import { computed, onMounted, onUnmounted, reactive, ref } from "vue"
 
-import { ipcRenderer } from 'electron'
+import { ipcRenderer } from "electron"
 
-const user = ref("");
-const pdobj = ref(null);
-const exobj = ref(null);
-const ziobj = ref(null);
+import {handleSingle} from './info'
+
+
+const user = ref("")
+const pdobj = ref(null)
+const exobj = ref(null)
+const ziobj = ref(null)
 
 const state = reactive({
   pname: "",
   ename: "",
   zname: "",
-});
+})
 
-const handlePdf = (type) => {
-  let dom = null;
+const selectPdf = (type) => {
+  let dom = null
   if (type === "pdf") {
-    dom = pdobj.value;
+    dom = pdobj.value
   } else if (type === "excel") {
-    dom = exobj.value;
+    dom = exobj.value
   }
-  const file = dom.files[0];
-  state.pname = file.name;
-  let filePath = file.path,
-    fileName = user.value || file.name;
-  ipcRenderer.send("convert-pdf", filePath, fileName, state.pname);
-
-  // const dataBuffer = fs.readFileSync(filePath)
-  // const uploadPath = uploadDir + fileName
-  // fs.writeFileSync(uploadPath, dataBuffer)
-  // console.log(fileName + "写入成功")
-};
+  const file = dom.files[0]
+  state.pname = file.name
+  let filePath = file.path
+  let fileName = user.value || file.name
+  handleSingle(filePath, fileName, state.pname, 'excel')
+}
 
 const handleZip = () => {
-  console.log("zip");
-};
+  console.log("zip")
+}
 
 const setDragOverColor = (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  let pDom = e.target.previousSibling;
-  pDom.style.boxShadow = "5px 5px 5px #00bccc";
-};
+  e.preventDefault()
+  e.stopPropagation()
+  let pDom = e.target.previousSibling
+  pDom.style.boxShadow = "5px 5px 5px #00bccc"
+}
 const removeDragOverColor = (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  let pDom = e.target.previousSibling;
-  pDom.style.boxShadow = "";
-};
+  e.preventDefault()
+  e.stopPropagation()
+  let pDom = e.target.previousSibling
+  pDom.style.boxShadow = ""
+}
 
 const sendDragFile = (e) => {
-  e.preventDefault();
-  e.stopPropagation();
+  e.preventDefault()
+  e.stopPropagation()
 
-  const files = e.dataTransfer.files;
+  const files = e.dataTransfer.files
   if (files.length) {
-    const file = files[0];
-    console.log(file);
-    state.pname = file.name;
-    let filePath = file.path;
-    const fileName = user.value || file.name;
-    ipcRenderer.send("convert-pdf", filePath, fileName);
+    const file = files[0]
+    state.pname = file.name
+    let filePath = file.path
+    const fileName = user.value || file.name
+    handleSingle(filePath, fileName, state.pname, 'excel')
   }
-};
+}
 
 onMounted(() => {
-  pdobj.value.addEventListener("dragenter", setDragOverColor);
-  pdobj.value.addEventListener("dragleave", removeDragOverColor);
-  pdobj.value.addEventListener("drop", removeDragOverColor);
-  pdobj.value.addEventListener("drop", sendDragFile);
+  pdobj.value.addEventListener("dragenter", setDragOverColor)
+  pdobj.value.addEventListener("dragleave", removeDragOverColor)
+  pdobj.value.addEventListener("drop", removeDragOverColor)
+  pdobj.value.addEventListener("drop", sendDragFile)
   pdobj.value.addEventListener("dragover", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  });
-});
-onUnmounted(()=>{
-
+    e.preventDefault()
+    e.stopPropagation()
+  })
 })
+onUnmounted(() => {})
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

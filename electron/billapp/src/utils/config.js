@@ -1,7 +1,7 @@
 import path from 'path'
 const __dirname = path.resolve();
 
-const tableHeader = [
+export const tableHeader = [
   "姓名",
   "行号(必输)",
   "发票种类代码",
@@ -13,12 +13,19 @@ const tableHeader = [
   "班组",
 ];
 
-export default {
+export const getPicOptions = (outputDir, uploadPath) => {
+  return {
+    format: "jpeg",
+    scale: 2048,
+    out_dir: outputDir,
+    out_prefix: path.basename(uploadPath, path.extname(uploadPath)),
+    page: null,
+  }
+}
+
   // 开发
-  uploadDir: path.join(__dirname, './upload/'),
-  outputDir: path.join(__dirname, './output/'),
+  export const uploadDir = path.join(__dirname, './upload/')
+  export const outputDir = path.join(__dirname, './output/')
   // 生产
   // uploadDir: path.join(__dirname, '../upload/'),
   // outputDir: path.join(__dirname, '../output/'),
-  tableHeader
-}

@@ -5,10 +5,9 @@ import { join } from 'path'
 import fs from 'fs'
 import path from 'path'
 
-import config from '../../src/utils/config'
-const { uploadDir, outputDir, tableHeader } = config
-import func from "../../src/utils/funcs.js";
-const { getAllBillInfoByQrcode, deleteDirFunc } = func
+import { uploadDir, outputDir, tableHeader } from '../../src/utils/config'
+import func from "../../src/utils/common.js";
+const { deleteDirFunc } = func
 
 const pdfPoppler = require("pdf-poppler"); // pdf转图片
 import { Decoder } from "@nuintun/qrcode"; // 图片二维码解析
@@ -136,65 +135,3 @@ ipcMain.on('delete-output', event => {
   fs.mkdirSync(outputDir)
 })
 
-ipcMain.on("convert-pdf",async (event, filePath, fileName, originName )=>{
-  const dataBuffer = fs.readFileSync(filePath)
-  const uploadPath = uploadDir + fileName
-  fs.writeFileSync(uploadPath, dataBuffer)
-  console.log(fileName + "写入成功")
-
-  let finalName = fileName.split(".")[0];
-  const opts = {
-    format: "jpeg",
-    scale: 2048,
-    out_dir: outputDir,
-    out_prefix: path.basename(uploadPath, path.extname(uploadPath)),
-    page: null,
-  };
-
-  let pic = await getPdfInfo(uploadPath, opts, originName)
-  event.sender.send('readQrcode', pic)
-  return
-
-  let info:any = await getPdfInfo(uploadPath, opts, originName)
-  console.log(info)
-  const arr = info.split(',')
-  const newFile = `${outputDir}${arr[2]}_${arr[3]}_${finalName}.pdf`;
-  fs.rename(uploadPath, newFile, (err) => {
-    if (err) {
-      console.log(err)
-    } else {
-      event.sender.send('addDom', `输出文件：${newFile}`)
-    }
-  });
-})
-
-
-function getPdfInfo(uploadPath:string, opts: any, originalName: string){
-  return new Promise((resolve,reject) => {
-    const pic = opts.out_dir + "\\" + opts.out_prefix + "-1.jpg";
-    // 有同名的图片，先删除，防止无法解析
-    if(fs.existsSync(pic)){
-      fs.unlinkSync(pic)
-    }
-    // 生成图片
-    pdfPoppler.convert(uploadPath, opts)
-    .then((res:any) => {
-      console.log("Successfully converted： ");
-      resolve(pic)
-      // resolve(pic)
-      // 解析二维码
-      // qrcode.scan(path.join(__dirname, './aaa-1.jpg'))
-      //   .then((result:any) => {
-      //     fs.unlinkSync(pic)
-      //     resolve(result.data)
-      //   }).catch((error:any) => {
-      //     console.log('pic failed  '+ pic)
-      //     console.log(error)
-      //     // addContent(`图片 ${originalName} 解析失败`)
-      //   });
-    })
-    .catch((error: any) => {
-      reject(error);
-    });
-  })
-}

@@ -1,0 +1,48 @@
+const fs = require('fs');
+
+const getAllBillInfoByQrcode = (arr) => {
+  //姓名name,regCode发票代码, regNumber发票号码，开票日期：billDate，校验码6为judgeCode，
+  // 税号 orgNum，班组 group, 发票类型 billType
+  console.log(arr);
+  let codeOfPiao = arr[2], numberOfPiao = arr[3], billType = arr[1], orgNum = '9132050508781783X7'
+  let judgeCode = arr[6].slice(-6)
+  let billDateArr = arr[5].split('')
+  billDateArr.splice(6,0,'/')
+  billDateArr.splice(4,0,'/')
+  let billDate = billDateArr.join('')
+  return {
+    billType,
+    codeOfPiao,
+    numberOfPiao,
+    billDate,
+    judgeCode,
+    orgNum,
+    group: '舆情产品组'
+  }
+}
+
+const deleteDirFunc = (path) => {
+  let files = [];
+    if(fs.existsSync(path)){
+        files = fs.readdirSync(path);
+        files.forEach((file, index) => {
+            let curPath = path + "/" + file;
+            if(fs.statSync(curPath).isDirectory()){
+              deleteDirFunc(curPath); //递归删除文件夹
+            } else {
+                fs.unlinkSync(curPath); //删除文件
+            }
+        });
+        fs.rmdirSync(path);
+        console.log('删除成功')
+    }
+}
+
+const addContent = (content) => {
+  const container = document.querySelector('#container')
+  const ele = document.createElement('div')
+  ele.innerText = content
+  container.appendChild(ele)
+}
+
+export default { addContent, getAllBillInfoByQrcode, deleteDirFunc }
