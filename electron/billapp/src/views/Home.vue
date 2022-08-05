@@ -8,14 +8,16 @@
     <button id="open-out" class="btn" @click="open">输出目录</button>
     <button id="delete-out" class="btn" @click="deleteOutput">清空输出目录</button>
     <button id="reset" class="btn" @click="reset">重置</button>
-    <Info/>
+    <Info :resetCount="count"/>
   </div>
 </template>
 
 <script setup name="HomeView">
 import { ipcRenderer } from 'electron'
-
 import Info from "@/components/Info.vue";
+import { ref } from "vue"
+
+const count=ref(1)
 
 const open = () => {
   ipcRenderer.send("open-output");
@@ -25,7 +27,7 @@ const deleteOutput = () => {
   ipcRenderer.send("delete-output");
 };
 const reset = () => {
-  console.log('reset')
+  count.value++
 }
 </script>
 <style lang="less" scoped>
@@ -38,7 +40,7 @@ const reset = () => {
 h2 {
   width: 100%;
   text-align: center;
-  color: #999;
+  color: #fff;
 }
 .btn {
   position: absolute;

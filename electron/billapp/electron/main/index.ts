@@ -132,6 +132,8 @@ ipcMain.on('open-output', (event) => {
 })
 ipcMain.on('delete-output', event => {
   deleteDirFunc(outputDir)
-  fs.mkdirSync(outputDir)
+  setTimeout(()=>{
+    fs.mkdirSync(outputDir)
+  },200)
 })
 

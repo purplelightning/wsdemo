@@ -23,16 +23,15 @@ export const handleSingle = async (filePath, fileName, originName, type) => {
   console.log(info);
   const arr = info.split(',')
   const newFile = `${outputDir}${arr[2]}_${arr[3]}_${finalName}.pdf`;
-  renamePdf(info, uploadPath, finalName)
-  if(type === 'excel'){
+  if(type === 'pdf'){
+    renamePdf(uploadPath, newFile)
+  }else if(type === 'excel'){
     let fie = getAllBillInfoByQrcode(arr)
-    genExcel(filePath, newFile, fie, finalName);
+    genExcel(uploadPath, newFile, fie, finalName);
   }
 }
 
-const renamePdf = (info, uploadPath, finalName) => {
-  const arr = info.split(',')
-  const newFile = `${outputDir}${arr[2]}_${arr[3]}_${finalName}.pdf`;
+const renamePdf = (uploadPath, newFile) => {
   fs.rename(uploadPath, newFile, (err) => {
     if (err) {
       console.log(err)
@@ -43,6 +42,7 @@ const renamePdf = (info, uploadPath, finalName) => {
 }
 
 function genExcel(filePath, newFile, fie, finalName) {
+  fs.renameSync(filePath, newFile)
   let data = [];
   let val = [
     finalName, 1, fie.billType, fie.codeOfPiao, fie.numberOfPiao,

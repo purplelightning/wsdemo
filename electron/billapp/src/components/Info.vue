@@ -26,6 +26,7 @@
     <div class="item">
       <span class="des">单张发票重命名生成Excel</span>
       <div class="upload-wrapper">
+        <p>选择文件/拖拽到此处</p>
         <input
           class="upload-file"
           ref="exobj"
@@ -34,10 +35,12 @@
           @change="selectPdf('excel')"
         />
       </div>
+      <div class="file-name">{{ state.ename }}</div>
     </div>
     <div class="item">
       <span class="des">发票压缩包处理<br />(zip格式，需要不带目录压缩)</span>
       <div class="upload-wrapper">
+        <p>选择文件/拖拽到此处</p>
         <input
           class="upload-file"
           ref="ziobj"
@@ -50,85 +53,139 @@
       <div class="circle-progress"></div>
       <div class="line-progress"></div>
     </div>
-    <section id="container"></section>
+    <section ref="container" id="container"></section>
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted, onUnmounted, reactive, ref } from "vue"
+import { watch, onMounted, onUnmounted, reactive, ref } from "vue";
 
-import { ipcRenderer } from "electron"
+import { ipcRenderer } from "electron";
 
-import {handleSingle} from './info'
+import { handleSingle } from "./info";
 
+const props = defineProps({
+  resetCount: {
+    type: Number,
+  },
+});
 
-const user = ref("")
-const pdobj = ref(null)
-const exobj = ref(null)
-const ziobj = ref(null)
+const user = ref("");
+const pdobj = ref(null);
+const exobj = ref(null);
+const ziobj = ref(null);
 
 const state = reactive({
   pname: "",
   ename: "",
   zname: "",
-})
+});
 
 const selectPdf = (type) => {
-  let dom = null
+  let dom = null;
   if (type === "pdf") {
-    dom = pdobj.value
+    dom = pdobj.value;
   } else if (type === "excel") {
-    dom = exobj.value
+    dom = exobj.value;
   }
-  const file = dom.files[0]
-  state.pname = file.name
-  let filePath = file.path
-  let fileName = user.value || file.name
-  handleSingle(filePath, fileName, state.pname, 'excel')
-}
+  const file = dom.files[0];
+  if (type === "pdf") {
+      state.pname = file.name;
+    } else {
+      state.ename = file.name;
+    }
+  let filePath = file.path;
+  let fileName = user.value || file.name;
+  handleSingle(
+    filePath,
+    fileName,
+    file.name,
+    type === "pdf" ? "pdf" : "excel"
+  );
+};
 
 const handleZip = () => {
-  console.log("zip")
-}
+  console.log("zip");
+};
 
 const setDragOverColor = (e) => {
-  e.preventDefault()
-  e.stopPropagation()
-  let pDom = e.target.previousSibling
-  pDom.style.boxShadow = "5px 5px 5px #00bccc"
-}
+  e.preventDefault();
+  e.stopPropagation();
+  let pDom = e.target.previousSibling;
+  pDom.style.boxShadow = "5px 5px 5px #00bccc";
+};
 const removeDragOverColor = (e) => {
-  e.preventDefault()
-  e.stopPropagation()
-  let pDom = e.target.previousSibling
-  pDom.style.boxShadow = ""
-}
+  e.preventDefault();
+  e.stopPropagation();
+  let pDom = e.target.previousSibling;
+  pDom.style.boxShadow = "";
+};
+const stop = (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+};
 
-const sendDragFile = (e) => {
-  e.preventDefault()
-  e.stopPropagation()
+const sendDragFile = (e, type) => {
+  e.preventDefault();
+  e.stopPropagation();
 
-  const files = e.dataTransfer.files
+  const files = e.dataTransfer.files;
   if (files.length) {
-    const file = files[0]
-    state.pname = file.name
-    let filePath = file.path
-    const fileName = user.value || file.name
-    handleSingle(filePath, fileName, state.pname, 'excel')
+    const file = files[0];
+    if (type === "pdf") {
+      state.pname = file.name;
+    } else {
+      state.ename = file.name;
+    }
+
+    let filePath = file.path;
+    const fileName = user.value || file.name;
+    handleSingle(filePath, fileName, file.name, type);
   }
-}
+};
+
+const cleanState = () => {
+  user.value = "";
+  pdobj.value = null;
+  exobj.value = null;
+  ziobj.value = null;
+  state.pname = "";
+  state.ename = "";
+  state.zname = "";
+  container.innerHTML = null;
+};
+
+watch(
+  () => props.resetCount,
+  (val) => cleanState()
+);
+
+const bindListener = (obj) => {
+  obj.value.addEventListener("dragenter", setDragOverColor);
+  obj.value.addEventListener("dragleave", removeDragOverColor);
+  obj.value.addEventListener("drop", removeDragOverColor);
+  obj.value.addEventListener("dragover", stop);
+};
+
+const unbindListener = (obj) => {
+  obj.value.removeListener("dragenter", setDragOverColor);
+  obj.value.removeListener("dragleave", removeDragOverColor);
+  obj.value.removeListener("drop", removeDragOverColor);
+  obj.value.removeListener("dragover", stop);
+};
 
 onMounted(() => {
-  pdobj.value.addEventListener("dragenter", setDragOverColor)
-  pdobj.value.addEventListener("dragleave", removeDragOverColor)
-  pdobj.value.addEventListener("drop", removeDragOverColor)
-  pdobj.value.addEventListener("drop", sendDragFile)
-  pdobj.value.addEventListener("dragover", (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-  })
-})
-onUnmounted(() => {})
+  bindListener(pdobj);
+  bindListener(exobj);
+  pdobj.value.addEventListener("drop", (e) => sendDragFile(e, "pdf"));
+  exobj.value.addEventListener("drop", (e) => sendDragFile(e, "excel"));
+});
+onUnmounted(() => {
+  unbindListener(pdobj);
+  unbindListener(exobj);
+  // pdobj.value.removeEventListener("drop", (e) => sendDragFile(e, "pdf"));
+  // exobj.value.removeEventListener("drop", (e) => sendDragFile(e, "excel"));
+});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -176,9 +233,9 @@ onUnmounted(() => {})
       width: 150px;
       text-align: center;
       border-radius: 5px;
-      &:drag-over {
+      &:hover {
         p {
-          color: red;
+          box-shadow: 5px 5px 5px #00bccc;
         }
       }
       p {
