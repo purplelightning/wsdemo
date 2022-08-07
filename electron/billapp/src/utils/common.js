@@ -3,7 +3,6 @@ const fs = require('fs');
 const getAllBillInfoByQrcode = (arr) => {
   //姓名name,regCode发票代码, regNumber发票号码，开票日期：billDate，校验码6为judgeCode，
   // 税号 orgNum，班组 group, 发票类型 billType
-  console.log(arr);
   let codeOfPiao = arr[2], numberOfPiao = arr[3], billType = '--', orgNum = '9132050508781783X7'
   let judgeCode = arr[6].slice(-6)
   let billDateArr = arr[5].split('')

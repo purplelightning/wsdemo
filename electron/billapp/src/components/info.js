@@ -28,7 +28,7 @@ const { addContent, addCheckContent, getAllBillInfoByQrcode, deleteDirFunc} = fu
 
 import store from '@/store'
 import { useInfoStore } from '@/store/info';
-import { findOneDb, insertDb } from '../utils/db';
+import { findOneDb, insertDb, insertMultiDb} from '../utils/db';
 const infoStore = useInfoStore(store)
 
 
@@ -179,7 +179,7 @@ export const handleMultiple = async(filePath, fileName, originName, type) => {
   if (!fs.existsSync(outputDir + name + "发票/")) {
     fs.mkdirSync(outputDir + name + "发票/");
   }
-  const { ouDir, index } = await getZipFinal(
+  const { ouDir, index, dataArr } = await getZipFinal(
     files,
     resDir,
     outputDir + name + "发票/",
@@ -189,13 +189,13 @@ export const handleMultiple = async(filePath, fileName, originName, type) => {
   let url = ouDir.replace('/', '')
   // infoStore.setPath(url)
   zipDis.innerText = `共处理${index}/${totalCount}张发票，输出目录：${url}`
-
+  insertMultiDb(dataArr)
 }
 
 // pdf文件数组，pdf原始文件夹， 输出目录，原zip文件名
 const getZipFinal = async (fileArr, oriDir, ouDir, userName, containerDir) => {
   return new Promise((resolve, reject) => {
-    const excelData = [];
+    const excelData = [], dataArr = []
     excelData.push(tableHeader);
     let index = 0, len = fileArr.length;
     totalCount = len;
@@ -206,6 +206,10 @@ const getZipFinal = async (fileArr, oriDir, ouDir, userName, containerDir) => {
       const arr = tmp.split(',')
       index++;
       const newFile = `${ouDir}${arr[2]}_${arr[3]}_${userName}${index}.pdf`;
+      dataArr.push({
+        originName: v,
+        key: `${arr[2]}_${arr[3]}`
+      })
       let info = getAllBillInfoByQrcode(arr)
 
       genZip(newFile, originPdf, index, info, ouDir, containerDir);
@@ -223,7 +227,7 @@ const getZipFinal = async (fileArr, oriDir, ouDir, userName, containerDir) => {
           fs.writeFileSync(ouDir + userName + ".xlsx", buffer, "binary");
           packer(ouDir, `${ouDir}/${userName}.zip`);
           deleteDirFunc(deleteDir);
-          resolve({ ouDir, index });
+          resolve({ ouDir, index, dataArr });
         }
       }
     });

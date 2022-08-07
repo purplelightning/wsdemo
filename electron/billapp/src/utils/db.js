@@ -12,6 +12,16 @@ export const insertDb = (obj) => {
   db.insert({...obj, updateTime: formatTime()}, (err, ret) => {})
 }
 
+export const insertMultiDb = (arr) => {
+  let res = arr.map(v => {
+    return {
+      ...v,
+      updateTime: formatTime()
+    }
+  })
+  db.insert(res, (err, ret) => {})
+}
+
 export const findOneDb = (obj) => {
   return new Promise((resolve,reject) => {
     db.findOne(obj, async(err, ret) => {
