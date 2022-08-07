@@ -44,19 +44,18 @@ h2 {
 }
 .btn {
   position: absolute;
-  top: 80px;
+  top: 60px;
   width: 120px;
   height: 40px;
   line-height: 40px;
   text-align: center;
   border: 1px solid #666;
-  color: #666;
+  color: #fff;
   border-radius: 4px;
   cursor: pointer;
-  background: #fff;
+  background: @linear-bg;
   &:hover{
-    color: cyan;
-    border: 1px solid cyan;
+    font-size: 15px;
   }
 }
 #open-out {

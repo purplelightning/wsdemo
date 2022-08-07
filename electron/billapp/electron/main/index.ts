@@ -3,15 +3,10 @@ import { release } from 'os'
 import { join } from 'path'
 
 import fs from 'fs'
-import path from 'path'
 
-import { uploadDir, outputDir, tableHeader } from '../../src/utils/config'
+import { uploadDir, outputDir } from '../../src/utils/config'
 import func from "../../src/utils/common.js";
 const { deleteDirFunc } = func
-
-const pdfPoppler = require("pdf-poppler"); // pdf转图片
-import { Decoder } from "@nuintun/qrcode"; // 图片二维码解析
-const qrcode = new Decoder();
 
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith('6.1')) app.disableHardwareAcceleration()
@@ -132,8 +127,10 @@ ipcMain.on('open-output', (event) => {
 })
 ipcMain.on('delete-output', event => {
   deleteDirFunc(outputDir)
+  deleteDirFunc(uploadDir)
   setTimeout(()=>{
     fs.mkdirSync(outputDir)
+    fs.mkdirSync(uploadDir)
   },200)
 })
 

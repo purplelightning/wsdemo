@@ -46,23 +46,35 @@
           ref="ziobj"
           type="file"
           accept=".zip"
-          @change="handleZip()"
+          @change="handleZip"
         />
       </div>
-      <div id="zip-display"></div>
-      <div class="circle-progress"></div>
-      <div class="line-progress"></div>
+      <div class="file-name">{{ state.zname }}</div>
+      <div class="play">
+        
+        <!-- <d`iv class="line-progress"></div> -->
+        <div ref="zipDis" id="zipDis">
+          <!--` <span v-show="infoStore.totalCount && infoStore.totalCount > infoStore.index">
+            正在处理{{infoStore.index}}/{{infoStore.totalCount}}张
+          </span>
+          <span v-show="infoStore.totalCount && infoStore.totalCount === infoStore.index">
+            共处理{{infoStore.index}}/{{infoStore.totalCount}}张发票，输出目录：{{infoStore.url}}
+          </span> -->
+        </div>
+        <div ref="circle" id="circle"></div>
+      </div>
     </div>
     <section ref="container" id="container"></section>
   </div>
 </template>
 
 <script setup>
-import { watch, onMounted, onUnmounted, reactive, ref } from "vue";
+import { watch, onMounted, reactive, ref, onBeforeUnmount } from "vue";
 
-import { ipcRenderer } from "electron";
+import { handleSingle, handleMultiple } from "./info";
+import { useInfoStore } from '@/store/info';
 
-import { handleSingle } from "./info";
+const infoStore = useInfoStore()
 
 const props = defineProps({
   resetCount: {
@@ -105,7 +117,12 @@ const selectPdf = (type) => {
 };
 
 const handleZip = () => {
-  console.log("zip");
+  const dom = ziobj.value
+  const file = dom.files[0]
+  state.zname = file.name
+  let filePath = file.path;
+  let fileName = user.value || file.name;
+  handleMultiple(filePath, fileName, file.name)
 };
 
 const setDragOverColor = (e) => {
@@ -132,15 +149,18 @@ const sendDragFile = (e, type) => {
   const files = e.dataTransfer.files;
   if (files.length) {
     const file = files[0];
-    if (type === "pdf") {
-      state.pname = file.name;
-    } else {
-      state.ename = file.name;
-    }
-
     let filePath = file.path;
     const fileName = user.value || file.name;
-    handleSingle(filePath, fileName, file.name, type);
+    if (type === "pdf") {
+      state.pname = file.name;
+      handleSingle(filePath, fileName, file.name, type);
+    } else if(type ==='excel') {
+      state.ename = file.name;
+      handleSingle(filePath, fileName, file.name, type);
+    }else{
+      state.zname = file.name
+      handleMultiple(filePath, fileName, file.name)
+    }
   }
 };
 
@@ -153,6 +173,10 @@ const cleanState = () => {
   state.ename = "";
   state.zname = "";
   container.innerHTML = null;
+  zipDis.innerText = ''
+  circle.style.background = `conic-gradient(
+    #11f5e2fd 0, #11f5e2fd 0, #b3b2ff 0, #b3b2ff
+  )`
 };
 
 watch(
@@ -168,10 +192,12 @@ const bindListener = (obj) => {
 };
 
 const unbindListener = (obj) => {
-  obj.value.removeListener("dragenter", setDragOverColor);
-  obj.value.removeListener("dragleave", removeDragOverColor);
-  obj.value.removeListener("drop", removeDragOverColor);
-  obj.value.removeListener("dragover", stop);
+  if(obj.value){
+    // obj.value.removeListener("dragenter", setDragOverColor);
+    // obj.value.removeListener("dragleave", removeDragOverColor);
+    // obj.value.removeListener("drop", removeDragOverColor);
+    // obj.value.removeListener("dragover", stop);
+  }
 };
 
 onMounted(() => {
@@ -180,7 +206,7 @@ onMounted(() => {
   pdobj.value.addEventListener("drop", (e) => sendDragFile(e, "pdf"));
   exobj.value.addEventListener("drop", (e) => sendDragFile(e, "excel"));
 });
-onUnmounted(() => {
+onBeforeUnmount(() => {
   unbindListener(pdobj);
   unbindListener(exobj);
   // pdobj.value.removeEventListener("drop", (e) => sendDragFile(e, "pdf"));
@@ -188,7 +214,6 @@ onUnmounted(() => {
 });
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
 #info {
   min-height: 600px;
@@ -201,7 +226,6 @@ onUnmounted(() => {
     box-sizing: border-box;
     label {
       font-size: 16px;
-      color: #51ece2;
     }
     #name {
       padding: 2px 3px;
@@ -225,7 +249,6 @@ onUnmounted(() => {
       vertical-align: middle;
       display: inline-block;
       width: 220px;
-      color: #51ece2;
     }
     .upload-wrapper {
       display: inline-block;
@@ -263,17 +286,25 @@ onUnmounted(() => {
     }
     .file-name {
       position: absolute;
-      top: 60px;
+      top: 40px;
       left: 400px;
       width: 400px;
       height: 24px;
       font-size: 14px;
+      text-align: left;
       color: #00bfff;
     }
   }
-  #zip-display {
-    position: relative;
-    left: 50px;
+  .play{
+    vertical-align: top;
+  }
+  #zipDis {
+    margin-top: 10px;
+    float: right;
+    margin-right: 20px;
+    width: 460px;
+    height: 120px;
+    word-wrap: break-word;
   }
   .line-progress {
     display: inline-block;
@@ -283,9 +314,8 @@ onUnmounted(() => {
     background: linear-gradient(90deg, #0f0, #0ff 0, transparent 0);
     border: 1px solid #88f;
   }
-  .circle-progress {
-    display: inline-block;
-    position: relative;
+  #circle {
+    margin-top: 10px;
     margin-left: 200px;
     width: 160px;
     height: 160px;

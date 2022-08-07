@@ -4,6 +4,7 @@ import { defineConfig, Plugin, UserConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import electron from 'vite-plugin-electron'
 import pkg from './package.json'
+import path from 'path'
 
 const {resolve} = require('path')
 
@@ -46,6 +47,14 @@ export default defineConfig({
     host: pkg.env.VITE_DEV_SERVER_HOST,
     port: pkg.env.VITE_DEV_SERVER_PORT,
   },
+  css: {
+    preprocessorOptions: {
+      less: {
+          javascriptEnabled: true,
+          additionalData:  `@import "${path.resolve(__dirname, 'src/assets/base.less')}";`
+      }
+    }
+  }
 })
 
 function withDebug(config: UserConfig): UserConfig {

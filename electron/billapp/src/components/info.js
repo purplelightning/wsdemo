@@ -6,9 +6,30 @@ const qrcode = new Decoder();
 
 const xlsx = require("node-xlsx");
 
+const AdmZip = require("adm-zip-iconv");
+const originAdmZip = require("adm-zip");
+// 解决admzip压缩时中文乱码问题
+function packer(folder, filepath) {
+  var zip = new originAdmZip();
+  zip.addLocalFolder(folder);
+  // update file headers
+  zip.getEntries().forEach((entry) => {
+    entry.header.flags |= 0x0800; // Set bit 11 - APP Note 4.4.4 Language encoding flag (EFS)
+  });
+  // save file (we generate our content again)
+  zip.writeZip(filepath);
+}
+
+
 import { getPicOptions, uploadDir, outputDir, tableHeader } from '../utils/config'
 import func from '../utils/common'
-const { addContent, getAllBillInfoByQrcode} = func
+const { addContent, getAllBillInfoByQrcode, deleteDirFunc} = func
+
+
+import store from '@/store'
+import { useInfoStore } from '@/store/info';
+const infoStore = useInfoStore(store)
+
 
 // 文件路径，最终文件名，原文件名，类型
 export const handleSingle = async (filePath, fileName, originName, type) => {
@@ -85,3 +106,92 @@ function getPdfInfo(uploadPath, opts, originalName) {
       });
   })
 }
+let totalCount  = 0
+
+const updateIndex = (index) => {
+  // 可以使用pinia设置全局变量，也可以直接操作dom
+  console.log('----------'+index);
+  zipDis.innerText = `正在处理第${index}/${totalCount}张`
+  // infoStore.changeIndex(index)
+  // infoStore.changeTotalCount(totalCount)
+  let per = Math.floor(index*100 / totalCount)
+  // progress.style.background = `linear-gradient(90deg, #0f0, #0ff ${per}%, transparent 0)`
+  circle.innerText = `${index}/${totalCount}`
+  circle.style.background = `conic-gradient(
+    #11f5e2fd 0,
+    #11f5e2fd ${per}%,
+    #b3b2ff ${per}%,
+    #b3b2ff
+  )`
+}
+
+export const handleMultiple = async(filePath, fileName, originName) => {
+  const dataBuffer = fs.readFileSync(filePath)
+  const uploadPath = uploadDir + fileName
+  fs.writeFileSync(uploadPath, dataBuffer)
+  console.log(fileName + "写入成功")
+  let name = fileName.split(".")[0];
+
+  const zip = new AdmZip(uploadPath, "GBK");
+  let resDir = outputDir + `${name}/`;
+  const containerDir = resDir; // 用于最后生成文件删除
+  zip.extractAllTo(resDir, true);
+  let flag = fs.existsSync(resDir + name);
+  if (flag) {
+    // 判断解压后文件夹是否包含目录
+    resDir = resDir + name + "/";
+  }
+  const files = fs.readdirSync(resDir);
+  if (!fs.existsSync(outputDir + name + "发票/")) {
+    fs.mkdirSync(outputDir + name + "发票/");
+  }
+  const { ouDir, index } = await getZipFinal(
+    files,
+    resDir,
+    outputDir + name + "发票/",
+    name,
+    containerDir,
+  );
+  let url = ouDir.replace('/', '')
+  // infoStore.setPath(url)
+  zipDis.innerText = `共处理${index}/${totalCount}张发票，输出目录：${url}`
+
+}
+
+// pdf文件数组，pdf原始文件夹， 输出目录，原zip文件名
+const getZipFinal = async (fileArr, oriDir, ouDir, userName, containerDir) => {
+  return new Promise((resolve, reject) => {
+    const excelData = [];
+    excelData.push(tableHeader);
+    let index = 0, len = fileArr.length;
+    totalCount = len;
+    fileArr.forEach(async (v) => {
+      let originPdf = oriDir + v;
+      const options = getPicOptions(outputDir, originPdf)
+      let tmp = await getPdfInfo(originPdf, options, originPdf)
+      const arr = tmp.split(',')
+      index++;
+      const newFile = `${ouDir}${arr[2]}_${arr[3]}_${userName}${index}.pdf`;
+      let info = getAllBillInfoByQrcode(arr)
+
+      genZip(newFile, originPdf, index, info, ouDir, containerDir);
+      function genZip(newFile, originPdf, index, info, ouDir, deleteDir) {
+        fs.renameSync(originPdf, newFile);
+        const val = [
+          userName, index, info.billType, info.codeOfPiao, info.numberOfPiao,
+          info.billDate, info.judgeCode, info.orgNum, info.group,
+        ];
+        excelData.push(val);
+        updateIndex(index);
+        // 生成excel,打包
+        if (index >= len) {
+          let buffer = xlsx.build([{ name: "ss", data: excelData }]);
+          fs.writeFileSync(ouDir + userName + ".xlsx", buffer, "binary");
+          packer(ouDir, `${ouDir}/${userName}.zip`);
+          deleteDirFunc(deleteDir);
+          resolve({ ouDir, index });
+        }
+      }
+    });
+  });
+};

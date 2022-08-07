@@ -42,6 +42,7 @@
   "dependencies": {
     "@nuintun/qrcode": "^3.3.0",
     "pdf-poppler": "^0.2.1",
+    "pinia": "^2.0.17",
     "vue-router": "^4.0.3"
   }
 }
