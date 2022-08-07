@@ -23,11 +23,12 @@ function packer(folder, filepath) {
 
 import { getPicOptions, uploadDir, outputDir, tableHeader } from '../utils/config'
 import func from '../utils/common'
-const { addContent, getAllBillInfoByQrcode, deleteDirFunc} = func
+const { addContent, addCheckContent, getAllBillInfoByQrcode, deleteDirFunc} = func
 
 
 import store from '@/store'
 import { useInfoStore } from '@/store/info';
+import { findOneDb, insertDb } from '../utils/db';
 const infoStore = useInfoStore(store)
 
 
@@ -46,9 +47,27 @@ export const handleSingle = async (filePath, fileName, originName, type) => {
   const newFile = `${outputDir}${arr[2]}_${arr[3]}_${finalName}.pdf`;
   if(type === 'pdf'){
     renamePdf(uploadPath, newFile)
+    insertDb({
+      originName: originName,
+      key: `${arr[2]}_${arr[3]}`
+    })
   }else if(type === 'excel'){
     let fie = getAllBillInfoByQrcode(arr)
     genExcel(uploadPath, newFile, fie, finalName);
+    // 记录使用
+    insertDb({
+      originName: originName,
+      key: `${arr[2]}_${arr[3]}`
+    })
+  }else if(type === 'pdfCheck'){
+    const res = await findOneDb({
+      key: `${arr[2]}_${arr[3]}`
+    })
+    if(!res){
+      addCheckContent(`发票${originName}未发现使用记录`)
+    }else{
+      addCheckContent(`发票${originName}已于${res.updateTime}使用过`, true)
+    }
   }
 }
 
@@ -110,7 +129,6 @@ let totalCount  = 0
 
 const updateIndex = (index) => {
   // 可以使用pinia设置全局变量，也可以直接操作dom
-  console.log('----------'+index);
   zipDis.innerText = `正在处理第${index}/${totalCount}张`
   // infoStore.changeIndex(index)
   // infoStore.changeTotalCount(totalCount)
@@ -125,7 +143,7 @@ const updateIndex = (index) => {
   )`
 }
 
-export const handleMultiple = async(filePath, fileName, originName) => {
+export const handleMultiple = async(filePath, fileName, originName, type) => {
   const dataBuffer = fs.readFileSync(filePath)
   const uploadPath = uploadDir + fileName
   fs.writeFileSync(uploadPath, dataBuffer)
@@ -142,6 +160,22 @@ export const handleMultiple = async(filePath, fileName, originName) => {
     resDir = resDir + name + "/";
   }
   const files = fs.readdirSync(resDir);
+  
+  //校验逻辑 
+  if(type && type === 'zipCheck'){
+    let keyArr = await checkZipFinal(files, resDir)
+    keyArr.forEach(async v => {
+      const res = await findOneDb({
+        key: v.key
+      })
+      if(!res){
+        addCheckContent(`发票${v.name}未发现使用记录`)
+      }else{
+        addCheckContent(`发票${v.name}已于${res.updateTime}使用过`, true)
+      }
+    })
+    return
+  }
   if (!fs.existsSync(outputDir + name + "发票/")) {
     fs.mkdirSync(outputDir + name + "发票/");
   }
@@ -195,3 +229,23 @@ const getZipFinal = async (fileArr, oriDir, ouDir, userName, containerDir) => {
     });
   });
 };
+
+const checkZipFinal = async (fileArr, oriDir) => {
+  let res = [], index = 0, total = fileArr.length
+  return new Promise((resolve, reject) => {
+    fileArr.forEach(async v => {
+      let originPdf = oriDir + v
+      const options = getPicOptions(outputDir, originPdf)
+      let tmp = await getPdfInfo(originPdf, options, originPdf)
+      const arr = tmp.split(',')
+      res.push({
+        name: v,
+        key: `${arr[2]}_${arr[3]}`
+      })
+      index++
+      if(index === total){
+        resolve(res)
+      }
+    })
+  })
+}

@@ -4,12 +4,14 @@ import router from './router'
 import store from './store'
 import './samples/node-api'
 
+import './utils/db.js'
+
 import "@/assets/reset.css";
 
 createApp(App)
   .use(router)
   .use(store)
   .mount('#app')
-  // .$nextTick(() => {
-  //   postMessage({ payload: 'removeLoading' }, '*')
-  // })
+  .$nextTick(() => {
+    postMessage({ payload: 'removeLoading' }, '*')
+  })

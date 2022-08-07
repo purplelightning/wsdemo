@@ -70,7 +70,6 @@
 
 <script setup>
 import { watch, onMounted, reactive, ref, onBeforeUnmount } from "vue";
-
 import { handleSingle, handleMultiple } from "./info";
 import { useInfoStore } from '@/store/info';
 
@@ -203,8 +202,10 @@ const unbindListener = (obj) => {
 onMounted(() => {
   bindListener(pdobj);
   bindListener(exobj);
+  bindListener(ziobj)
   pdobj.value.addEventListener("drop", (e) => sendDragFile(e, "pdf"));
   exobj.value.addEventListener("drop", (e) => sendDragFile(e, "excel"));
+  ziobj.value.addEventListener("drop", (e) => sendDragFile(e, "zip"));
 });
 onBeforeUnmount(() => {
   unbindListener(pdobj);

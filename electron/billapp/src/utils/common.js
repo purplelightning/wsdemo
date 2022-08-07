@@ -45,4 +45,20 @@ const addContent = (content) => {
   container.appendChild(ele)
 }
 
-export default { addContent, getAllBillInfoByQrcode, deleteDirFunc }
+const addCheckContent = (content, flag) => {
+  const container = document.querySelector('#check-container')
+  const ele = document.createElement('div')
+  ele.innerText = content
+  ele.style.marginBottom = '5px'
+  if(flag){
+    ele.style.color = 'red'
+  }
+  container.appendChild(ele)
+}
+
+export const formatTime = () => {
+  let now = new Date()
+  return `${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()}|${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`
+}
+
+export default { addContent, addCheckContent, getAllBillInfoByQrcode, deleteDirFunc }
