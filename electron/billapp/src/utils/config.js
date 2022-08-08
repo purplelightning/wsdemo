@@ -23,9 +23,5 @@ export const getPicOptions = (outputDir, uploadPath) => {
   }
 }
 
-  // 开发
   export const uploadDir = path.join(__dirname, './upload/')
   export const outputDir = path.join(__dirname, './output/')
-  // 生产
-  // uploadDir: path.join(__dirname, '../upload/'),
-  // outputDir: path.join(__dirname, '../output/'),

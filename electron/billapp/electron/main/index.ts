@@ -40,8 +40,8 @@ const indexHtml = join(ROOT_PATH.dist, 'index.html')
 
 async function createWindow() {
   win = new BrowserWindow({
-    title: 'Main window',
-    icon: join(ROOT_PATH.public, 'favicon.ico'),
+    title: '发票处理',
+    icon: join(ROOT_PATH.public, 'tree.ico'),
     webPreferences: {
       preload,
       // Warning: Enable nodeIntegration and disable contextIsolation is not secure in production
@@ -49,8 +49,7 @@ async function createWindow() {
       // Read more on https://www.electronjs.org/docs/latest/tutorial/context-isolation
       nodeIntegration: true,
       contextIsolation: false,
-
-      webSecurity: false
+      webSecurity: false //允许渲染页面读取文件
     },
   })
 
