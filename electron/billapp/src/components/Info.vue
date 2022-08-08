@@ -217,6 +217,7 @@ onBeforeUnmount(() => {
 
 <style scoped lang="less">
 #info {
+  min-width: 800px;
   min-height: 600px;
   .top {
     margin-bottom: 20px;
@@ -303,7 +304,8 @@ onBeforeUnmount(() => {
     margin-top: 10px;
     float: right;
     margin-right: 20px;
-    width: 460px;
+    width: calc(100% - 400px);
+    min-width: 200px;
     height: 120px;
     word-wrap: break-word;
   }

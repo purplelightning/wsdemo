@@ -64,9 +64,9 @@ export const handleSingle = async (filePath, fileName, originName, type) => {
       key: `${arr[2]}_${arr[3]}`
     })
     if(!res){
-      addCheckContent(`发票${originName}未发现使用记录`)
+      addCheckContent(`发票 ${originName} 未发现使用记录`)
     }else{
-      addCheckContent(`发票${originName}已于${res.updateTime}使用过`, true)
+      addCheckContent(`发票 ${originName} 已于${res.updateTime.split('|').join(' ')}使用过`, true)
     }
   }
 }
@@ -134,7 +134,7 @@ const updateIndex = (index) => {
   // infoStore.changeTotalCount(totalCount)
   let per = Math.floor(index*100 / totalCount)
   // progress.style.background = `linear-gradient(90deg, #0f0, #0ff ${per}%, transparent 0)`
-  circle.innerText = `${index}/${totalCount}`
+  // circle.innerText = `${index}/${totalCount}`
   circle.style.background = `conic-gradient(
     #11f5e2fd 0,
     #11f5e2fd ${per}%,
@@ -169,9 +169,9 @@ export const handleMultiple = async(filePath, fileName, originName, type) => {
         key: v.key
       })
       if(!res){
-        addCheckContent(`发票${v.name}未发现使用记录`)
+        addCheckContent(`发票 ${v.name} 未发现使用记录`)
       }else{
-        addCheckContent(`发票${v.name}已于${res.updateTime}使用过`, true)
+        addCheckContent(`发票 ${v.name} 已于${res.updateTime.split('|').join(' ')}使用过`, true)
       }
     })
     return

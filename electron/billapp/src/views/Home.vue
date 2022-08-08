@@ -33,6 +33,7 @@ const reset = () => {
 <style lang="less" scoped>
 .home {
   position: relative;
+  min-width: 800px;
   .des{
     margin: 30px 0;
   }

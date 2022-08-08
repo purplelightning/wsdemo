@@ -121,6 +121,7 @@ onMounted(() => {
 </script>
 <style scoped lang="less">
 .about {
+  min-width: 600px;
   min-height: 600px;
   .item {
     position: relative;

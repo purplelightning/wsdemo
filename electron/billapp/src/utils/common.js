@@ -57,7 +57,12 @@ const addCheckContent = (content, flag) => {
 
 export const formatTime = () => {
   let now = new Date()
-  return `${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()}|${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`
+  let month = (now.getMonth() + 1 + '').padStart(2, '0')
+  let day = ('' + now.getDate()).padStart(2, '0')
+  let hour = ('' + now.getHours()).padStart(2, '0')
+  let minute = ('' + now.getMinutes()).padStart(2, '0')
+  let second = ('' + now.getSeconds()).padStart(2, '0')
+  return `${now.getFullYear()}-${month}-${day}|${hour}:${minute}:${second}`
 }
 
 export default { addContent, addCheckContent, getAllBillInfoByQrcode, deleteDirFunc }
