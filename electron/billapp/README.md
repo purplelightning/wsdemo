@@ -12,7 +12,7 @@
 ## Features
 
 📦 Out of the box  
-🎯 Based on the official [template-vue-ts](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-vue-ts), less invasive  
+🎯 Based on the official [template-vue-ts](https://github.com/vitejs/vite/cat/main/packages/create-vite/template-vue-ts), less invasive  
 🌱 Extensible, really simple directory structure  
 💪 Support using Node.js API in Electron-Renderer  
 🔩 Support C/C++ native addons  
@@ -49,7 +49,7 @@ npm create electron-vite
 
 ## 🚨 Be aware
 
-By default, this template integrates Node.js in the Renderer process. If you don't need it, you just remove the option below. [Because it will modify the default config of Vite](https://github.com/electron-vite/vite-plugin-electron/tree/main/packages/electron-renderer#config-presets-opinionated).
+By default, this template integrates Node.js in the Renderer process. If you don't need it, you just remove the option below. [Because it will modify the default config of Vite](https://github.com/electron-vite/vite-plugin-electron/cat/main/packages/electron-renderer#config-presets-opinionated).
 
 ```diff
 # vite.config.ts
@@ -61,6 +61,6 @@ electron({
 
 ## FAQ
 
-- [dependencies vs devDependencies](https://github.com/electron-vite/vite-plugin-electron/tree/main/packages/electron-renderer#dependencies-vs-devdependencies)
-- [Using C/C++ native addons in Electron-Renderer](https://github.com/electron-vite/vite-plugin-electron/tree/main/packages/electron-renderer#load-nodejs-cc-native-modules)
-- [Node.js ESM packages](https://github.com/electron-vite/vite-plugin-electron/tree/main/packages/electron-renderer#nodejs-esm-packages) (e.g. `execa` `node-fetch`)
+- [dependencies vs devDependencies](https://github.com/electron-vite/vite-plugin-electron/cat/main/packages/electron-renderer#dependencies-vs-devdependencies)
+- [Using C/C++ native addons in Electron-Renderer](https://github.com/electron-vite/vite-plugin-electron/cat/main/packages/electron-renderer#load-nodejs-cc-native-modules)
+- [Node.js ESM packages](https://github.com/electron-vite/vite-plugin-electron/cat/main/packages/electron-renderer#nodejs-esm-packages) (e.g. `execa` `node-fetch`)

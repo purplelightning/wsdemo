@@ -18,16 +18,16 @@
       "output": "release/2.0.0"
     },
     "win": {
-      "icon": "./public/tree.ico"
+      "icon": "./public/star.ico"
     },
     "nsis": {
       "oneClick": false,
       "perMachine": true,
       "allowToChangeInstallationDirectory": true,
       "allowElevation": true,
-      "installerIcon": "./public/tree.ico",
-      "uninstallerIcon": "./public/tree.ico",
-      "installerHeaderIcon": "./public/tree.ico",
+      "installerIcon": "./public/star.ico",
+      "uninstallerIcon": "./public/star.ico",
+      "installerHeaderIcon": "./public/star.ico",
       "createDesktopShortcut": true,
       "shortcutName": "发票处理"
     }

@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell, ipcMain } from 'electron'
+import { app, BrowserWindow, shell, ipcMain, Menu } from 'electron'
 import { release } from 'os'
 import { join } from 'path'
 
@@ -41,7 +41,8 @@ const indexHtml = join(ROOT_PATH.dist, 'index.html')
 async function createWindow() {
   win = new BrowserWindow({
     title: '发票处理',
-    icon: join(ROOT_PATH.public, 'tree.ico'),
+    icon: join(ROOT_PATH.public, 'star.ico'),
+    // frame: false,
     webPreferences: {
       preload,
       // Warning: Enable nodeIntegration and disable contextIsolation is not secure in production
@@ -71,6 +72,10 @@ async function createWindow() {
     if (url.startsWith('https:')) shell.openExternal(url)
     return { action: 'deny' }
   })
+
+  const template:any = []
+  const menu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu)
 }
 
 app.whenReady().then(createWindow)

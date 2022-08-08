@@ -21,5 +21,5 @@
 - If you prefer Rollup, Use rollup branch.
 
 ```bash
-Error: @vitejs/plugin-vue requires vue (>=3.2.13) or @vue/compiler-sfc to be present in the dependency tree.
+Error: @vitejs/plugin-vue requires vue (>=3.2.13) or @vue/compiler-sfc to be present in the dependency cat.
 ```
