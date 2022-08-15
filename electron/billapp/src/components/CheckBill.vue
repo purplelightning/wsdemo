@@ -28,12 +28,15 @@
       </div>
       <div class="file-name">{{ state.zname }}</div>
     </div>
-    <section ref="check-container" id="check-container"></section>
+    <section ref="check-container" id="check-container">
+    </section>
+    <loading></loading>
   </div>
 </template>
 <script setup>
 import { onMounted, reactive, ref, onBeforeUnmount } from "vue";
 import { handleSingle, handleMultiple } from "./info";
+import loading from './loading/threeLoading.vue'
 
 const state = reactive({
   pname: "",
