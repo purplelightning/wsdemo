@@ -30,13 +30,18 @@
     </div>
     <section ref="check-container" id="check-container">
     </section>
-    <loading></loading>
+    <div v-show="infoStore.showLoading">
+      <loading></loading>
+    </div>
   </div>
 </template>
 <script setup>
 import { onMounted, reactive, ref, onBeforeUnmount } from "vue";
 import { handleSingle, handleMultiple } from "./info";
 import loading from './loading/threeLoading.vue'
+import { useInfoStore } from '@/store/info';
+
+const infoStore = useInfoStore()
 
 const state = reactive({
   pname: "",
@@ -64,6 +69,7 @@ const selectPdf = (type) => {
 };
 
 const handleZip = () => {
+  infoStore.openLoading()
   const dom = ziobj.value
   const file = dom.files[0]
   state.zname = file.name
@@ -102,6 +108,7 @@ const sendDragFile = (e, type) => {
       state.pname = file.name;
       handleSingle(filePath, fileName, file.name, type);
     }else if(type=== 'zipCheck'){
+      infoStore.openLoading()
       state.zname = file.name
       handleMultiple(filePath, fileName, file.name, 'zipCheck')
     }
@@ -116,6 +123,7 @@ const bindListener = (obj) => {
 };
 
 onMounted(() => {
+  infoStore.closeLoading()
   bindListener(pdobj);
   bindListener(ziobj);
   pdobj.value.addEventListener("drop", (e) => sendDragFile(e, "pdfCheck"));

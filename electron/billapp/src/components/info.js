@@ -173,6 +173,7 @@ export const handleMultiple = async(filePath, fileName, originName, type) => {
       }else{
         addCheckContent(`发票 ${v.name} 已于${res.updateTime.split('|').join(' ')}使用过`, true)
       }
+      infoStore.closeLoading()
     })
     return
   }

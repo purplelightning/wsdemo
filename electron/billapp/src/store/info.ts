@@ -4,6 +4,7 @@ export interface infoState {
   index: number,
   totalCount: number,
   path: string,
+  showLoading: boolean,
 }
 
 export const useInfoStore = defineStore({
@@ -12,7 +13,8 @@ export const useInfoStore = defineStore({
     return {
       index: 0,
       totalCount: 0,
-      path: ''
+      path: '',
+      showLoading: false
     }
   },
   actions: {
@@ -24,6 +26,12 @@ export const useInfoStore = defineStore({
     },
     setPath(url: string) {
       this.path = url
+    },
+    closeLoading(){
+      this.showLoading = false
+    },
+    openLoading(){
+      this.showLoading = true
     }
   }
 })
