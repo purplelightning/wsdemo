@@ -42,7 +42,6 @@ export const handleSingle = async (filePath, fileName, originName, type) => {
 
   const options = getPicOptions(outputDir, uploadPath)
   const info = await getPdfInfo(uploadPath, options, originName)
-  console.log(info);
   const arr = info.split(',')
   const newFile = `${outputDir}${arr[2]}_${arr[3]}_${finalName}.pdf`;
   if(type === 'pdf'){

@@ -38,7 +38,7 @@
 <script setup>
 import { onMounted, reactive, ref, onBeforeUnmount } from "vue";
 import { handleSingle, handleMultiple } from "./info";
-import loading from './loading/threeLoading.vue'
+import loading from './loading/LoadingEyeExplo.vue'
 import { useInfoStore } from '@/store/info';
 
 const infoStore = useInfoStore()
