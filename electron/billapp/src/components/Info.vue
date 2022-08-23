@@ -165,9 +165,9 @@ const sendDragFile = (e, type) => {
 
 const cleanState = () => {
   user.value = "";
-  pdobj.value = null;
-  exobj.value = null;
-  ziobj.value = null;
+  pdobj.value.value = null;
+  exobj.value.value = null;
+  ziobj.value.value = null;
   state.pname = "";
   state.ename = "";
   state.zname = "";
