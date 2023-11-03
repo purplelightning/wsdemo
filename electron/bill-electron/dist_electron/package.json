@@ -2,7 +2,7 @@
   "name": "bill",
   "version": "2.0.0",
   "private": true,
-  "main": "background.js",
+  "main": "./src/background.js",
   "author": "youysong",
   "description": "bill-manage",
   "scripts": {
@@ -16,6 +16,7 @@
   "dependencies": {
     "core-js": "^3.8.3",
     "node-polyfill-webpack-plugin": "^2.0.1",
+    "pdf-poppler": "^0.2.1",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
     "vuex": "^4.0.0"
@@ -28,13 +29,12 @@
     "@vue/cli-service": "~5.0.0",
     "adm-zip": "^0.5.9",
     "adm-zip-iconv": "^0.4.9",
-    "electron": "^19.0.10",
+    "electron": "^17.2.0",
     "electron-devtools-installer": "^3.2.0",
     "less": "^4.0.0",
     "less-loader": "^8.0.0",
     "node-uuid": "^1.4.8",
     "node-xlsx": "^0.21.0",
-    "pdf-poppler": "^0.2.1",
     "vue-cli-plugin-electron-builder": "^2.1.1"
   }
 }

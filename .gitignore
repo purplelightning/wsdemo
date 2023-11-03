@@ -8,3 +8,10 @@ test/unit/coverage
 test/e2e/reports
 download/
 Blog-master/
+bill/
+chrome/
+**/output/
+socket/
+**/upload/
+
+bill-app/

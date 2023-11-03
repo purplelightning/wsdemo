@@ -87,7 +87,7 @@ router.post('/uploadBill', pdfUpload.single('ppp'), (req, res) => {
         }
       })
     }else{// 没有，用pdf2json处理
-      let pdfParser = new PdfParser(this,1)
+      let pdfParser = new PdfParser(null,1)
       pdfParser.on("pdfParser_dataError", errData => console.error(errData.parserError));
 
       pdfParser.on("pdfParser_dataReady", pdfData => {

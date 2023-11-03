@@ -87,7 +87,6 @@ export default {
 
 <style lang="less">
 .modal-mask {
-  
   position: fixed;
   width: 100%;
   height: 100%;
@@ -250,9 +249,8 @@ export default {
     }
     p{
       position: absolute;
-      background-image:url('../assets/imgs/hy.jpg');
       font-size: 40px;
-      // background-color: rgba(255,188,188,1);
+      background-color: rgba(255,188,188,1);
     }
   }
   .fei{
